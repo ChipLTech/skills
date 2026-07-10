@@ -177,29 +177,3 @@ skills:
     path: skills/personal/obsidian-vault
     files:
       - SKILL.md
-
-  # ── Deprecated ────────────────────────────────────────────────────────
-
-  - name: design-an-interface
-    description: Generate multiple radically different interface designs for a module using parallel sub-agents
-    path: skills/deprecated/design-an-interface
-    files:
-      - SKILL.md
-
-  - name: qa
-    description: Interactive QA session where the user reports bugs conversationally and the agent files GitHub issues
-    path: skills/deprecated/qa
-    files:
-      - SKILL.md
-
-  - name: request-refactor-plan
-    description: Create a detailed refactor plan with tiny commits via user interview, then file it as a GitHub issue
-    path: skills/deprecated/request-refactor-plan
-    files:
-      - SKILL.md
-
-  - name: ubiquitous-language
-    description: Extract a DDD-style ubiquitous language glossary from the current conversation
-    path: skills/deprecated/ubiquitous-language
-    files:
-      - SKILL.md
