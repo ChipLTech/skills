@@ -5,14 +5,14 @@ skills:
   # ── Engineering ───────────────────────────────────────────────────────
 
   - name: diagnose
-    description: Disciplined diagnosis loop for hard bugs and performance regressions: reproduce -> minimise -> hypothesise -> instrument -> fix -> regression-test
+    description: "Disciplined diagnosis loop for hard bugs and performance regressions: reproduce -> minimise -> hypothesise -> instrument -> fix -> regression-test"
     path: skills/engineering/diagnose
     files:
       - SKILL.md
       - "scripts/"
 
   - name: grill-with-docs
-    description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline
+    description: "Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline"
     path: skills/engineering/grill-with-docs
     files:
       - SKILL.md
@@ -20,7 +20,7 @@ skills:
       - "CONTEXT-FORMAT.md"
 
   - name: triage
-    description: Triage issues through a state machine of triage roles
+    description: "Triage issues through a state machine of triage roles"
     path: skills/engineering/triage
     files:
       - SKILL.md
@@ -28,7 +28,7 @@ skills:
       - "OUT-OF-SCOPE.md"
 
   - name: improve-codebase-architecture
-    description: Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/
+    description: "Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/"
     path: skills/engineering/improve-codebase-architecture
     files:
       - SKILL.md
@@ -38,7 +38,7 @@ skills:
       - "LANGUAGE.md"
 
   - name: setup-matt-pocock-skills
-    description: Scaffold the per-repo config issue tracker, triage label vocabulary, and domain doc layout that the other engineering skills consume
+    description: "Scaffold the per-repo config issue tracker, triage label vocabulary, and domain doc layout that the other engineering skills consume"
     path: skills/engineering/setup-matt-pocock-skills
     files:
       - SKILL.md
@@ -49,7 +49,7 @@ skills:
       - "triage-labels.md"
 
   - name: tdd
-    description: Test-driven development with a red-green-refactor loop that builds features or fixes bugs one vertical slice at a time
+    description: "Test-driven development with a red-green-refactor loop that builds features or fixes bugs one vertical slice at a time"
     path: skills/engineering/tdd
     files:
       - SKILL.md
@@ -60,25 +60,25 @@ skills:
       - "tests.md"
 
   - name: to-issues
-    description: Break any plan, spec, or PRD into independently-grabbable GitHub issues using vertical slices
+    description: "Break any plan, spec, or PRD into independently-grabbable GitHub issues using vertical slices"
     path: skills/engineering/to-issues
     files:
       - SKILL.md
 
   - name: to-prd
-    description: Turn the current conversation context into a PRD and submit it as a GitHub issue
+    description: "Turn the current conversation context into a PRD and submit it as a GitHub issue"
     path: skills/engineering/to-prd
     files:
       - SKILL.md
 
   - name: zoom-out
-    description: Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code
+    description: "Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code"
     path: skills/engineering/zoom-out
     files:
       - SKILL.md
 
   - name: prototype
-    description: Build a throwaway prototype to flesh out a design, either a runnable terminal app for state and business-logic questions or several radically different UI variations
+    description: "Build a throwaway prototype to flesh out a design, either a runnable terminal app for state and business-logic questions or several radically different UI variations"
     path: skills/engineering/prototype
     files:
       - SKILL.md
@@ -88,25 +88,25 @@ skills:
   # ── Productivity ──────────────────────────────────────────────────────
 
   - name: caveman
-    description: Ultra-compressed communication mode that cuts token usage by dropping filler while keeping full technical accuracy
+    description: "Ultra-compressed communication mode that cuts token usage by dropping filler while keeping full technical accuracy"
     path: skills/productivity/caveman
     files:
       - SKILL.md
 
   - name: grill-me
-    description: Relentlessly interview the user about a plan or design until every branch of the decision tree is resolved
+    description: "Relentlessly interview the user about a plan or design until every branch of the decision tree is resolved"
     path: skills/productivity/grill-me
     files:
       - SKILL.md
 
   - name: handoff
-    description: Compact the current conversation into a handoff document so another agent can continue the work
+    description: "Compact the current conversation into a handoff document so another agent can continue the work"
     path: skills/productivity/handoff
     files:
       - SKILL.md
 
   - name: write-a-skill
-    description: Create new skills with proper structure, progressive disclosure, and bundled resources
+    description: "Create new skills with proper structure, progressive disclosure, and bundled resources"
     path: skills/productivity/write-a-skill
     files:
       - SKILL.md
@@ -114,26 +114,26 @@ skills:
   # ── Misc ──────────────────────────────────────────────────────────────
 
   - name: git-guardrails-claude-code
-    description: Set up Claude Code hooks to block dangerous git commands such as push, reset --hard, and clean before they execute
+    description: "Set up Claude Code hooks to block dangerous git commands such as push, reset --hard, and clean before they execute"
     path: skills/misc/git-guardrails-claude-code
     files:
       - SKILL.md
       - "scripts/"
 
   - name: migrate-to-shoehorn
-    description: Migrate test files from as type assertions to @total-typescript/shoehorn
+    description: "Migrate test files from as type assertions to @total-typescript/shoehorn"
     path: skills/misc/migrate-to-shoehorn
     files:
       - SKILL.md
 
   - name: scaffold-exercises
-    description: Create exercise directory structures with sections, problems, solutions, and explainers
+    description: "Create exercise directory structures with sections, problems, solutions, and explainers"
     path: skills/misc/scaffold-exercises
     files:
       - SKILL.md
 
   - name: setup-pre-commit
-    description: Set up Husky pre-commit hooks with lint-staged, Prettier, type checking, and tests
+    description: "Set up Husky pre-commit hooks with lint-staged, Prettier, type checking, and tests"
     path: skills/misc/setup-pre-commit
     files:
       - SKILL.md
@@ -141,25 +141,25 @@ skills:
   # ── In Progress ───────────────────────────────────────────────────────
 
   - name: review
-    description: Review changes since a fixed point along standards and spec-compliance axes using parallel sub-agents
+    description: "Review changes since a fixed point along standards and spec-compliance axes using parallel sub-agents"
     path: skills/in-progress/review
     files:
       - SKILL.md
 
   - name: writing-beats
-    description: Shape an article as a journey of beats, choose the next pivot step by step, and write until it reaches a natural end
+    description: "Shape an article as a journey of beats, choose the next pivot step by step, and write until it reaches a natural end"
     path: skills/in-progress/writing-beats
     files:
       - SKILL.md
 
   - name: writing-fragments
-    description: Run a grilling session that mines writing fragments and appends them to a single document as raw material
+    description: "Run a grilling session that mines writing fragments and appends them to a single document as raw material"
     path: skills/in-progress/writing-fragments
     files:
       - SKILL.md
 
   - name: writing-shape
-    description: Take a markdown file of raw material and shape it into an article paragraph by paragraph
+    description: "Take a markdown file of raw material and shape it into an article paragraph by paragraph"
     path: skills/in-progress/writing-shape
     files:
       - SKILL.md
@@ -167,13 +167,13 @@ skills:
   # ── Personal ──────────────────────────────────────────────────────────
 
   - name: edit-article
-    description: Edit and improve articles by restructuring sections, improving clarity, and tightening prose
+    description: "Edit and improve articles by restructuring sections, improving clarity, and tightening prose"
     path: skills/personal/edit-article
     files:
       - SKILL.md
 
   - name: obsidian-vault
-    description: Search, create, and manage notes in an Obsidian vault with wikilinks and index notes
+    description: "Search, create, and manage notes in an Obsidian vault with wikilinks and index notes"
     path: skills/personal/obsidian-vault
     files:
       - SKILL.md
