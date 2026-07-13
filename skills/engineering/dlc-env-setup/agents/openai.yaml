@@ -1,0 +1,4 @@
+interface:
+  display_name: "DLC Env Setup"
+  short_description: "Rebuild this DLC workstation stack"
+  default_prompt: "Use dlc-env-setup to rediscover the local DLC repos, rebuild the requested stages safely, and finish with runtime verification."

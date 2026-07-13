@@ -11,6 +11,14 @@ skills:
       - SKILL.md
       - "scripts/"
 
+  - name: dlc-env-setup
+    description: "Rebuild and verify a DLC workstation toolchain, PyTorch 2.5.0 wheel, and optional local vLLM stack after rediscovering repos and checking git safety"
+    path: skills/engineering/dlc-env-setup
+    files:
+      - SKILL.md
+      - "agents/"
+      - "scripts/"
+
   - name: grill-with-docs
     description: "Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline"
     path: skills/engineering/grill-with-docs
