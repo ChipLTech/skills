@@ -20,7 +20,7 @@ skills:
       - "scripts/"
 
   - name: dlc-env-setup
-    description: "Rebuild and verify a DLC workstation toolchain, PyTorch 2.5.0 wheel, and optional local vLLM stack after rediscovering repos and checking git safety"
+    description: "Bootstrap, rebuild, and verify a DLC workstation toolchain by rediscovering repos, preparing missing source trees such as CMake 3.27.0 and optional local vLLM repos, then validating the PyTorch 2.5.0 wheel and local vLLM stack safely"
     path: skills/engineering/dlc-env-setup
     files:
       - SKILL.md
