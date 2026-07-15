@@ -5,12 +5,17 @@ A collection of agent skills (slash commands and behaviors) loaded by Claude Cod
 ## Language
 
 **Issue tracker**:
-The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-issues`, `to-prd`, `triage`, and `qa` read from and write to it.
+The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets`, `to-spec`, `triage`, and `qa` read from and write to it.
 _Avoid_: backlog manager, backlog backend, issue host
 
 **Issue**:
-A single tracked unit of work inside an **Issue tracker** — a bug, task, PRD, or slice produced by `to-issues`.
-_Avoid_: ticket (use only when quoting external systems that call them tickets)
+A single tracked unit of work inside an **Issue tracker** — a bug, task, spec, implementation ticket, or decision ticket.
+
+**Implementation ticket**:
+A tracer-bullet slice produced by `to-tickets`, declaring the work it delivers and its blocking edges. Once introduced in a workflow, "ticket" may be used as shorthand when it cannot be confused with a **Decision ticket**.
+
+**Decision ticket**:
+A `wayfinder` unit — a child **Issue** of a `wayfinder:map` holding a *question* whose resolution is a decision, not an **Implementation ticket** to execute. The **decision** qualifier distinguishes the two ticket types.
 
 **Triage role**:
 A canonical state-machine label applied to an **Issue** during triage (e.g. `needs-triage`, `ready-for-afk`). Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
@@ -19,6 +24,8 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 
 - An **Issue tracker** holds many **Issues**
 - An **Issue** carries one **Triage role** at a time
+- An **Implementation ticket** is an **Issue** produced by `to-tickets`
+- A **Decision ticket** is an **Issue** (a child of a `wayfinder:map`)
 
 ## Flagged ambiguities
 

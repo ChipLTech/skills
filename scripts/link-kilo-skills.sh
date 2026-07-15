@@ -23,6 +23,7 @@ DEST="$HOME/.config/kilo/skills"
 COMMAND_DEST="$HOME/.config/kilo/command"
 WITH_COMMANDS=0
 INCLUDE_ALL=0
+RETIRED=(diagnose to-prd to-issues write-a-skill review)
 
 usage() {
   cat <<'USAGE'
@@ -162,6 +163,25 @@ mkdir -p "$DEST"
 if [ "$WITH_COMMANDS" -eq 1 ]; then
   mkdir -p "$COMMAND_DEST"
 fi
+
+for name in "${RETIRED[@]}"; do
+  skill_target="$DEST/$name"
+  if [ -L "$skill_target" ]; then
+    rm "$skill_target"
+    echo "removed stale skill symlink $skill_target"
+  fi
+
+  if [ "$WITH_COMMANDS" -eq 1 ]; then
+    command_target="$COMMAND_DEST/$name.md"
+    if [ -L "$command_target" ]; then
+      rm "$command_target"
+      echo "removed stale command symlink $command_target"
+    elif [ -f "$command_target" ] && grep -Fq "请使用 \`$name\` skill，严格按它的流程处理下面的问题：" "$command_target"; then
+      rm "$command_target"
+      echo "removed stale generated command $command_target"
+    fi
+  fi
+done
 
 linked_count=0
 skipped_count=0

@@ -4,11 +4,19 @@
 skills:
   # ── Engineering ───────────────────────────────────────────────────────
 
-  - name: diagnose
-    description: "Disciplined diagnosis loop for hard bugs and performance regressions: reproduce -> minimise -> hypothesise -> instrument -> fix -> regression-test"
-    path: skills/engineering/diagnose
+  - name: ask-matt
+    description: "Ask which skill or flow fits your situation; a router over the skills in this repo"
+    path: skills/engineering/ask-matt
     files:
       - SKILL.md
+      - "agents/"
+
+  - name: diagnosing-bugs
+    description: "Diagnosis loop for hard bugs and performance regressions; use when diagnosing or debugging broken, failing, or slow behavior"
+    path: skills/engineering/diagnosing-bugs
+    files:
+      - SKILL.md
+      - "agents/"
       - "scripts/"
 
   - name: dlc-env-setup
@@ -50,6 +58,7 @@ skills:
     path: skills/engineering/setup-matt-pocock-skills
     files:
       - SKILL.md
+      - "agents/"
       - "domain.md"
       - "issue-tracker-github.md"
       - "issue-tracker-gitlab.md"
@@ -67,17 +76,54 @@ skills:
       - "refactoring.md"
       - "tests.md"
 
-  - name: to-issues
-    description: "Break any plan, spec, or PRD into independently-grabbable GitHub issues using vertical slices"
-    path: skills/engineering/to-issues
+  - name: to-spec
+    description: "Turn the current conversation into a spec and publish it to the project issue tracker without an additional interview"
+    path: skills/engineering/to-spec
     files:
       - SKILL.md
+      - "agents/"
 
-  - name: to-prd
-    description: "Turn the current conversation context into a PRD and submit it as a GitHub issue"
-    path: skills/engineering/to-prd
+  - name: to-tickets
+    description: "Break a plan, spec, or conversation into tracer-bullet tickets with explicit blocking edges and publish them to the configured tracker"
+    path: skills/engineering/to-tickets
     files:
       - SKILL.md
+      - "agents/"
+
+  - name: wayfinder
+    description: "Plan work too large for one agent session as a shared map of decision tickets and resolve them until the route is clear"
+    path: skills/engineering/wayfinder
+    files:
+      - SKILL.md
+      - "agents/"
+
+  - name: implement
+    description: "Implement a piece of work based on a spec or set of tickets"
+    path: skills/engineering/implement
+    files:
+      - SKILL.md
+      - "agents/"
+
+  - name: research
+    description: "Investigate a question against high-trust primary sources and capture cited findings as a Markdown file in the repo"
+    path: skills/engineering/research
+    files:
+      - SKILL.md
+      - "agents/"
+
+  - name: code-review
+    description: "Review changes since a fixed point against repository standards and the originating spec using parallel sub-agents"
+    path: skills/engineering/code-review
+    files:
+      - SKILL.md
+      - "agents/"
+
+  - name: resolving-merge-conflicts
+    description: "Resolve an in-progress git merge or rebase conflict while preserving the intent of both changes where possible"
+    path: skills/engineering/resolving-merge-conflicts
+    files:
+      - SKILL.md
+      - "agents/"
 
   - name: zoom-out
     description: "Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code"
@@ -113,11 +159,24 @@ skills:
     files:
       - SKILL.md
 
-  - name: write-a-skill
-    description: "Create new skills with proper structure, progressive disclosure, and bundled resources"
-    path: skills/productivity/write-a-skill
+  - name: teach
+    description: "Teach the user a new skill or concept within a stateful teaching workspace"
+    path: skills/productivity/teach
     files:
       - SKILL.md
+      - "agents/"
+      - "GLOSSARY-FORMAT.md"
+      - "LEARNING-RECORD-FORMAT.md"
+      - "MISSION-FORMAT.md"
+      - "RESOURCES-FORMAT.md"
+
+  - name: writing-great-skills
+    description: "Reference for writing and editing predictable skills using clear vocabulary and design principles"
+    path: skills/productivity/writing-great-skills
+    files:
+      - SKILL.md
+      - "agents/"
+      - "GLOSSARY.md"
 
   # ── Misc ──────────────────────────────────────────────────────────────
 
@@ -147,12 +206,6 @@ skills:
       - SKILL.md
 
   # ── In Progress ───────────────────────────────────────────────────────
-
-  - name: review
-    description: "Review changes since a fixed point along standards and spec-compliance axes using parallel sub-agents"
-    path: skills/in-progress/review
-    files:
-      - SKILL.md
 
   - name: writing-beats
     description: "Shape an article as a journey of beats, choose the next pivot step by step, and write until it reaches a natural end"

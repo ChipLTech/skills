@@ -21,8 +21,8 @@ cd skills
 
 主要分为几类：
 
-- `engineering/`：工程开发类，例如 `diagnose`、`tdd`、`to-prd`、`to-issues`
-- `productivity/`：生产力类，例如 `grill-me`、`handoff`、`caveman`
+- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup` 和 `zoom-out`
+- `productivity/`：生产力类，例如 `grill-me`、`handoff`、`teach`、`writing-great-skills`，并保留本地的 `caveman`
 - `misc/`：杂项工具类，例如 `setup-pre-commit`、`git-guardrails-claude-code`
 - `personal/`：Matt 个人工作流，默认不安装
 - `in-progress/`：草稿技能，默认不安装
@@ -49,7 +49,7 @@ cd skills
 生成后你可以在 Kilo Code 里使用类似下面的命令：
 
 ```text
-/diagnose 支付成功后偶尔生成两个订单，请帮我定位原因
+/diagnosing-bugs 支付成功后偶尔生成两个订单，请帮我定位原因
 /tdd 实现课程收藏功能，优先测试刷新后仍保持收藏状态
 /grill-with-docs 我想给订单系统增加部分退款能力
 ```
@@ -79,8 +79,8 @@ cd skills
 例如：
 
 ```text
-~/.config/kilo/skills/diagnose -> <repo>/skills/engineering/diagnose
-~/.config/kilo/command/diagnose.md
+~/.config/kilo/skills/diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
+~/.config/kilo/command/diagnosing-bugs.md
 ```
 
 安装完成后，重启 Kilo Code 或打开一个新 session。
@@ -101,11 +101,11 @@ cd skills
 /path/to/your-project/
 └── .kilo/
     ├── skills/
-    │   ├── diagnose -> <repo>/skills/engineering/diagnose
+    │   ├── diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
     │   ├── tdd -> <repo>/skills/engineering/tdd
     │   └── grill-with-docs -> <repo>/skills/engineering/grill-with-docs
     └── command/
-        ├── diagnose.md
+        ├── diagnosing-bugs.md
         ├── tdd.md
         └── grill-with-docs.md
 ```
@@ -114,7 +114,7 @@ cd skills
 
 ## 4. 只安装 skills，不生成 slash commands
 
-如果你不需要 `/diagnose` 这种 slash command，只想让 Kilo Code 能读取 skills，可以执行：
+如果你不需要 `/diagnosing-bugs` 这种 slash command，只想让 Kilo Code 能读取 skills，可以执行：
 
 ```bash
 ./scripts/link-kilo-skills.sh
@@ -123,7 +123,7 @@ cd skills
 这种情况下，建议在对话里明确点名 skill：
 
 ```text
-请使用 diagnose skill 来诊断这个 bug：支付成功后偶尔生成两个订单。
+请使用 diagnosing-bugs skill 来诊断这个 bug：支付成功后偶尔生成两个订单。
 ```
 
 或者：
@@ -187,10 +187,10 @@ ls -la ~/.config/kilo/skills
 你应该能看到类似：
 
 ```text
-diagnose -> <repo>/skills/engineering/diagnose
+diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
 tdd -> <repo>/skills/engineering/tdd
-to-prd -> <repo>/skills/engineering/to-prd
-to-issues -> <repo>/skills/engineering/to-issues
+to-spec -> <repo>/skills/engineering/to-spec
+to-tickets -> <repo>/skills/engineering/to-tickets
 grill-with-docs -> <repo>/skills/engineering/grill-with-docs
 ```
 
@@ -202,29 +202,29 @@ ls -la /path/to/your-project/.kilo/skills
 
 ### 7.2 验证 SKILL.md 是否存在
 
-以 `diagnose` 为例：
+以 `diagnosing-bugs` 为例：
 
 ```bash
-test -f ~/.config/kilo/skills/diagnose/SKILL.md && echo "diagnose installed"
+test -f ~/.config/kilo/skills/diagnosing-bugs/SKILL.md && echo "diagnosing-bugs installed"
 ```
 
 如果安装成功，会输出：
 
 ```text
-diagnose installed
+diagnosing-bugs installed
 ```
 
 也可以直接查看 skill 内容：
 
 ```bash
-sed -n '1,20p' ~/.config/kilo/skills/diagnose/SKILL.md
+sed -n '1,20p' ~/.config/kilo/skills/diagnosing-bugs/SKILL.md
 ```
 
 你应该能看到：
 
 ```text
 ---
-name: diagnose
+name: diagnosing-bugs
 description: Disciplined diagnosis loop for hard bugs and performance regressions...
 ---
 ```
@@ -240,17 +240,17 @@ ls -la ~/.config/kilo/command
 你应该能看到：
 
 ```text
-diagnose.md
+diagnosing-bugs.md
 tdd.md
-to-prd.md
-to-issues.md
+to-spec.md
+to-tickets.md
 grill-with-docs.md
 ```
 
 查看某个 command：
 
 ```bash
-sed -n '1,30p' ~/.config/kilo/command/diagnose.md
+sed -n '1,30p' ~/.config/kilo/command/diagnosing-bugs.md
 ```
 
 内容应该类似：
@@ -260,7 +260,7 @@ sed -n '1,30p' ~/.config/kilo/command/diagnose.md
 description: Disciplined diagnosis loop for hard bugs and performance regressions...
 ---
 
-请使用 `diagnose` skill，严格按它的流程处理下面的问题：
+请使用 `diagnosing-bugs` skill，严格按它的流程处理下面的问题：
 
 $ARGUMENTS
 ```
@@ -270,10 +270,10 @@ $ARGUMENTS
 重启 Kilo Code 或打开新 session 后，在聊天框输入：
 
 ```text
-/diagnose 测试一下：请说明 diagnose skill 的工作流程，不要改代码。
+/diagnosing-bugs 测试一下：请说明 diagnosing-bugs skill 的工作流程，不要改代码。
 ```
 
-如果 slash command 生效，agent 应该会按 `diagnose` 的流程解释：
+如果 slash command 生效，agent 应该会按 `diagnosing-bugs` 的流程解释：
 
 - 先建立反馈循环
 - 再复现问题
@@ -297,12 +297,12 @@ $ARGUMENTS
 
 ## 8. 常见问题
 
-### 8.1 Kilo Code 里输入 `/diagnose` 没反应
+### 8.1 Kilo Code 里输入 `/diagnosing-bugs` 没反应
 
 先确认 command 文件是否存在：
 
 ```bash
-ls -la ~/.config/kilo/command/diagnose.md
+ls -la ~/.config/kilo/command/diagnosing-bugs.md
 ```
 
 如果不存在，重新安装并加上 `--with-commands`：
@@ -318,7 +318,7 @@ ls -la ~/.config/kilo/command/diagnose.md
 检查 skill 是否存在：
 
 ```bash
-test -f ~/.config/kilo/skills/diagnose/SKILL.md && echo ok
+test -f ~/.config/kilo/skills/diagnosing-bugs/SKILL.md && echo ok
 ```
 
 如果没有输出 `ok`，说明 skill 链接没有成功。重新执行：
@@ -344,7 +344,7 @@ test -f ~/.config/kilo/skills/diagnose/SKILL.md && echo ok
 例如：
 
 ```text
-skip diagnose: ~/.config/kilo/skills/diagnose already exists and is not a symlink
+skip diagnosing-bugs: ~/.config/kilo/skills/diagnosing-bugs already exists and is not a symlink
 ```
 
 如果目标位置是 symlink，脚本会更新 symlink 指向本仓库里的 skill。
@@ -356,10 +356,10 @@ skip diagnose: ~/.config/kilo/skills/diagnose already exists and is not a symlin
 例如：
 
 ```text
-~/.config/kilo/skills/diagnose -> <repo>/skills/engineering/diagnose
+~/.config/kilo/skills/diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
 ```
 
-所以你修改 `<repo>/skills/engineering/diagnose/SKILL.md` 后，Kilo 读取到的也是同一份文件。
+所以你修改 `<repo>/skills/engineering/diagnosing-bugs/SKILL.md` 后，Kilo 读取到的也是同一份文件。
 
 如果 Kilo 当前 session 已经加载过旧内容，建议打开新 session。
 
@@ -372,7 +372,7 @@ skip diagnose: ~/.config/kilo/skills/diagnose already exists and is not a symlin
 ```
 
 ```text
-/diagnose 测试一下 diagnose 流程：假设登录接口偶尔返回 500，你会怎么排查？不要改代码。
+/diagnosing-bugs 测试一下 diagnosing-bugs 流程：假设登录接口偶尔返回 500，你会怎么排查？不要改代码。
 ```
 
 ```text
@@ -380,11 +380,11 @@ skip diagnose: ~/.config/kilo/skills/diagnose already exists and is not a symlin
 ```
 
 ```text
-/to-prd 请把我们刚才关于课程收藏功能的讨论整理成 PRD 草稿，不要发布 issue。
+/to-spec 请把我们刚才关于课程收藏功能的讨论整理成 spec 草稿，不要发布 issue。
 ```
 
 ```text
-/to-issues 请把课程收藏功能拆成 vertical slice issues，只输出拆分方案，不要创建 issue。
+/to-tickets 请把课程收藏功能拆成 tracer-bullet tickets，只输出拆分方案，不要创建 issue。
 ```
 
 这些验证命令都要求“不改代码”，适合确认 skill 是否可用。
@@ -406,19 +406,19 @@ skip diagnose: ~/.config/kilo/skills/diagnose already exists and is not a symlin
 排查 bug 时：
 
 ```text
-/diagnose <bug 描述>。请先建立可重复的失败信号，不要直接猜原因。
+/diagnosing-bugs <bug 描述>。请先建立可重复的失败信号，不要直接猜原因。
 ```
 
 沉淀需求时：
 
 ```text
-/to-prd 请把当前讨论整理成 PRD。
+/to-spec 请把当前讨论整理成 spec。
 ```
 
 拆任务时：
 
 ```text
-/to-issues 请把这个 PRD 拆成多个 AFK 优先的 vertical slices。
+/to-tickets 请把这个 spec 拆成多个 tracer-bullet tickets，并注明 blocking edges。
 ```
 
 ## 11. 卸载方式
@@ -426,10 +426,10 @@ skip diagnose: ~/.config/kilo/skills/diagnose already exists and is not a symlin
 如果是全局安装，删除：
 
 ```bash
-rm -rf ~/.config/kilo/skills/diagnose \
+rm -rf ~/.config/kilo/skills/diagnosing-bugs \
   ~/.config/kilo/skills/tdd \
-  ~/.config/kilo/skills/to-prd \
-  ~/.config/kilo/skills/to-issues \
+  ~/.config/kilo/skills/to-spec \
+  ~/.config/kilo/skills/to-tickets \
   ~/.config/kilo/skills/grill-with-docs
 ```
 
@@ -444,10 +444,10 @@ ls -la ~/.config/kilo/skills
 如果安装了 commands，也可以删除：
 
 ```bash
-rm -f ~/.config/kilo/command/diagnose.md \
+rm -f ~/.config/kilo/command/diagnosing-bugs.md \
   ~/.config/kilo/command/tdd.md \
-  ~/.config/kilo/command/to-prd.md \
-  ~/.config/kilo/command/to-issues.md \
+  ~/.config/kilo/command/to-spec.md \
+  ~/.config/kilo/command/to-tickets.md \
   ~/.config/kilo/command/grill-with-docs.md
 ```
 
@@ -468,7 +468,7 @@ rm -f ~/.config/kilo/command/diagnose.md \
 3. 在 Kilo Code 中输入：
 
 ```text
-/diagnose 测试一下 diagnose skill 的流程，不要改代码。
+/diagnosing-bugs 测试一下 diagnosing-bugs skill 的流程，不要改代码。
 ```
 
-如果 agent 能按 diagnose 的调试流程回答，就说明安装基本成功。
+如果 agent 能按 diagnosing-bugs 的调试流程回答，就说明安装基本成功。
