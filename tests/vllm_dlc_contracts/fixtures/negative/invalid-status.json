@@ -1,0 +1,14 @@
+{
+  "schema_version": "vllm-dlc-result-evidence/v1",
+  "contract_kind": "result_evidence",
+  "run_id": "invalid-status-001",
+  "run_spec_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "execution_environment": "real_dlc_hardware",
+  "acceptance_eligible": false,
+  "overall_status": "failed",
+  "exit_code": 20,
+  "gates": [{"id": "hardware", "mandatory": true, "status": "skipped", "evidence_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}],
+  "artifacts": [],
+  "diagnostics": [],
+  "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}

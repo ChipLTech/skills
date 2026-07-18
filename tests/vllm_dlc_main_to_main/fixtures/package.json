@@ -1,0 +1,8 @@
+{
+  "skill_identity": "main-to-main-upgrade",
+  "roles": {
+    "skill": "../../../skills/in-progress/main-to-main-upgrade/SKILL.md",
+    "agent": "../../../skills/in-progress/main-to-main-upgrade/agents/openai.yaml",
+    "knowledge": "../../../skills/in-progress/main-to-main-upgrade/knowledge.md"
+  }
+}

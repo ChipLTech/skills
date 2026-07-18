@@ -1,0 +1,12 @@
+{
+  "schema_version": "vllm-dlc-parent-child-handoff/v1",
+  "contract_kind": "parent_child_handoff",
+  "parent_run_id": "main-to-main-001",
+  "child_run_id": "model-adaptation-deepseek-001",
+  "target_vllm_sha": "1111111111111111111111111111111111111111",
+  "candidate_vllm_dlc_sha": "2222222222222222222222222222222222222222",
+  "result_evidence_digest": "sha256:30c29b5c1fcf97411b68be5a357dfaa206da3a7c66726e7c6e8c252b534e3b7c",
+  "changed_dependency_ids": ["model.deepseek-v2"],
+  "status": "passed",
+  "digest": "sha256:8489128053bde75ca605b9f13b48f50434243549c55a50b1ad37115ea2ef8077"
+}

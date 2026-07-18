@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model Adaptation"
+  short_description: "Adapt one specific model for the DLC Platform"
+  default_prompt: "Use Model Adaptation for this specific new or incompatible model and deployment profile. Analyze model-level Attention, MLA, MoE, quantization, multimodal, MTP, tokenizer, processor, and distributed compatibility, choose the smallest traceable compatibility action, consume the shared runner's sealed evidence, keep Dummy diagnostic-only, and do not perform upstream alignment, environment rebuilds, single-operator debugging, independent compile work, or smoke-only execution."

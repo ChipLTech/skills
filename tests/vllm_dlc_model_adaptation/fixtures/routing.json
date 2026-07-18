@@ -1,0 +1,15 @@
+{
+  "schema_version": "vllm-dlc-model-adaptation-routing/v1",
+  "candidate_package": "package.json",
+  "cases": [
+    {"id": "new_model", "prompt": "Load and serve approved/model on the DLC Platform.", "expected_owner": "model-adaptation"},
+    {"id": "attention_incompatibility", "prompt": "Adapt this model's Attention and MoE incompatibilities for its deployment profile.", "expected_owner": "model-adaptation"},
+    {"id": "main_to_main_delegation", "prompt": "Consume this Main-to-Main parent assignment for one model-specific adaptation.", "expected_owner": "model-adaptation"},
+    {"id": "upstream_alignment", "prompt": "Align vllm-dlc main to this upstream full SHA.", "expected_owner": "main-to-main-upgrade"},
+    {"id": "alignment_recovery", "prompt": "Recover the unknown Verified vLLM Alignment.", "expected_owner": "main-to-main-upgrade"},
+    {"id": "environment_rebuild", "prompt": "Rebuild the DLC Ecosystem workstation and PyTorch wheel.", "expected_owner": "dlc-env-setup"},
+    {"id": "single_operator", "prompt": "Diagnose this one DLC Custom Kernel precision failure.", "expected_owner": "diagnosing-bugs"},
+    {"id": "independent_compile", "prompt": "Develop independent torch.compile capability.", "expected_owner": "compile-capability"},
+    {"id": "smoke_only", "prompt": "Only run the existing smoke without model analysis.", "expected_owner": "shared-smoke-runner"}
+  ]
+}

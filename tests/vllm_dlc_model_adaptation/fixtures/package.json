@@ -1,0 +1,8 @@
+{
+  "skill_identity": "model-adaptation",
+  "roles": {
+    "skill": "../../../skills/in-progress/model-adaptation/SKILL.md",
+    "agent": "../../../skills/in-progress/model-adaptation/agents/openai.yaml",
+    "knowledge": "../../../skills/in-progress/model-adaptation/knowledge.md"
+  }
+}

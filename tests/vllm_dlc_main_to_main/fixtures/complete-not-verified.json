@@ -1,0 +1,140 @@
+{
+  "schema_version": "vllm-dlc-main-to-main-bundle/v1",
+  "workflow": "main_to_main",
+  "parent_run_id": "main-to-main-parent-001",
+  "target": {
+    "vllm_sha": "1111111111111111111111111111111111111111",
+    "lineage_tag": "v0.9.0"
+  },
+  "candidate_vllm_dlc_sha": "974aa861f3d964ca45b2450915e765aa87cec51f",
+  "preflight": {
+    "target_available": true,
+    "current_branch": "dev-skills",
+    "required_branch": "main",
+    "branch_matches_main": false,
+    "contract_available": true,
+    "assets_available": true,
+    "hardware_available": true,
+    "observability_available": true,
+    "read_only_boundary_preserved": true
+  },
+  "baseline": {
+    "state": "unknown",
+    "selected_candidate_id": null,
+    "candidates": [
+      {
+        "id": "historical-verified",
+        "source": "historical_evidence",
+        "upstream_sha": "0000000000000000000000000000000000000000",
+        "mandatory_evidence_complete": false,
+        "evidence_digest": null,
+        "revalidation_status": "not_verified",
+        "verified_alignment": false
+      },
+      {
+        "id": "explicit-pin",
+        "source": "explicit_git_pin",
+        "upstream_sha": "2488d1dca2df05059fcfbad0a1612ef2a5202b47",
+        "mandatory_evidence_complete": false,
+        "evidence_digest": null,
+        "revalidation_status": "not_verified",
+        "verified_alignment": false
+      },
+      {
+        "id": "correlated-candidate",
+        "source": "correlated_candidate",
+        "upstream_sha": "3072ed636a8993f69e6c2ab4d4a90bb50f04ab81",
+        "mandatory_evidence_complete": false,
+        "evidence_digest": null,
+        "revalidation_status": "not_verified",
+        "verified_alignment": false
+      },
+      {
+        "id": "checkout-clue",
+        "source": "checkout_clue",
+        "upstream_sha": "a208f41eee15d15b0da619ded9384fda5efd2e7f",
+        "mandatory_evidence_complete": false,
+        "evidence_digest": null,
+        "revalidation_status": "not_applicable",
+        "verified_alignment": false
+      }
+    ]
+  },
+  "history": {
+    "complete": false,
+    "range_evidence_digest": null,
+    "discovered_changed_surface_count": 3,
+    "range_start_sha": "0000000000000000000000000000000000000000",
+    "range_end_sha": "1111111111111111111111111111111111111111"
+  },
+  "delta": {
+    "declared_changed_surface_count": 3,
+    "declared_unknown_impact_count": 0,
+    "surfaces": [
+      {"id": "attention.api", "classification": "affected_dependency", "dependency_id": "attention.api", "evidence": "upstream-diff:attention"},
+      {"id": "worker.new", "classification": "new_dependency_candidate", "dependency_id": "worker.new", "evidence": "upstream-diff:worker"},
+      {"id": "docs.typo", "classification": "confirmed_irrelevant", "dependency_id": null, "evidence": "upstream-diff:docs-only"}
+    ]
+  },
+  "manifest_impact": {
+    "manifest_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+    "read_only": true,
+    "modified": false,
+    "applied_changes": [],
+    "future_changes": [
+      {"dependency_id": "attention.api", "action": "future_update", "reason": "upstream contract changed"},
+      {"dependency_id": "worker.new", "action": "future_add", "reason": "new compatibility candidate"}
+    ]
+  },
+  "assignments": [
+    {
+      "assignment_id": "deepseek-tp2",
+      "mandatory": true,
+      "role": "deepseek_distributed",
+      "child_run_id": "deepseek-child-001",
+      "model_id": "approved/deepseek-v2-lite-chat",
+      "model_revision": "2222222222222222222222222222222222222222",
+      "tokenizer_revision": "3333333333333333333333333333333333333333",
+      "processor_revision": null,
+      "tensor_parallel_size": 2,
+      "mode": "acceptance",
+      "real_weights_required": true,
+      "hardware_class": "real_dlc_hardware",
+      "deployment_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expected_dependency_ids": ["attention.api"]
+    },
+    {
+      "assignment_id": "llama-tp1",
+      "mandatory": true,
+      "role": "llama_dense",
+      "child_run_id": "llama-child-001",
+      "model_id": "approved/llama-dense",
+      "model_revision": "4444444444444444444444444444444444444444",
+      "tokenizer_revision": "5555555555555555555555555555555555555555",
+      "processor_revision": null,
+      "tensor_parallel_size": 1,
+      "mode": "acceptance",
+      "real_weights_required": true,
+      "hardware_class": "real_dlc_hardware",
+      "deployment_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "expected_dependency_ids": []
+    }
+  ],
+  "child_bundles": [],
+  "regression_policy": {
+    "schema_version": "vllm-dlc-main-to-main-regression-policy/v1",
+    "status": "not_verified",
+    "digest": null
+  },
+  "freeze": {
+    "tested_revision_unique": false,
+    "commit_required": true,
+    "commit_authorized": false,
+    "evidence_stale": false
+  },
+  "claims": {
+    "alignment_action": "unchanged",
+    "manifest_action": "report_only",
+    "finalize_action": "none"
+  }
+}

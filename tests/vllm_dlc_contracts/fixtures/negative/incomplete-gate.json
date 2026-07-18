@@ -1,0 +1,14 @@
+{
+  "schema_version": "vllm-dlc-result-evidence/v1",
+  "contract_kind": "result_evidence",
+  "run_id": "incomplete-gate-001",
+  "run_spec_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "execution_environment": "real_dlc_hardware",
+  "acceptance_eligible": false,
+  "overall_status": "blocked",
+  "exit_code": 8,
+  "gates": [{"id": "chunked_prefill", "mandatory": true, "status": "blocked"}],
+  "artifacts": [],
+  "diagnostics": [],
+  "digest": "sha256:0d1aa0dacb6753b52a74e20e8a078a7c16aae80034979d2067a39e27ff4b853c"
+}

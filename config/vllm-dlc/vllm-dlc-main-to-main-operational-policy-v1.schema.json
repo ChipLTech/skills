@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vllm-dlc-main-to-main-operational-policy/v1",
+  "additionalProperties": false,
+  "properties": {
+    "alignment_action": {"const": "unchanged"},
+    "approved": {"const": true},
+    "claim_level": {"const": "operational_only"},
+    "finalization_intent": {"const": "none"},
+    "manifest_action": {"const": "report_only"},
+    "roles": {
+      "items": false,
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "role": {"const": "deepseek_tp2_operational"},
+            "tensor_parallel_size": {"const": 2}
+          },
+          "required": ["role", "tensor_parallel_size"],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "role": {"const": "llama_tp1_dense_operational"},
+            "tensor_parallel_size": {"const": 1}
+          },
+          "required": ["role", "tensor_parallel_size"],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "schema_version": {"const": "vllm-dlc-main-to-main-operational-policy/v1"},
+    "target": {
+      "additionalProperties": false,
+      "properties": {
+        "manifest_digest": {"pattern": "^sha256:[0-9a-f]{64}$", "type": "string"},
+        "vllm_dlc_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "vllm_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"}
+      },
+      "required": ["vllm_sha", "vllm_dlc_sha", "manifest_digest"],
+      "type": "object"
+    }
+  },
+  "required": [
+    "alignment_action",
+    "approved",
+    "claim_level",
+    "finalization_intent",
+    "manifest_action",
+    "roles",
+    "schema_version",
+    "target"
+  ],
+  "type": "object"
+}

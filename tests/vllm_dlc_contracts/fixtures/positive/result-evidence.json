@@ -1,0 +1,39 @@
+{
+  "schema_version": "vllm-dlc-result-evidence/v1",
+  "contract_kind": "result_evidence",
+  "run_id": "model-adaptation-fixture-001",
+  "run_spec_digest": "sha256:8b948287996b488814c0d7a51eff7805bbc350ca35a55f062d7afa7673ed8834",
+  "execution_environment": "real_dlc_hardware",
+  "acceptance_eligible": true,
+  "overall_status": "passed",
+  "exit_code": 0,
+  "gates": [
+    {
+      "id": "service_ready",
+      "mandatory": true,
+      "status": "passed",
+      "evidence_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "id": "chunked_prefill",
+      "mandatory": true,
+      "status": "passed",
+      "evidence_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    {
+      "id": "runtime_dispatch",
+      "mandatory": true,
+      "status": "passed",
+      "evidence_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    {
+      "id": "real_dlc_hardware",
+      "mandatory": true,
+      "status": "passed",
+      "evidence_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    }
+  ],
+  "artifacts": [],
+  "diagnostics": [],
+  "digest": "sha256:492fb38813412ed05cf752156f71840684725de7485c52490f3aae6d1d34df38"
+}

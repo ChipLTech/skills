@@ -1,0 +1,16 @@
+{
+  "schema_version": "vllm-dlc-run-spec/v1",
+  "contract_kind": "run_spec",
+  "run_id": "invalid-vllm-dlc-sha-001",
+  "workflow": "model_adaptation",
+  "mode": "acceptance",
+  "target": {"vllm_sha": "1111111111111111111111111111111111111111", "vllm_dlc_sha": "main", "manifest_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "deployment_profile": {"model_id": "approved/model", "model_revision": "3333333333333333333333333333333333333333", "tokenizer_revision": "4444444444444444444444444444444444444444", "processor_revision": null, "tensor_parallel_size": 1, "pipeline_parallel_size": 1, "dtype": "bfloat16", "quantization": "none", "context_limit": 4096, "max_num_batched_tokens": 1024, "chunked_prefill": true, "served_model_name": "approved-model", "real_weights": true},
+  "hardware": {"class": "real_dlc_hardware", "device_count": 1, "required": true},
+  "timeouts": {"startup_seconds": 600, "request_seconds": 120, "long_prefix_seconds": 300},
+  "runtime_policy": {"execution": "eager", "triton_execution": "forbidden", "compile_execution": "forbidden"},
+  "gates": ["service_ready"],
+  "artifact_destination": "/tmp/kilo/invalid-vllm-dlc-sha-001",
+  "finalization_intent": "none",
+  "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}

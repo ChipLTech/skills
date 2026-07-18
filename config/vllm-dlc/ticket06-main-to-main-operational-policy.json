@@ -1,0 +1,23 @@
+{
+  "alignment_action": "unchanged",
+  "approved": true,
+  "claim_level": "operational_only",
+  "finalization_intent": "none",
+  "manifest_action": "report_only",
+  "roles": [
+    {
+      "role": "deepseek_tp2_operational",
+      "tensor_parallel_size": 2
+    },
+    {
+      "role": "llama_tp1_dense_operational",
+      "tensor_parallel_size": 1
+    }
+  ],
+  "schema_version": "vllm-dlc-main-to-main-operational-policy/v1",
+  "target": {
+    "manifest_digest": "sha256:2532367774290b33aa0d3daf86eeafb723aefd432d3c1990fbddda211c900821",
+    "vllm_dlc_sha": "974aa861f3d964ca45b2450915e765aa87cec51f",
+    "vllm_sha": "a208f41eee15d15b0da619ded9384fda5efd2e7f"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "vllm-dlc-prompt-dry-run/v1",
+  "knowledge_package": "knowledge-package.json",
+  "cases": [
+    {
+      "id": "model-adaptation-missing-inputs",
+      "prompt_role": "model_adaptation_prompt",
+      "provided_inputs": {}
+    },
+    {
+      "id": "model-adaptation-partial-inputs",
+      "prompt_role": "model_adaptation_prompt",
+      "provided_inputs": {"model_id": "approved/model", "model_revision": "approved-revision"}
+    },
+    {
+      "id": "main-to-main-missing-target",
+      "prompt_role": "main_to_main_prompt",
+      "provided_inputs": {}
+    },
+    {
+      "id": "main-to-main-partial-inputs",
+      "prompt_role": "main_to_main_prompt",
+      "provided_inputs": {"target_vllm_full_sha": "1111111111111111111111111111111111111111"}
+    }
+  ]
+}

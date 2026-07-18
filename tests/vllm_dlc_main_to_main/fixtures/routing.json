@@ -1,0 +1,15 @@
+{
+  "schema_version": "vllm-dlc-main-to-main-routing/v1",
+  "candidate_package": "package.json",
+  "cases": [
+    {"id": "upstream_target", "prompt": "Upgrade vllm-dlc main to upstream full SHA 1111111111111111111111111111111111111111", "expected_owner": "main-to-main-upgrade"},
+    {"id": "alignment_recovery", "prompt": "Recover the unknown Verified vLLM Alignment using evidence", "expected_owner": "main-to-main-upgrade"},
+    {"id": "compatibility_impact", "prompt": "Analyze the complete upstream compatibility impact range", "expected_owner": "main-to-main-upgrade"},
+    {"id": "standalone_model", "prompt": "Adapt this specific incompatible model", "expected_owner": "model-adaptation"},
+    {"id": "environment_rebuild", "prompt": "Rebuild the DLC Ecosystem environment", "expected_owner": "dlc-env-setup"},
+    {"id": "single_operator", "prompt": "Diagnose one DLC Custom Kernel operator", "expected_owner": "diagnosing-bugs"},
+    {"id": "independent_compile", "prompt": "Implement independent compile capability", "expected_owner": "compile-capability"},
+    {"id": "release_branch", "prompt": "Create a release branch for vLLM", "expected_owner": "release-management"},
+    {"id": "smoke_only", "prompt": "Only run the existing smoke", "expected_owner": "shared-smoke-runner"}
+  ]
+}

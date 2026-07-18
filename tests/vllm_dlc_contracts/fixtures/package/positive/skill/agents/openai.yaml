@@ -1,0 +1,4 @@
+interface:
+  display_name: Fixture Model Adaptation
+  short_description: Validate fixture packaging
+  default_prompt: Use fixture-model-adaptation for the supplied model.

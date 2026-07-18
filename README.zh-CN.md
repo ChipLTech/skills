@@ -21,7 +21,7 @@ cd skills
 
 主要分为几类：
 
-- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup` 和 `zoom-out`
+- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup`、`model-adaptation`、`main-to-main-upgrade` 和 `zoom-out`
 - `productivity/`：生产力类，例如 `grill-me`、`handoff`、`teach`、`writing-great-skills`，并保留本地的 `caveman`
 - `misc/`：杂项工具类，例如 `setup-pre-commit`、`git-guardrails-claude-code`
 - `personal/`：Matt 个人工作流，默认不安装
@@ -52,6 +52,8 @@ cd skills
 /diagnosing-bugs 支付成功后偶尔生成两个订单，请帮我定位原因
 /tdd 实现课程收藏功能，优先测试刷新后仍保持收藏状态
 /grill-with-docs 我想给订单系统增加部分退款能力
+/model-adaptation 请只路由：这个特定新模型在 DLC Platform 上加载失败，检查模型级兼容边界
+/main-to-main-upgrade 请只路由：分析 vllm-dlc main 对齐 exact upstream full SHA 的完整兼容影响
 ```
 
 ## 2. 推荐安装方式：全局安装
@@ -80,7 +82,11 @@ cd skills
 
 ```text
 ~/.config/kilo/skills/diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
+~/.config/kilo/skills/model-adaptation -> <repo>/skills/engineering/model-adaptation
+~/.config/kilo/skills/main-to-main-upgrade -> <repo>/skills/engineering/main-to-main-upgrade
 ~/.config/kilo/command/diagnosing-bugs.md
+~/.config/kilo/command/model-adaptation.md
+~/.config/kilo/command/main-to-main-upgrade.md
 ```
 
 安装完成后，重启 Kilo Code 或打开一个新 session。
@@ -139,6 +145,8 @@ cd skills
 - `engineering/`
 - `productivity/`
 - `misc/`
+
+因此默认安装不需要 `--all`，会包含 `model-adaptation` 和 `main-to-main-upgrade` 这两个 stable engineering skills 及其 slash command 包装器。它们也支持自然语言触发：特定模型加载/服务兼容问题应路由到 `model-adaptation`，exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
 
 默认不会安装：
 
@@ -241,6 +249,8 @@ ls -la ~/.config/kilo/command
 
 ```text
 diagnosing-bugs.md
+model-adaptation.md
+main-to-main-upgrade.md
 tdd.md
 to-spec.md
 to-tickets.md
@@ -286,6 +296,17 @@ $ARGUMENTS
 ```text
 请使用 tdd skill，简单说明红绿重构流程，不要改代码。
 ```
+
+也可以验证 vLLM-DLC publication 路由边界：
+
+```text
+这个特定新模型在 DLC Platform 上加载失败，请只路由到合适 skill，不要运行命令或修改文件。
+/model-adaptation 请只处理参数转发：检查这个模型的 Attention、tokenizer 和部署 profile 兼容边界。
+把 vllm-dlc main 对齐到 exact upstream full SHA 1111111111111111111111111111111111111111，并只分析兼容影响。
+/main-to-main-upgrade 请只处理参数转发：分析 exact upstream full SHA 的完整 compatibility-impact range。
+```
+
+这两个 skills 的 publication 只描述 capability 与 routing boundary。Ticket 06 的 exact v12 profiles 仅完成 operational regression，保持 `authoritativeness: operational_only`、`acceptance_eligible: false`、alignment unchanged、manifest report-only 和 finalization `none`；这不等于 Real DLC Hardware acceptance、Verified vLLM Alignment、DLC Runtime dispatch 或其他更强执行结论。
 
 如果 skill 被正确加载，agent 应该会强调：
 

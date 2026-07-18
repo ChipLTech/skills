@@ -1,0 +1,14 @@
+{
+  "skill_identity": "fixture-model-adaptation",
+  "roles": {
+    "skill": "skill/SKILL.md",
+    "agent": "skill/agents/openai.yaml",
+    "knowledge": "knowledge.md",
+    "top_level_catalog": "catalog.md",
+    "engineering_catalog": "engineering-catalog.md",
+    "plugin_manifest": "plugin.json",
+    "skillhub_manifest": "skillhub.yaml",
+    "kilo_linker": "kilo-linker.sh",
+    "installation_documentation": "install.md"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "vllm-dlc-model-adaptation-bundle/v1",
+  "workflow": "model_adaptation",
+  "preflight": {
+    "model_path": "/approved/model",
+    "model_revision": "3333333333333333333333333333333333333333",
+    "weights_evidence": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "tokenizer_revision": "4444444444444444444444444444444444444444",
+    "processor_required": false,
+    "processor_revision": null,
+    "required_branch": "dev-skills",
+    "current_branch": "dev-skills",
+    "contract_available": true,
+    "hardware_required": true,
+    "required_device_count": 1,
+    "available_device_count": 1,
+    "chunk_observability_available": true,
+    "dispatch_observability_available": true,
+    "required_execution_path_supported": true,
+    "read_only_boundary_preserved": true,
+    "artifact_destination": "/tmp/kilo/model-adaptation-fixture-001"
+  },
+  "capability_matrix": [
+    {"id": "text_generation", "classification": "required", "evidence": "model-config:text-generation"},
+    {"id": "attention", "classification": "required", "evidence": "model-config:attention"},
+    {"id": "mla", "classification": "not_applicable", "evidence": "model-config:no-mla"},
+    {"id": "moe", "classification": "not_applicable", "evidence": "model-config:no-moe"},
+    {"id": "quantization", "classification": "conditional", "evidence": "deployment:quantization", "activation_predicate": "quantization != none", "resolved": true, "active": false},
+    {"id": "multimodal", "classification": "not_applicable", "evidence": "model-config:text-only"},
+    {"id": "distributed", "classification": "conditional", "evidence": "deployment:tensor-parallel", "activation_predicate": "tensor_parallel_size > 1", "resolved": true, "active": false},
+    {"id": "mtp", "classification": "not_applicable", "evidence": "model-config:no-mtp"},
+    {"id": "tokenizer", "classification": "required", "evidence": "asset:tokenizer-revision"},
+    {"id": "processor", "classification": "not_applicable", "evidence": "model-config:no-processor"},
+    {"id": "model_specific", "classification": "required", "evidence": "source:model-registration"}
+  ],
+  "tp_decision": {
+    "tensor_parallel_size": 1,
+    "weights_evidence": "weight-index:approved",
+    "config_evidence": "model-config:approved",
+    "dtype": "bfloat16",
+    "quantization": "none",
+    "capacity_evidence": "device-capacity:approved",
+    "deployment_evidence": "deployment-profile:fixture"
+  },
+  "compatibility": {"changed": false, "changed_dependency_ids": []},
+  "execution": {
+    "runner_requested": false,
+    "result_reference": null,
+    "result_environment": null,
+    "result_status": null,
+    "result_acceptance_eligible": false,
+    "real_weight_failure_reference": null,
+    "dummy_requested": false,
+    "dummy_approved": false,
+    "dummy_mode": null,
+    "dummy_acceptance_eligible": false
+  },
+  "identity": {
+    "expected_model_id": "approved/model",
+    "expected_model_revision": "3333333333333333333333333333333333333333",
+    "expected_tokenizer_revision": "4444444444444444444444444444444444444444",
+    "expected_processor_revision": null,
+    "expected_deployment_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "parent_run_id": null
+  },
+  "run_spec": null,
+  "result_evidence": null,
+  "prior_real_weight_run_spec": null,
+  "prior_real_weight_result_evidence": null,
+  "handoff": null,
+  "alignment_claim": "none"
+}

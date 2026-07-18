@@ -170,6 +170,8 @@ Skills I use daily for code work.
 - **[code-review](./skills/engineering/code-review/SKILL.md)** — Review a diff since a fixed point along Standards and Spec axes in parallel sub-agents.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)** — Resolve an in-progress merge or rebase hunk by hunk from each side's intent, then finish the operation.
 - **[dlc-env-setup](./skills/engineering/dlc-env-setup/SKILL.md)** — Rebuild and verify a workstation DLC toolchain, PyTorch 2.5.0 wheel, and optional local vLLM runtime.
+- **[model-adaptation](./skills/engineering/model-adaptation/SKILL.md)** — Adapt a specific new or incompatible model for loading or serving on the DLC Platform; use for model-level Attention, MLA, MoE, quantization, multimodal, MTP, or distributed compatibility, not upstream alignment, environment rebuilds, single-operator debugging, independent compile work, or running an existing smoke alone.
+- **[main-to-main-upgrade](./skills/engineering/main-to-main-upgrade/SKILL.md)** — Upgrade vllm-dlc main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests.
 
 ### Productivity
 

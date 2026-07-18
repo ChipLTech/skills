@@ -1,0 +1,14 @@
+{
+  "schema_version": "vllm-dlc-knowledge-package/v1",
+  "documents": {
+    "entry_point": "README.md",
+    "decision_record": "vllm-dlc/model-adaptation-and-main-to-main-decisions.md",
+    "model_adaptation_prompt": "prompt-examples/vllm-dlc-model-adaptation.md",
+    "main_to_main_prompt": "prompt-examples/vllm-dlc-main-to-main-upgrade.md"
+  },
+  "required_links": [
+    {"from": "entry_point", "to": "decision_record"},
+    {"from": "entry_point", "to": "model_adaptation_prompt"},
+    {"from": "entry_point", "to": "main_to_main_prompt"}
+  ]
+}

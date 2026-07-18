@@ -1,0 +1,6 @@
+{
+  "schema_version": "vllm-dlc-run-spec/v1",
+  "contract_kind": "run_spec",
+  "target": {"vllm_sha": "1111111111111111111111111111111111111111"},
+  "digest": "sha256:5570dcff930b9f5b5f4b6324b7127e51b3f15c64d0ef18b3b7dd62688a3a6396"
+}

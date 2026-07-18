@@ -1,0 +1,11 @@
+{
+  "exception": {
+    "dependency": "opencv-python-headless",
+    "distribution": "vllm",
+    "installed_version": "4.11.0.86",
+    "rationale": "vllm-dlc requires <=4.11.0.86 to preserve numpy<2",
+    "requirement": "opencv-python-headless>=4.13.0",
+    "vllm_dlc_requirement": "opencv-python-headless<=4.11.0.86"
+  },
+  "schema_version": "vllm-dlc-dependency-exception-policy/v1"
+}

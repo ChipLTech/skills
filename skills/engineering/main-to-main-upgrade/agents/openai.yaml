@@ -1,0 +1,4 @@
+interface:
+  display_name: "Main-to-Main Upgrade"
+  short_description: "Analyze an exact upstream vLLM alignment upgrade"
+  default_prompt: "Use Main-to-Main Upgrade for an exact upstream full SHA, unknown Verified vLLM Alignment recovery, or complete compatibility-impact analysis. Keep vllm-dlc read-only, classify the full delta, report manifest impact, assign DeepSeek TP=2 and Llama TP=1, consume only Model Adaptation sealed child evidence, and never absorb standalone adaptation, environment rebuild, single-operator diagnosis, independent compile, release branch, or smoke-only work."

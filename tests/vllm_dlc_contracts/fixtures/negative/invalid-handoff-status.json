@@ -1,0 +1,12 @@
+{
+  "schema_version": "vllm-dlc-parent-child-handoff/v1",
+  "contract_kind": "parent_child_handoff",
+  "parent_run_id": "main-to-main-001",
+  "child_run_id": "model-adaptation-001",
+  "target_vllm_sha": "1111111111111111111111111111111111111111",
+  "candidate_vllm_dlc_sha": "2222222222222222222222222222222222222222",
+  "result_evidence_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "changed_dependency_ids": [],
+  "status": "nonsense",
+  "digest": "sha256:98bcb5ea3e3c5b5d628c657d81ca706ed6aa68bd0a7a5bf264d469d715c55991"
+}

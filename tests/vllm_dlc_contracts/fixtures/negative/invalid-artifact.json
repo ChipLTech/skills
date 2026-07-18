@@ -1,0 +1,14 @@
+{
+  "schema_version": "vllm-dlc-result-evidence/v1",
+  "contract_kind": "result_evidence",
+  "run_id": "invalid-artifact-001",
+  "run_spec_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "execution_environment": "real_dlc_hardware",
+  "acceptance_eligible": false,
+  "overall_status": "blocked",
+  "exit_code": 8,
+  "gates": [{"id": "hardware", "mandatory": true, "status": "blocked", "evidence_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}],
+  "artifacts": [{"id": "log", "kind": "server_log", "uri": "file:///tmp/kilo/log", "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "surprise": true}],
+  "diagnostics": [],
+  "digest": "sha256:e67e1fed0ee2804eaa201d559df9a4842ca18452a549f1eedbad14f1b4a755f8"
+}

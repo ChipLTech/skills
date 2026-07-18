@@ -1,0 +1,7 @@
+{
+  "skill_identity": "fixture-model-adaptation",
+  "skill_file": "../positive/skill/SKILL.md",
+  "agent_file": "../positive/skill/agents/openai.yaml",
+  "knowledge_file": "../positive/knowledge.md",
+  "publication_files": ["missing-catalog.md"]
+}

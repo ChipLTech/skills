@@ -1,0 +1,4 @@
+{
+  "schema_version": "vllm-dlc-run-spec/v3",
+  "contract_kind": "run_spec"
+}

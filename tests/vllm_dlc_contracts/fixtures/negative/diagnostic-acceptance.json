@@ -1,0 +1,14 @@
+{
+  "schema_version": "vllm-dlc-result-evidence/v1",
+  "contract_kind": "result_evidence",
+  "run_id": "dummy-diagnostic-001",
+  "run_spec_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "execution_environment": "dummy",
+  "acceptance_eligible": true,
+  "overall_status": "passed",
+  "exit_code": 0,
+  "gates": [{"id": "real_dlc_hardware", "mandatory": true, "status": "not_verified", "evidence_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}],
+  "artifacts": [],
+  "diagnostics": [],
+  "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}

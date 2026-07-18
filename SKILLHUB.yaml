@@ -27,6 +27,22 @@ skills:
       - "agents/"
       - "scripts/"
 
+  - name: model-adaptation
+    description: "Adapt a specific new or incompatible model for loading or serving on the DLC Platform; use for model-level Attention, MLA, MoE, quantization, multimodal, MTP, or distributed compatibility, not upstream alignment, environment rebuilds, single-operator debugging, independent compile work, or running an existing smoke alone."
+    path: skills/engineering/model-adaptation
+    files:
+      - SKILL.md
+      - "agents/"
+      - knowledge.md
+
+  - name: main-to-main-upgrade
+    description: "Upgrade vllm-dlc main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests."
+    path: skills/engineering/main-to-main-upgrade
+    files:
+      - SKILL.md
+      - "agents/"
+      - knowledge.md
+
   - name: grill-with-docs
     description: "Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline"
     path: skills/engineering/grill-with-docs
