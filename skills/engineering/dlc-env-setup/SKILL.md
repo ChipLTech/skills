@@ -23,7 +23,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 ## Automatic Workflow
 
 1. Rediscover repo locations instead of assuming `/home/workspace`.
-2. Build and echo a repo map for `cmake-3.27.0`, `dlc-thunk`, `DLCsim`, `DLCSynapse`, `DLC_CL`, `LLVM`, `DLC_Custom_Kernel`, and `pytorch`.
+2. Build and echo a repo map for a usable CMake installation or source tree, `dlc-thunk`, `DLCsim`, `DLCSynapse`, `DLC_CL`, `LLVM`, `DLC_Custom_Kernel`, and `pytorch`.
 3. Validate that each discovered tree contains its expected build entrypoint.
 4. If branch switching was requested, inspect `git status --short`, current branch, and branch availability before any checkout.
 5. Run the rebuild in dependency order.
@@ -34,7 +34,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 ## Rebuild Order
 
-1. CMake 3.27 install from the local source tree.
+1. CMake check or install from the local source tree when the installed version is not strictly greater than `3.27.0`.
 2. `dlc-thunk`
 3. `DLCsim`
 4. `DLCSynapse`
@@ -64,8 +64,8 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 ## Verification Standard
 
-- `/usr/local/bin/cmake --version` reports `3.27.0`.
-- The default `cmake`, `ctest`, and `cpack` on `PATH` also resolve to `3.27.0`.
+- `/usr/local/bin/cmake --version` or the default `cmake --version` reports a version strictly greater than `3.27.0`.
+- The default `cmake`, `ctest`, and `cpack` on `PATH` are available from the intended installation.
 - `torch.__version__` reports `2.5.0` outside the PyTorch source tree.
 - `torch.tensor([0.1], dtype=torch.float32).numpy()` succeeds outside the source tree.
 - `/usr/local/chipltech/synapse/bin` contains the installed custom-kernel test tools.
