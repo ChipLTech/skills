@@ -30,7 +30,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 6. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build.
 7. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
 8. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
-9. Finish with `scripts/runtime-smoke.sh` plus the final install checks listed below.
+9. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Before Real DLC Hardware model serving, additionally run it with `--require-device-execution` in a fresh process.
 
 ## Rebuild Order
 
@@ -59,7 +59,8 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - Requested branch switching finds uncommitted changes.
 - The requested branch does not exist locally or on the tracked remote.
 - A build step fails and the failure is not resolved by the documented clean rebuild path.
-- Runtime smoke fails after reinstall, especially if `torch.tensor(...).numpy()` or `import torch` outside the repo is broken.
+- Package smoke fails after reinstall, especially if `torch.tensor(...).numpy()` or `import torch` outside the repo is broken.
+- A requested Real DLC Hardware execution smoke fails or times out at device enumeration, allocation, H2D, device operation, synchronize, D2H, or correctness.
 - Multiple candidate repos share the same name and the authoritative root is ambiguous.
 
 ## Verification Standard
@@ -69,13 +70,14 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `torch.__version__` reports `2.5.0` outside the PyTorch source tree.
 - `torch.tensor([0.1], dtype=torch.float32).numpy()` succeeds outside the source tree.
 - `/usr/local/chipltech/synapse/bin` contains the installed custom-kernel test tools.
-- If optional `vllm` work was requested, `import vllm`, `import vllm_dlc`, and `pip show` metadata checks all succeed.
+- If optional `vllm` work was requested, `import vllm` and its `pip show` metadata checks succeed. `import vllm_dlc` and its metadata are additionally required only when the deployment contract uses the plugin.
+- Before Real DLC Hardware model serving, `scripts/runtime-smoke.sh /tmp --require-device-execution` passes in a fresh process on every requested logical device. Use `--require-vllm` when vLLM is part of the contract. Plugin deployments add `--require-vllm-dlc`; a built-in DLC Platform deployment uses `--skip-vllm-dlc` after verifying its platform and entry-point identity.
 
 ## Script Assets
 
 - `scripts/pytorch-preflight.sh`: Python packaging and NumPy preflight before building the wheel.
 - `scripts/vllm-preflight.sh`: editable-install preflight for local `vllm` and `vllm-dlc` work.
-- `scripts/runtime-smoke.sh`: post-install smoke checks outside the source trees.
+- `scripts/runtime-smoke.sh`: package checks outside source trees, with optional required vLLM imports and an opt-in layered Real DLC Hardware execution gate.
 - `agents/openai.yaml`: preserved agent entrypoint for environments that surface skill-specific quick prompts.
 
 ## Related Knowledge-Base Docs
@@ -91,3 +93,4 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - Do not use destructive git commands unless the user explicitly asks.
 - Keep platform-specific wrappers in this skill, not in the knowledge base.
 - Treat the knowledge base as the source of reusable rationale, and this skill as the source of execution order.
+- Do not infer device execution health from package imports, backend availability, allocation, or H2D alone. A recovery or device-state change requires a fresh-process layered execution smoke before model loading resumes.
