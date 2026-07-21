@@ -35,6 +35,14 @@ skills:
       - "agents/"
       - knowledge.md
 
+  - name: modelzoo-image-validation
+    description: "Resolve a named ModelZoo entry into an auditable read-only manifest and drive guarded DLC Chip and TYD Chip image workflows. Use when a model name must select ModelZoo evidence, detect framework ambiguity, or prepare generation-correct image build and validation contracts without guessing assets, refs, hardware, or authorization."
+    path: skills/engineering/modelzoo-image-validation
+    files:
+      - SKILL.md
+      - "agents/"
+      - "scripts/"
+
   - name: main-to-main-upgrade
     description: "Upgrade vllm-dlc main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests."
     path: skills/engineering/main-to-main-upgrade

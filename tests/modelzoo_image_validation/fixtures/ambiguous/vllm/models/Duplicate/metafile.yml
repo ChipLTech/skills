@@ -1,0 +1,5 @@
+Name: Duplicate
+Task: NLP
+Infer: true
+Train: false
+Parameters: 1B

@@ -1,0 +1,5 @@
+Name: Sparse
+Task: NLP
+Infer: true
+Train: false
+Parameters: 3B

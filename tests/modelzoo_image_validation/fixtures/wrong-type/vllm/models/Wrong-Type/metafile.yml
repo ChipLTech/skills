@@ -1,0 +1,5 @@
+Name: Wrong-Type
+Task: NLP
+Infer: "true"
+Train: false
+Parameters: 1B

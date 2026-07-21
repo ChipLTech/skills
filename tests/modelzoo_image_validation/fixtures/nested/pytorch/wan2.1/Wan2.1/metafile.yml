@@ -1,0 +1,5 @@
+Name: Wan2.1
+Task: Multimodal
+Infer: true
+Train: false
+Parameters: 1B

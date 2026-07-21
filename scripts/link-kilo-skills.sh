@@ -287,7 +287,7 @@ from pathlib import Path
 src = Path(sys.argv[1])
 tmp = Path(sys.argv[2])
 marker = sys.argv[3]
-shutil.copytree(src, tmp, symlinks=True)
+shutil.copytree(src, tmp, symlinks=True, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"))
 (tmp / marker).write_text(str(src) + "\n", encoding="utf-8")
 PY
       rm -rf "$target"
@@ -320,7 +320,7 @@ from pathlib import Path
 src = Path(sys.argv[1])
 tmp = Path(sys.argv[2])
 marker = sys.argv[3]
-shutil.copytree(src, tmp, symlinks=True)
+shutil.copytree(src, tmp, symlinks=True, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"))
 (tmp / marker).write_text(str(src) + "\n", encoding="utf-8")
 PY
   mv "$tmp" "$target"

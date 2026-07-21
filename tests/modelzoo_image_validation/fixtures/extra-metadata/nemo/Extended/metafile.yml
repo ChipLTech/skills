@@ -1,0 +1,7 @@
+Name: Extended
+Task: NLP
+Infer: true
+Train: false
+Parameters: 7
+ExtraField:
+  source: fixture

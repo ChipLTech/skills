@@ -1,0 +1,5 @@
+Name: No-Infer
+Task: NLP
+Infer: false
+Train: false
+Parameters: 3B

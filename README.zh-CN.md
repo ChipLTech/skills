@@ -21,7 +21,7 @@ cd skills
 
 主要分为几类：
 
-- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup`、`model-adaptation`、`main-to-main-upgrade` 和 `zoom-out`
+- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup`、`model-adaptation`、`modelzoo-image-validation`、`main-to-main-upgrade` 和 `zoom-out`
 - `productivity/`：生产力类，例如 `grill-me`、`handoff`、`teach`、`writing-great-skills`，并保留本地的 `caveman`
 - `misc/`：杂项工具类，例如 `setup-pre-commit`、`git-guardrails-claude-code`
 - `personal/`：Matt 个人工作流，默认不安装
@@ -53,6 +53,7 @@ cd skills
 /tdd 实现课程收藏功能，优先测试刷新后仍保持收藏状态
 /grill-with-docs 我想给订单系统增加部分退款能力
 /model-adaptation 请只路由：这个特定新模型在 DLC Platform 上加载失败，检查模型级兼容边界
+/modelzoo-image-validation Qwen2-7B，先只读解析 ModelZoo；同名时阻断并要求 framework selector
 /main-to-main-upgrade 请只路由：分析 vllm-dlc main 对齐 exact upstream full SHA 的完整兼容影响
 ```
 
@@ -83,9 +84,11 @@ cd skills
 ```text
 ~/.config/kilo/skills/diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
 ~/.config/kilo/skills/model-adaptation -> <repo>/skills/engineering/model-adaptation
+~/.config/kilo/skills/modelzoo-image-validation -> <repo>/skills/engineering/modelzoo-image-validation
 ~/.config/kilo/skills/main-to-main-upgrade -> <repo>/skills/engineering/main-to-main-upgrade
 ~/.config/kilo/command/diagnosing-bugs.md
 ~/.config/kilo/command/model-adaptation.md
+~/.config/kilo/command/modelzoo-image-validation.md
 ~/.config/kilo/command/main-to-main-upgrade.md
 ```
 
@@ -146,7 +149,7 @@ cd skills
 - `productivity/`
 - `misc/`
 
-因此默认安装不需要 `--all`，会包含 `model-adaptation` 和 `main-to-main-upgrade` 这两个 stable engineering skills 及其 slash command 包装器。它们也支持自然语言触发：特定模型加载/服务兼容问题应路由到 `model-adaptation`，exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
+因此默认安装不需要 `--all`，会包含 `model-adaptation`、`modelzoo-image-validation` 和 `main-to-main-upgrade` 这些 stable engineering skills 及其 slash command 包装器。ModelZoo 模型名解析和 DLC/TYD 镜像 workflow 应路由到 `modelzoo-image-validation`；特定模型加载/服务兼容问题应路由到 `model-adaptation`；exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
 
 默认不会安装：
 
@@ -250,6 +253,7 @@ ls -la ~/.config/kilo/command
 ```text
 diagnosing-bugs.md
 model-adaptation.md
+modelzoo-image-validation.md
 main-to-main-upgrade.md
 tdd.md
 to-spec.md

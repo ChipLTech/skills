@@ -1,0 +1,5 @@
+Name: Nemo-Model
+Task: NLP
+Infer: true
+Train: true
+Parameters: 2B

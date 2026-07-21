@@ -1,0 +1,5 @@
+Name: Noncanonical
+Task: NLP
+Infer: yes
+Train: false
+Parameters: 1B
