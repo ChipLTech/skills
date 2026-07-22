@@ -6,6 +6,7 @@
     "./skills/engineering/dlc-env-setup",
     "./skills/engineering/model-adaptation",
     "./skills/engineering/modelzoo-image-validation",
+    "./skills/engineering/pd-separation",
     "./skills/engineering/main-to-main-upgrade",
     "./skills/engineering/grill-with-docs",
     "./skills/engineering/triage",

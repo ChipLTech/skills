@@ -21,7 +21,7 @@ cd skills
 
 主要分为几类：
 
-- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup`、`model-adaptation`、`modelzoo-image-validation`、`main-to-main-upgrade` 和 `zoom-out`
+- `engineering/`：工程开发类，例如 `ask-matt`、`implement`、`research`、`resolving-merge-conflicts`、`wayfinder`、`diagnosing-bugs`、`code-review`、`tdd`、`to-spec`、`to-tickets`，并保留本地的 `dlc-env-setup`、`model-adaptation`、`modelzoo-image-validation`、`pd-separation`、`main-to-main-upgrade` 和 `zoom-out`
 - `productivity/`：生产力类，例如 `grill-me`、`handoff`、`teach`、`writing-great-skills`，并保留本地的 `caveman`
 - `misc/`：杂项工具类，例如 `setup-pre-commit`、`git-guardrails-claude-code`
 - `personal/`：Matt 个人工作流，默认不安装
@@ -54,6 +54,7 @@ cd skills
 /grill-with-docs 我想给订单系统增加部分退款能力
 /model-adaptation 请只路由：这个特定新模型在 DLC Platform 上加载失败，检查模型级兼容边界
 /modelzoo-image-validation Qwen2-7B /mnt/jfs/models/Qwen2-7B，先验证本地模型；ModelZoo 同名时记录歧义，必要时用 framework selector 消歧
+/pd-separation 使用单机 TCP 部署 Prefill/Decode/Proxy，并保留 request-correlated KV transfer 与 cleanup evidence
 /main-to-main-upgrade 请只路由：分析 vllm-dlc main 对齐 exact upstream full SHA 的完整兼容影响
 ```
 
@@ -85,10 +86,12 @@ cd skills
 ~/.config/kilo/skills/diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
 ~/.config/kilo/skills/model-adaptation -> <repo>/skills/engineering/model-adaptation
 ~/.config/kilo/skills/modelzoo-image-validation -> <repo>/skills/engineering/modelzoo-image-validation
+~/.config/kilo/skills/pd-separation -> <repo>/skills/engineering/pd-separation
 ~/.config/kilo/skills/main-to-main-upgrade -> <repo>/skills/engineering/main-to-main-upgrade
 ~/.config/kilo/command/diagnosing-bugs.md
 ~/.config/kilo/command/model-adaptation.md
 ~/.config/kilo/command/modelzoo-image-validation.md
+~/.config/kilo/command/pd-separation.md
 ~/.config/kilo/command/main-to-main-upgrade.md
 ```
 
@@ -149,7 +152,7 @@ cd skills
 - `productivity/`
 - `misc/`
 
-因此默认安装不需要 `--all`，会包含 `model-adaptation`、`modelzoo-image-validation` 和 `main-to-main-upgrade` 这些 stable engineering skills 及其 slash command 包装器。ModelZoo 模型名解析和 DLC/TYD 镜像 workflow 应路由到 `modelzoo-image-validation`；特定模型加载/服务兼容问题应路由到 `model-adaptation`；exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
+因此默认安装不需要 `--all`，会包含 `model-adaptation`、`modelzoo-image-validation`、`pd-separation` 和 `main-to-main-upgrade` 这些 stable engineering skills 及其 slash command 包装器。ModelZoo 模型名解析和 DLC/TYD 镜像 workflow 应路由到 `modelzoo-image-validation`；Prefill/Decode 拓扑、MooncakeDLCConnector、KV transfer 和 PD 启停排障应路由到 `pd-separation`；特定模型加载/服务兼容问题应路由到 `model-adaptation`；exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
 
 默认不会安装：
 
