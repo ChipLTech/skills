@@ -4,17 +4,19 @@ Load this reference before creating a validation container or executing C1a/C1b/
 
 ## Ordinary Daily Base
 
-Require immutable Image ID, repo digest when available, non-model-specialized provenance, clean task container identity, original package inventory, and pre-launch process/port/device/HBM baseline. A tag is provenance, not immutable identity.
+Require immutable Image ID, repo digest when available, non-model-specialized provenance, clean task container identity, original package inventory, and pre-launch process/port/device/HBM baseline. Record the Host driver API and the full container mount/privilege/ipc/shm/ulimit profile before C1b. A tag is provenance, not immutable identity.
 
-Task-owned offline dependency bundles, clean source archives, and built extensions are permitted when their source/hash and later build-context equivalence are recorded. Existing model-specific aliases, plugins, caches, servers, or acceptance claims are not inherited.
+Task-owned offline dependency bundles, clean source archives, and built extensions are permitted when their source/hash and later build-context equivalence are recorded. Archive source SHA and compiled extension SHA are separate identities. Existing model-specific aliases, plugins, caches, servers, or acceptance claims are not inherited.
+
+Before mutation, verify every task-owned source ref, recursive submodule worktree, actual build entrypoint, Git ownership for builder UID, and the CMake/ctest/cpack binary resolved by the real Python/setuptools subprocess. Use canonical task paths in a task-local `GIT_CONFIG_GLOBAL` `safe.directory` file, then remove that file at cleanup. An interrupted large clone may resume through partial clone plus fixed commit object verification only when clone/fetch authorization and the approved remote/ref remain valid. An incomplete task-owned submodule may be restored only to its already approved fixed commit.
 
 ## C1a And C1b
 
-Use `dlc-env-setup` for C1a package/import origins and fresh-process C1b allocation, H2D, nontrivial operation, synchronize, D2H, and correctness. Invoke C1b separately for each requested logical device, then run simultaneous/collective probes required by the deployment profile.
+Use `dlc-env-setup` for C1a package/import origins and fresh-process C1b allocation, H2D, nontrivial operation, synchronize, D2H, and correctness. Invoke C1b separately for each requested logical device, then run simultaneous/collective probes required by the deployment profile. If the minimal container profile fails driver access, preserve that failure epoch and recreate only the task-owned container with the recorded driver-compatible profile before rerunning fresh C1a/C1b.
 
 ## Functional Gate
 
-Bind exact model assets, profile, alias, and server epoch. Preserve health-before, model list, at least two orthogonal deterministic assertions, raw requests/responses, HTTP/completion/non-empty/semantic results, finish reason/token count when observable, corruption/repetition checks, health-after, and process identity.
+Bind exact model assets, profile, alias, and server epoch. Read current server `--help`, use an explicit absolute model path instead of a positional fallback, set `HF_HUB_OFFLINE=1` and `TRANSFORMERS_OFFLINE=1`, and retain server logs proving no remote-model fallback occurred. Preserve health-before, model list, at least two orthogonal deterministic assertions, raw requests/responses, HTTP/completion/non-empty/semantic results, finish reason/token count when observable, corruption/repetition checks, health-after, and process identity.
 
 Any assertion failure blocks benchmark and delivery. CPU Reference is diagnostic only.
 

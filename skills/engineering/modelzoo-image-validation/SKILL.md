@@ -20,11 +20,11 @@ This skill orchestrates a **runtime-first** model delivery. The local model is a
 1. Qualify local assets before ModelZoo. Require `config.json`, non-empty weights, and applicable tokenizer/processor; record architecture, dtype, quantization, shard inventory, size, and digests without serializing model contents. **Complete when:** the selected asset identity is closed, or `blocked_missing_asset` names the exact resume input.
 2. Resolve ModelZoo through `scripts/resolve-modelzoo.py` when available. Treat `modelzoo_reference_unavailable`, `modelzoo_reference_incomplete`, `modelzoo_reference_ambiguous`, and `modelzoo_reference_malformed` as reference states, not local functional blockers. **Complete when:** a deterministic reference record is retained without ModelZoo mutation.
 3. Write a stable resolved-model manifest and a separate runtime qualification contract. Keep `modelzoo_claims`, `local_observations`, `inferences`, `execution_evidence`, and `unverified_scope` separate. **Complete when:** stable resolution excludes PID, port, HBM, occupancy, and timestamps, while the runtime contract binds all run-local inputs and assertions.
-4. Qualify an immutable ordinary daily base and create a task-owned persistent validation environment. Model-specialized, golden, candidate, or unexplained images are ineligible. Follow [Runtime Qualification](references/runtime-qualification.md). **Complete when:** base/container/source/package/device identities and the cleanup baseline are closed.
-5. Delegate package/import and layered device checks to `dlc-env-setup`; delegate capability analysis, TP derivation, and model-specific compatibility to `model-adaptation`. Do not duplicate their probes. **Complete when:** C1a and every required C1b/device/collective result have terminal states.
-6. Execute real-weight functional assertions, then the declared benchmark. Functional failure blocks benchmark and delivery. Distinguish `benchmark_workload_pass` from `benchmark_stability_baseline_pass`; a declared single-run workload may qualify delivery without becoming a stable baseline. **Complete when:** raw requests/results, health, server epochs, profile diff, warm-up/formal attempts, and cleanup evidence are retained.
+4. Qualify an immutable ordinary daily base and create a task-owned persistent validation environment. Before any model load, close the driver API, device mapping, C1b-compatible container profile, clean source/submodule worktrees, binary overlay provenance, and the CMake toolchain used by actual build subprocesses. Model-specialized, golden, candidate, or unexplained images are ineligible. Follow [Runtime Qualification](references/runtime-qualification.md). **Complete when:** base/container/source/package/device identities and the cleanup baseline are closed.
+5. Delegate package/import and layered device checks to `dlc-env-setup`; delegate capability analysis, TP derivation, and model-specific compatibility to `model-adaptation`. Do not duplicate their probes. Recreate only the task container for a known driver-profile mismatch; use partial clone plus fixed-object verification for interrupted large repositories; restore only the same fixed commit for an incomplete task-owned submodule. **Complete when:** C1a and every required C1b/device/collective result have terminal states.
+6. Execute real-weight functional assertions, then the declared benchmark. Read the installed server `--help`, use an explicit absolute model path, and set offline Hub guards before starting a server. Functional failure blocks benchmark and delivery. Distinguish `benchmark_workload_pass` from `benchmark_stability_baseline_pass`; a declared single-run workload may qualify delivery without becoming a stable baseline. **Complete when:** raw requests/results, health, server epochs, profile diff, warm-up/formal attempts, and cleanup evidence are retained.
 7. For image delivery, seal runtime evidence before building. Build DLC as a fixed-tag, weight-free image and record exact-image validation separately from pre-build runtime qualification. **Complete when:** image/base/source/build identities, exact-image C1a, tar path/size/SHA-256, attestation, validation level, and target cleanup are closed.
-8. Resolve and package TYD independently through [DLC And TYD Delivery](references/tyd-delivery.md). **Complete when:** TYD has its own fixed tag, Image ID, tar/hash, provenance, static/exact-image result, prohibited device scope, and final target status.
+8. Derive TYD from the delivered DLC Image ID through [DLC And TYD Delivery](references/tyd-delivery.md). Driver API changes and any rebuilt native dependency require downstream rebuild through PyTorch, vLLM-DLC, and vLLM; never infer a rebuild from an existing base library. **Complete when:** TYD has its own fixed tag, Image ID, tar/hash, provenance, static/exact-image result, prohibited device scope, and final target status.
 9. Emit independent DLC/TYD final states and clean only task-owned resources. **Complete when:** task processes/ports/HBM delta return to the sealed baseline or tolerance; retained deliverables and failed epochs are explicit; no unrelated resource was modified.
 
 ## Public States
@@ -48,7 +48,7 @@ blocked_unresolved_runtime_contract
 blocked_unsupported_framework
 blocked_missing_hardware
 blocked_missing_authorization
-blocked_missing_qualified_tyd_base
+blocked_missing_qualified_dlc_base
 blocked_cleanup_incomplete
 ```
 
@@ -71,6 +71,8 @@ failed_validation
 - Pre-build runtime evidence is not exact-image runtime evidence; bind equivalence and report exact-image validation level.
 - Static/package/hash/label checks do not prove TYD functionality.
 - On DLC Gen1, TYD device operation, C1b, DLCCL, model load, serving, and benchmark are `intentionally_not_executed_on_dlc_gen1`.
+- A native component is rebuilt only when task build output, terminal build/install logs, installed-target hash, and applicable linker/symbol/fresh-import evidence all agree.
+- A source archive SHA never proves a compiled extension identity; record both source and binary hashes.
 
 ## Resolver Exit Contract
 

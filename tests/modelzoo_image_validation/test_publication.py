@@ -18,7 +18,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         "blocked_unresolved_runtime_contract",
         "blocked_missing_hardware",
         "blocked_missing_authorization",
-        "blocked_missing_qualified_tyd_base",
+        "blocked_missing_qualified_dlc_base",
         "blocked_unsupported_framework",
         "blocked_cleanup_incomplete",
     }
@@ -42,15 +42,28 @@ class ModelZooPublicationTests(unittest.TestCase):
 
     def test_skill_document_locks_public_cross_repository_contract(self):
         text = (ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md").read_text(encoding="utf-8")
+        runtime = (ROOT / "skills" / "engineering" / IDENTITY / "references" / "runtime-qualification.md").read_text(encoding="utf-8")
+        tyd = (ROOT / "skills" / "engineering" / IDENTITY / "references" / "tyd-delivery.md").read_text(encoding="utf-8")
         self.assertIn("modelzoo-reference-record/v1", text)
         self.assertIn("ordinary daily base", text)
         self.assertIn("benchmark_workload_pass", text)
         self.assertIn("benchmark_stability_baseline_pass", text)
         self.assertIn("intentionally_not_executed_on_dlc_gen1", text)
+        self.assertIn("driver API", text)
+        self.assertIn("partial clone", text)
+        self.assertIn("source and binary hashes", text)
         self.assertIn("modelzoo_claims", text)
         self.assertIn("execution_evidence", text)
         for blocker in self.PUBLIC_BLOCKERS:
             self.assertIn(blocker, text)
+        blocker_section = text.split("Workflow blockers:", 1)[1]
+        blocker_block = blocker_section.split("```text", 1)[1].split("```", 1)[0]
+        self.assertEqual({line.strip() for line in blocker_block.splitlines() if line.strip()}, self.PUBLIC_BLOCKERS)
+        self.assertIn("HF_HUB_OFFLINE=1", runtime)
+        self.assertIn("TRANSFORMERS_OFFLINE=1", runtime)
+        self.assertIn("GIT_CONFIG_GLOBAL", runtime)
+        self.assertIn("blocked_missing_qualified_dlc_base", tyd)
+        self.assertIn("Host driver API", tyd)
         stale = {
             "test-observation-public-key",
             "component-root",

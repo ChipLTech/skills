@@ -24,13 +24,14 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 1. Rediscover repo locations instead of assuming `/home/workspace`.
 2. Build and echo a repo map for a usable CMake installation or source tree, `dlc-thunk`, `DLCsim`, `DLCSynapse`, `DLC_CL`, `LLVM`, `DLC_Custom_Kernel`, and `pytorch`.
-3. Validate that each discovered tree contains its expected build entrypoint.
+3. Before mutation, validate every requested ref object, recursive submodule worktree, and expected build entrypoint. A submodule SHA alone is insufficient: the required `CMakeLists.txt`, Makefile, `setup.py`, or build script must exist in the worktree. When the builder UID differs from a task-owned source owner, validate canonical paths and write only the task root and build-time submodules to a task-local `GIT_CONFIG_GLOBAL` `safe.directory` file; remove that file during task cleanup.
 4. If branch switching was requested, inspect `git status --short`, current branch, and branch availability before any checkout.
-5. Run the rebuild in dependency order.
-6. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build.
-7. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
-8. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
-9. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Before Real DLC Hardware model serving, additionally run it with `--require-device-execution` in a fresh process.
+5. Before the first long build, read the Host driver API from its authority surface and choose a DLCSynapse ref explicitly compatible with it. Confirm Host driver version, source header, installed library, and fresh import agree; tags and existing images are provenance only. A fresh userspace import does not replace target-hardware runtime validation.
+6. Run the rebuild in dependency order. A driver API or native dependency change invalidates every downstream consumer and requires rebuild through PyTorch, optional `vllm-dlc`, and optional `vllm`.
+7. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build. Set the approved PyTorch build version before the first configure; wheel metadata and `torch.__version__` must agree.
+8. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
+9. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
+10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Before Real DLC Hardware model serving, additionally run it with `--require-device-execution` in a fresh process.
 
 ## Rebuild Order
 
@@ -70,8 +71,9 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `torch.__version__` reports `2.5.0` outside the PyTorch source tree.
 - `torch.tensor([0.1], dtype=torch.float32).numpy()` succeeds outside the source tree.
 - `/usr/local/chipltech/synapse/bin` contains the installed custom-kernel test tools.
-- If optional `vllm` work was requested, `import vllm` and its `pip show` metadata checks succeed. `import vllm_dlc` and its metadata are additionally required only when the deployment contract uses the plugin.
+- If optional `vllm` work was requested, inspect the fixed source packaging mode before setting a device target. A core `empty` platform plus independent `vllm-dlc` plugin is valid when the source implements that mode; do not force an unsupported core device target. `import vllm` and its `pip show` metadata checks succeed. `import vllm_dlc` and its metadata are additionally required only when the deployment contract uses the plugin.
 - Before Real DLC Hardware model serving, `scripts/runtime-smoke.sh /tmp --require-device-execution` passes in a fresh process on every requested logical device. Use `--require-vllm` when vLLM is part of the contract. Plugin deployments add `--require-vllm-dlc`; a built-in DLC Platform deployment uses `--skip-vllm-dlc` after verifying its platform and entry-point identity.
+- A native component is complete only when task build output exists, the build and install logs have terminal success, the installed target timestamp/hash matches the task output, and applicable `ldd`, `nm`, or fresh import validation succeeds. Finding a same-named base-image library is not evidence of the current rebuild.
 
 ## Script Assets
 
