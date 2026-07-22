@@ -1,4 +1,4 @@
 interface:
   display_name: "ModelZoo Image Validation"
-  short_description: "Resolve ModelZoo evidence for guarded DLC and TYD workflows"
-  default_prompt: "Use ModelZoo Image Validation for this exact model name. Resolve ModelZoo read-only, require a framework selector for duplicate names, preserve source hashes and claim classes, stop on missing assets, refs, hardware, or authorization, use only the vLLM adapter, delegate Runtime smoke to dlc-env-setup and compatibility or TP work to model-adaptation, require DLC_TPU_VERSION=2 in every actual TYD compile process including PyTorch and vLLM, and prohibit TYD device execution on DLC Gen1."
+  short_description: "Qualify local models before DLC and TYD delivery"
+  default_prompt: "Use ModelZoo Image Validation for this local model. Treat ModelZoo as optional read-only reference, qualify an ordinary daily base, run C1a, C1b, real-weight functional assertions, and the declared benchmark before image build, then report DLC and TYD as independent targets."

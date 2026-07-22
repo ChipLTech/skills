@@ -53,7 +53,7 @@ cd skills
 /tdd 实现课程收藏功能，优先测试刷新后仍保持收藏状态
 /grill-with-docs 我想给订单系统增加部分退款能力
 /model-adaptation 请只路由：这个特定新模型在 DLC Platform 上加载失败，检查模型级兼容边界
-/modelzoo-image-validation Qwen2-7B，先只读解析 ModelZoo；同名时阻断并要求 framework selector
+/modelzoo-image-validation Qwen2-7B /mnt/jfs/models/Qwen2-7B，先验证本地模型；ModelZoo 同名时记录歧义，必要时用 framework selector 消歧
 /main-to-main-upgrade 请只路由：分析 vllm-dlc main 对齐 exact upstream full SHA 的完整兼容影响
 ```
 

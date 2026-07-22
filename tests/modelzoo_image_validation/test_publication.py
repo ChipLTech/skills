@@ -13,15 +13,12 @@ IDENTITY = "modelzoo-image-validation"
 
 class ModelZooPublicationTests(unittest.TestCase):
     PUBLIC_BLOCKERS = {
-        "blocked_model_not_found",
-        "blocked_ambiguous_model",
-        "blocked_malformed_metadata",
-        "blocked_missing_required_field",
-        "blocked_conflicting_source_claims",
         "blocked_missing_asset",
-        "blocked_unresolved_component_ref",
+        "blocked_unqualified_daily_base",
+        "blocked_unresolved_runtime_contract",
         "blocked_missing_hardware",
         "blocked_missing_authorization",
+        "blocked_missing_qualified_tyd_base",
         "blocked_unsupported_framework",
         "blocked_cleanup_incomplete",
     }
@@ -40,27 +37,26 @@ class ModelZooPublicationTests(unittest.TestCase):
         rows = [row for row in manifest["skills"] if row["name"] == IDENTITY]
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["description"], description)
-        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/", "scripts/"])
+        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/", "references/", "scripts/"])
         self.assertIn(IDENTITY, (ROOT / "README.zh-CN.md").read_text(encoding="utf-8"))
 
     def test_skill_document_locks_public_cross_repository_contract(self):
         text = (ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("modelzoo-dlc-tyd-resolved-manifest/v1", text)
-        self.assertIn("modelzoo-dlc-tyd-validation-report/v1", text)
-        self.assertIn("`vllm/v1`", text)
-        self.assertIn("DLC_Custom_Kernel Repository", text)
+        self.assertIn("modelzoo-reference-record/v1", text)
+        self.assertIn("ordinary daily base", text)
+        self.assertIn("benchmark_workload_pass", text)
+        self.assertIn("benchmark_stability_baseline_pass", text)
         self.assertIn("intentionally_not_executed_on_dlc_gen1", text)
         self.assertIn("modelzoo_claims", text)
         self.assertIn("execution_evidence", text)
         for blocker in self.PUBLIC_BLOCKERS:
-            self.assertIn(f"`{blocker}`", text)
+            self.assertIn(blocker, text)
         stale = {
-            "blocked_missing_model",
-            "blocked_malformed_yaml",
-            "blocked_malformed_schema",
-            "blocked_conflicting_evidence",
-            "blocked_inference_not_declared",
-            "modelzoo-image-validation-resolver/v1",
+            "test-observation-public-key",
+            "component-root",
+            "preflight",
+            "blocked_model_not_found",
+            "blocked_ambiguous_model",
         }
         for value in stale:
             self.assertNotIn(value, text)
@@ -78,6 +74,8 @@ class ModelZooPublicationTests(unittest.TestCase):
             installed = project / ".kilo" / "skills" / IDENTITY
             self.assertTrue((installed / "SKILL.md").is_file())
             self.assertTrue((installed / "scripts" / "resolve-modelzoo.py").is_file())
+            self.assertTrue((installed / "references" / "runtime-qualification.md").is_file())
+            self.assertTrue((installed / "references" / "tyd-delivery.md").is_file())
             wrapper = (project / ".kilo" / "command" / f"{IDENTITY}.md").read_text(encoding="utf-8")
             self.assertIn(f"请使用 `{IDENTITY}` skill", wrapper)
             self.assertIn("$ARGUMENTS", wrapper)

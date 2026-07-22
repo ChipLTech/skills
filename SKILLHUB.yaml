@@ -36,11 +36,12 @@ skills:
       - knowledge.md
 
   - name: modelzoo-image-validation
-    description: "Resolve a named ModelZoo entry into an auditable read-only manifest and drive guarded DLC Chip and TYD Chip image workflows. Use when a model name must select ModelZoo evidence, detect framework ambiguity, or prepare generation-correct image build and validation contracts without guessing assets, refs, hardware, or authorization."
+    description: "Qualify a local model from an ordinary daily base, use ModelZoo as optional read-only reference, then build independent DLC Chip and TYD Chip deliverables only after functional and benchmark gates pass. Use for ModelZoo-to-image workflows, local-model runtime qualification, or DLC/TYD image export."
     path: skills/engineering/modelzoo-image-validation
     files:
       - SKILL.md
       - "agents/"
+      - "references/"
       - "scripts/"
 
   - name: main-to-main-upgrade
