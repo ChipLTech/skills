@@ -19,15 +19,16 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - Which stage to start from: full rebuild, LLVM, `DLC_Custom_Kernel`, PyTorch, wheel reinstall only, or optional `vllm` repair.
 - Any requested repo-to-branch mapping before rebuild.
 - Any user-provided workspace roots that should be searched before broad filesystem discovery.
+- Host driver API authority surface and any explicitly approved privileged container/mount profile. Device execution authorization never implies privileged Host integration.
 
 ## Automatic Workflow
 
 1. Rediscover repo locations instead of assuming `/home/workspace`.
-2. Build and echo a repo map for a usable CMake installation or source tree, `dlc-thunk`, `DLCsim`, `DLCSynapse`, `DLC_CL`, `LLVM`, `DLC_Custom_Kernel`, and `pytorch`.
+2. Build and echo a repo map for a CMake toolchain strictly newer than `3.27.0`, `dlc-thunk`, `DLCsim`, `DLCSynapse`, `DLC_CL`, `LLVM`, `DLC_Custom_Kernel`, and `pytorch`. Verify the actual Python/setuptools subprocess resolves the approved CMake; record `ctest` and `cpack` only when invoked.
 3. Before mutation, validate every requested ref object, recursive submodule worktree, and expected build entrypoint. A submodule SHA alone is insufficient: the required `CMakeLists.txt`, Makefile, `setup.py`, or build script must exist in the worktree. When the builder UID differs from a task-owned source owner, validate canonical paths and write only the task root and build-time submodules to a task-local `GIT_CONFIG_GLOBAL` `safe.directory` file; remove that file during task cleanup.
 4. If branch switching was requested, inspect `git status --short`, current branch, and branch availability before any checkout.
-5. Before the first long build, read the Host driver API from its authority surface and choose a DLCSynapse ref explicitly compatible with it. Confirm Host driver version, source header, installed library, and fresh import agree; tags and existing images are provenance only. A fresh userspace import does not replace target-hardware runtime validation.
-6. Run the rebuild in dependency order. A driver API or native dependency change invalidates every downstream consumer and requires rebuild through PyTorch, optional `vllm-dlc`, and optional `vllm`.
+5. Before the first long build, read the Host driver API from its authority surface and choose a DLCSynapse ref explicitly compatible with it. Confirm Host driver version, source header, installed library, and fresh import agree; tags and existing images are provenance only. A fresh userspace import does not replace target-hardware runtime validation. Reuse a driver-compatible profile only when a successful C1b record binds it to an exactly equal canonical fingerprint covering kernel, hardware generation, Host driver API/version, container runtime/config digest, immutable base Image ID, device-node inventory/mapping, and profile digest, and every privilege/mount is explicitly authorized.
+6. Run the rebuild in dependency order. A driver API or native dependency change invalidates every downstream consumer and requires rebuild through PyTorch, optional `vllm-dlc`, and optional `vllm`. Each build record binds the current epoch, clean/configure command, source/submodule refs, direct upstream installed hashes, and produced hashes; reject stale cache/no-op outputs with mismatched bindings.
 7. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build. Set the approved PyTorch build version before the first configure; wheel metadata and `torch.__version__` must agree.
 8. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
 9. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
@@ -37,17 +38,17 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 1. CMake check or install from the local source tree when the installed version is not strictly greater than `3.27.0`.
 2. `dlc-thunk`
-3. `DLCsim`
-4. `DLCSynapse`
-5. `DLC_CL`
-6. `LLVM`
+3. `LLVM`
+4. `DLCsim` using the rebuilt LLVM
+5. `DLCSynapse`
+6. `DLC_CL`
 7. `DLC_Custom_Kernel`
 8. PyTorch 2.5.0 wheel build and reinstall.
 9. Optional `vllm` and `vllm-dlc` editable install repair.
 
 ## Partial Rebuild Rules
 
-- From LLVM: rebuild LLVM, `DLC_Custom_Kernel`, PyTorch, reinstall the wheel, then rerun smoke.
+- From LLVM: rebuild LLVM, `DLCsim`, `DLCSynapse`, `DLC_CL`, `DLC_Custom_Kernel`, PyTorch, reinstall the wheel, optional `vllm-dlc`/`vllm`, then rerun smoke.
 - From `DLC_Custom_Kernel`: rebuild `DLC_Custom_Kernel`, PyTorch, reinstall the wheel, then rerun smoke.
 - From PyTorch: confirm the native dependency installs still exist before building the wheel.
 - Wheel reinstall only: use only when a fresh wheel already exists in `dist/`.
@@ -66,8 +67,8 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 ## Verification Standard
 
-- `/usr/local/bin/cmake --version` or the default `cmake --version` reports a version strictly greater than `3.27.0`.
-- The default `cmake`, `ctest`, and `cpack` on `PATH` are available from the intended installation.
+- The actual Python/setuptools build subprocess resolves the approved `cmake`, whose version is strictly greater than `3.27.0`; an unrelated default or `/usr/local/bin/cmake` is not evidence.
+- Record `ctest` and `cpack` paths/versions only when the workflow invokes them.
 - `torch.__version__` reports `2.5.0` outside the PyTorch source tree.
 - `torch.tensor([0.1], dtype=torch.float32).numpy()` succeeds outside the source tree.
 - `/usr/local/chipltech/synapse/bin` contains the installed custom-kernel test tools.

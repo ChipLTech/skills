@@ -4,15 +4,15 @@ Load this reference before creating a validation container or executing C1a/C1b/
 
 ## Ordinary Daily Base
 
-Require immutable Image ID, repo digest when available, non-model-specialized provenance, clean task container identity, original package inventory, and pre-launch process/port/device/HBM baseline. Record the Host driver API and the full container mount/privilege/ipc/shm/ulimit profile before C1b. A tag is provenance, not immutable identity.
+Require immutable Image ID, repo digest when available, non-model-specialized provenance, clean task container identity, original package inventory, and pre-launch process/port/device/HBM baseline. Record the Host driver API, runtime/base fingerprint, and full container mount/privilege/ipc/shm/ulimit profile before C1b. Device execution does not authorize privileged Host integration. A tag is provenance, not immutable identity.
 
 Task-owned offline dependency bundles, clean source archives, and built extensions are permitted when their source/hash and later build-context equivalence are recorded. Archive source SHA and compiled extension SHA are separate identities. Existing model-specific aliases, plugins, caches, servers, or acceptance claims are not inherited.
 
-Before mutation, verify every task-owned source ref, recursive submodule worktree, actual build entrypoint, Git ownership for builder UID, and the CMake/ctest/cpack binary resolved by the real Python/setuptools subprocess. Use canonical task paths in a task-local `GIT_CONFIG_GLOBAL` `safe.directory` file, then remove that file at cleanup. An interrupted large clone may resume through partial clone plus fixed commit object verification only when clone/fetch authorization and the approved remote/ref remain valid. An incomplete task-owned submodule may be restored only to its already approved fixed commit.
+Before mutation, verify every task-owned source ref, recursive submodule worktree, actual build entrypoint, Git ownership for builder UID, and the CMake binary resolved by the real Python/setuptools subprocess. Record `ctest`/`cpack` only when invoked. Use canonical task paths in a task-local `GIT_CONFIG_GLOBAL` `safe.directory` file, then remove that file at cleanup. An interrupted large clone may resume through partial clone plus fixed commit object verification only when clone/fetch authorization and the approved remote/ref remain valid. An incomplete task-owned submodule may be restored only to its already approved fixed commit.
 
 ## C1a And C1b
 
-Use `dlc-env-setup` for C1a package/import origins and fresh-process C1b allocation, H2D, nontrivial operation, synchronize, D2H, and correctness. Invoke C1b separately for each requested logical device, then run simultaneous/collective probes required by the deployment profile. If the minimal container profile fails driver access, preserve that failure epoch and recreate only the task-owned container with the recorded driver-compatible profile before rerunning fresh C1a/C1b.
+Use `dlc-env-setup` for C1a package/import origins and fresh-process C1b allocation, H2D, nontrivial operation, synchronize, D2H, and correctness. Invoke C1b separately for each requested logical device, then run simultaneous/collective probes required by the deployment profile. When the same driver/runtime/base fingerprint has a validated driver-compatible profile and every privilege/mount is explicitly authorized, use it on the first attempt. Otherwise use the minimal profile; recreation with a broader profile requires an authorized exact profile diff and a C1b failure proven to be a container-profile mismatch.
 
 ## Functional Gate
 

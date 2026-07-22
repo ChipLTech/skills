@@ -44,6 +44,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         text = (ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md").read_text(encoding="utf-8")
         runtime = (ROOT / "skills" / "engineering" / IDENTITY / "references" / "runtime-qualification.md").read_text(encoding="utf-8")
         tyd = (ROOT / "skills" / "engineering" / IDENTITY / "references" / "tyd-delivery.md").read_text(encoding="utf-8")
+        env_setup = (ROOT / "skills" / "engineering" / "dlc-env-setup" / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("modelzoo-reference-record/v1", text)
         self.assertIn("ordinary daily base", text)
         self.assertIn("benchmark_workload_pass", text)
@@ -64,6 +65,20 @@ class ModelZooPublicationTests(unittest.TestCase):
         self.assertIn("GIT_CONFIG_GLOBAL", runtime)
         self.assertIn("blocked_missing_qualified_dlc_base", tyd)
         self.assertIn("Host driver API", tyd)
+        self.assertIn("Device execution never authorizes", text)
+        self.assertIn("privileged Host integration", runtime)
+        self.assertIn("CMake `>3.27.0`", tyd)
+        self.assertIn("dlc-thunk -> LLVM -> DLCsim", tyd)
+        self.assertIn("an LLVM change invalidates DLCsim", tyd)
+        self.assertIn("current clean/configure/build epoch ID", tyd)
+        self.assertIn("direct-upstream installed artifact hashes", tyd)
+        rebuild_order = env_setup.split("## Rebuild Order", 1)[1].split("## Partial Rebuild Rules", 1)[0]
+        self.assertLess(rebuild_order.index("`LLVM`"), rebuild_order.index("`DLCsim`"))
+        llvm_partial = env_setup.split("- From LLVM:", 1)[1].splitlines()[0]
+        self.assertIn("`DLCsim`", llvm_partial)
+        self.assertIn("direct upstream installed hashes", env_setup)
+        self.assertIn("exactly equal canonical fingerprint", env_setup)
+        self.assertIn("actual Python/setuptools build subprocess", env_setup)
         stale = {
             "test-observation-public-key",
             "component-root",
