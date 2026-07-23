@@ -56,7 +56,7 @@ def skillhub_entry(path: Path, identity: str) -> dict[str, Any]:
 def repository_snapshot(root: Path) -> dict[str, str]:
     def git(*args: str, binary: bool = False):
         process = subprocess.run(
-            ["/usr/bin/git", "-C", str(root), *args],
+            ["git", "-C", str(root), *args],
             check=True,
             capture_output=True,
             text=not binary,

@@ -436,7 +436,7 @@ def validate_campaign_manifest(path: Path, run_spec: dict[str, Any]) -> bool:
             if expected is None or entry["digest"] != expected:
                 return False
             revision = subprocess.run(
-                ["/usr/bin/git", "-C", str(candidate), "rev-parse", "HEAD^{commit}"],
+                ["git", "-C", str(candidate), "rev-parse", "HEAD^{commit}"],
                 check=False,
                 capture_output=True,
                 text=True,
@@ -445,7 +445,7 @@ def validate_campaign_manifest(path: Path, run_spec: dict[str, Any]) -> bool:
                 return False
             if entry["id"] == "smi_source":
                 status = subprocess.run(
-                    ["/usr/bin/git", "-C", str(candidate), "status", "--porcelain=v1"],
+                    ["git", "-C", str(candidate), "status", "--porcelain=v1"],
                     check=False,
                     capture_output=True,
                     text=True,

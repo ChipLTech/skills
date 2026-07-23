@@ -149,7 +149,7 @@ def main() -> int:
     }
     results = {
         name: subprocess.run(
-            ["/usr/bin/git", "-C", str(arguments.smi_source_root), *command],
+            ["git", "-C", str(arguments.smi_source_root), *command],
             check=False,
             capture_output=True,
             text=True,
@@ -168,7 +168,7 @@ def main() -> int:
     else:
         reasons.append("smi.source_identity_unavailable")
     remote_head = subprocess.run(
-        ["/usr/bin/git", "ls-remote", arguments.expected_origin, "HEAD"],
+        ["git", "ls-remote", arguments.expected_origin, "HEAD"],
         check=False,
         capture_output=True,
         text=True,

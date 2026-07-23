@@ -732,14 +732,14 @@ NESTED_FIELDS = {
 def repository_snapshot(root: Path) -> dict[str, str]:
     def git(*arguments: str) -> str:
         return subprocess.run(
-            ["/usr/bin/git", "-C", str(root), *arguments],
+            ["git", "-C", str(root), *arguments],
             check=True,
             capture_output=True,
             text=True,
         ).stdout.rstrip("\n")
 
     status_process = subprocess.run(
-        ["/usr/bin/git", "-C", str(root), "-c", "core.quotePath=false", "status", "--porcelain=v1", "-z", "--untracked-files=all"],
+        ["git", "-C", str(root), "-c", "core.quotePath=false", "status", "--porcelain=v1", "-z", "--untracked-files=all"],
         check=True,
         capture_output=True,
     )
@@ -748,12 +748,12 @@ def repository_snapshot(root: Path) -> dict[str, str]:
         entry.decode("utf-8", errors="backslashreplace") for entry in status_entries
     )
     tracked_diff = subprocess.run(
-        ["/usr/bin/git", "-C", str(root), "diff", "--binary"],
+        ["git", "-C", str(root), "diff", "--binary"],
         check=True,
         capture_output=True,
     ).stdout
     index_diff = subprocess.run(
-        ["/usr/bin/git", "-C", str(root), "diff", "--binary", "--cached"],
+        ["git", "-C", str(root), "diff", "--binary", "--cached"],
         check=True,
         capture_output=True,
     ).stdout
@@ -1588,14 +1588,14 @@ def validate_operational_result_reference(
                     return failure("artifact.invalid", "$.artifacts.run_spec.campaign_manifest")
             elif entry["kind"] == "git_repository":
                 revision = subprocess.run(
-                    ["/usr/bin/git", "-C", str(candidate), "rev-parse", "HEAD^{commit}"],
+                    ["git", "-C", str(candidate), "rev-parse", "HEAD^{commit}"],
                     check=False, capture_output=True, text=True,
                 )
                 if revision.returncode != 0 or revision.stdout.strip() != entry["digest"]:
                     return failure("artifact.invalid", "$.artifacts.run_spec.campaign_manifest")
                 if entry["id"] == "smi_source":
                     status = subprocess.run(
-                        ["/usr/bin/git", "-C", str(candidate), "status", "--porcelain=v1"],
+                        ["git", "-C", str(candidate), "status", "--porcelain=v1"],
                         check=False, capture_output=True, text=True,
                     )
                     if status.returncode != 0 or status.stdout.strip():
