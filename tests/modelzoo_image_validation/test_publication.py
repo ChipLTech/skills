@@ -30,7 +30,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         frontmatter = yaml.safe_load(text.split("---", 2)[1])
         description = frontmatter["description"]
         self.assertEqual(frontmatter["name"], IDENTITY)
-        self.assertIn(f"[{IDENTITY}](./skills/engineering/{IDENTITY}/SKILL.md)** — {description}", (ROOT / "README.md").read_text(encoding="utf-8"))
+        self.assertIn(f"[`{IDENTITY}`](./skills/engineering/{IDENTITY}/SKILL.md)", (ROOT / "README.md").read_text(encoding="utf-8"))
         self.assertIn(f"[{IDENTITY}](./{IDENTITY}/SKILL.md)** — {description}", (ROOT / "skills" / "engineering" / "README.md").read_text(encoding="utf-8"))
         plugin = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(plugin["skills"].count(f"./skills/engineering/{IDENTITY}"), 1)
@@ -39,7 +39,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["description"], description)
         self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/", "references/", "scripts/"])
-        self.assertIn(IDENTITY, (ROOT / "README.zh-CN.md").read_text(encoding="utf-8"))
+        self.assertIn(IDENTITY, (ROOT / "kilo-code-installation-and-validation.md").read_text(encoding="utf-8"))
 
     def test_skill_document_locks_public_cross_repository_contract(self):
         text = (ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md").read_text(encoding="utf-8")

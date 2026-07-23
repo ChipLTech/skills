@@ -19,7 +19,7 @@ class DLCHardwareObservabilityPublicationTests(unittest.TestCase):
         description = frontmatter["description"]
         self.assertEqual(frontmatter["name"], IDENTITY)
         self.assertIn(
-            f"[{IDENTITY}](./skills/engineering/{IDENTITY}/SKILL.md)** — {description}",
+            f"[`{IDENTITY}`](./skills/engineering/{IDENTITY}/SKILL.md)",
             (ROOT / "README.md").read_text(encoding="utf-8"),
         )
         self.assertIn(
@@ -37,7 +37,10 @@ class DLCHardwareObservabilityPublicationTests(unittest.TestCase):
         self.assertEqual(
             rows[0]["files"], ["SKILL.md", "agents/", "references/", "scripts/"]
         )
-        self.assertIn(f"/{IDENTITY}", (ROOT / "README.zh-CN.md").read_text(encoding="utf-8"))
+        self.assertIn(
+            f"/{IDENTITY}",
+            (ROOT / "kilo-code-installation-and-validation.md").read_text(encoding="utf-8"),
+        )
 
     def test_contract_is_query_only_and_fail_closed(self):
         root = ROOT / "skills" / "engineering" / IDENTITY

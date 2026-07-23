@@ -20,7 +20,7 @@ Summary:
   frontmatter-derived Kilo wrappers.
 - The six publication surfaces agree structurally: `/work/skills/README.md`,
   `/work/skills/skills/engineering/README.md`, `.claude-plugin/plugin.json`,
-  `SKILLHUB.yaml`, `scripts/link-kilo-skills.sh`, and `README.zh-CN.md`.
+  `SKILLHUB.yaml`, `scripts/link-kilo-skills.sh`, and `kilo-code-installation-and-validation.md`.
 - The default Kilo linker installs both skills and command wrappers without
   `--all`; isolated reruns are idempotent and preserve user-owned directories,
   files, symlinks, commands, and unrelated config.

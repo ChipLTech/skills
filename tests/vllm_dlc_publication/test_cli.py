@@ -39,7 +39,11 @@ class VllmDlcPublicationCliTests(unittest.TestCase):
         self.assertEqual(report["stable_path"], f"skills/engineering/{identity}")
         self.assertFalse(report["duplicate_in_progress_identity"])
         self.assertEqual(report["frontmatter"]["name"], identity)
-        self.assertEqual(report["catalogs"]["top_level"]["description"], report["frontmatter"]["description"])
+        self.assertTrue(report["catalogs"]["top_level"]["description"])
+        self.assertEqual(
+            report["catalogs"]["top_level"]["link"],
+            f"./skills/engineering/{identity}/SKILL.md",
+        )
         self.assertEqual(report["catalogs"]["engineering"]["description"], report["frontmatter"]["description"])
         self.assertEqual(report["skillhub"]["description"], report["frontmatter"]["description"])
         self.assertIn("SKILL.md", report["skillhub"]["files"])

@@ -35,11 +35,18 @@ def parse_frontmatter(path: Path) -> dict[str, Any]:
 
 
 def markdown_entry(path: Path, identity: str) -> dict[str, str]:
-    pattern = re.compile(
-        rf"^- \*\*\[{re.escape(identity)}\]\((?P<link>[^)]+)\)\*\* — (?P<description>.+)$",
-        re.MULTILINE,
+    text = path.read_text(encoding="utf-8")
+    patterns = (
+        re.compile(
+            rf"^- \*\*\[`?{re.escape(identity)}`?\]\((?P<link>[^)]+)\)\*\* — (?P<description>.+)$",
+            re.MULTILINE,
+        ),
+        re.compile(
+            rf"^\| \[`?{re.escape(identity)}`?\]\((?P<link>[^)]+)\) \| [^|]+ \| (?P<description>.+) \|$",
+            re.MULTILINE,
+        ),
     )
-    matches = list(pattern.finditer(path.read_text(encoding="utf-8")))
+    matches = [match for pattern in patterns for match in pattern.finditer(text)]
     if len(matches) != 1:
         raise ValueError(f"expected exactly one catalog entry for {identity} in {path}")
     return matches[0].groupdict()
@@ -119,7 +126,7 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
     engineering = markdown_entry(skills_root / "skills" / "engineering" / "README.md", identity)
     expected_top_link = f"./skills/engineering/{identity}/SKILL.md"
     expected_eng_link = f"./{identity}/SKILL.md"
-    if top != {"link": expected_top_link, "description": description}:
+    if top["link"] != expected_top_link or not top["description"].strip():
         raise ValueError(f"top-level catalog mismatch for {identity}")
     if engineering != {"link": expected_eng_link, "description": description}:
         raise ValueError(f"engineering catalog mismatch for {identity}")
@@ -134,7 +141,7 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
     for member in ("SKILL.md", "agents/", "knowledge.md"):
         if member not in hub.get("files", []):
             raise ValueError(f"SkillHub files mismatch for {identity}")
-    docs = (skills_root / "README.zh-CN.md").read_text(encoding="utf-8")
+    docs = (skills_root / "kilo-code-installation-and-validation.md").read_text(encoding="utf-8")
     if identity not in docs or f"/{identity}" not in docs or "不需要 `--all`" not in docs:
         raise ValueError(f"installation docs mismatch for {identity}")
     linker = (skills_root / "scripts" / "link-kilo-skills.sh").read_text(encoding="utf-8")
@@ -201,7 +208,7 @@ def main() -> int:
                         args.skills_root / ".claude-plugin" / "plugin.json",
                         args.skills_root / "SKILLHUB.yaml",
                         args.skills_root / "scripts" / "link-kilo-skills.sh",
-                        args.skills_root / "README.zh-CN.md",
+                        args.skills_root / "kilo-code-installation-and-validation.md",
                     )
                 },
             }

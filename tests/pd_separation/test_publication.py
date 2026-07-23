@@ -18,7 +18,7 @@ class PDSeparationPublicationTests(unittest.TestCase):
         frontmatter = yaml.safe_load(text.split("---", 2)[1])
         description = frontmatter["description"]
         self.assertEqual(frontmatter["name"], IDENTITY)
-        self.assertIn(f"[{IDENTITY}](./skills/engineering/{IDENTITY}/SKILL.md)** — {description}", (ROOT / "README.md").read_text(encoding="utf-8"))
+        self.assertIn(f"[`{IDENTITY}`](./skills/engineering/{IDENTITY}/SKILL.md)", (ROOT / "README.md").read_text(encoding="utf-8"))
         self.assertIn(f"[{IDENTITY}](./{IDENTITY}/SKILL.md)** — {description}", (ROOT / "skills" / "engineering" / "README.md").read_text(encoding="utf-8"))
         plugin = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(plugin["skills"].count(f"./skills/engineering/{IDENTITY}"), 1)
@@ -31,7 +31,7 @@ class PDSeparationPublicationTests(unittest.TestCase):
         self.assertIn("Qualify", agent["short_description"])
         for term in ("transport", "content-checked payload", "request-correlated", "recovery"):
             self.assertIn(term, agent["default_prompt"])
-        chinese_readme = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        chinese_readme = (ROOT / "kilo-code-installation-and-validation.md").read_text(encoding="utf-8")
         for capability in (f"/{IDENTITY}", "先验证 transport", "qualified TCP", "lyp_full", "dlccl_direct", "site recovery evidence"):
             self.assertIn(capability, chinese_readme)
         self.assertIn(f"skills/{IDENTITY} -> <repo>/skills/engineering/{IDENTITY}", chinese_readme)

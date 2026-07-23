@@ -4095,7 +4095,7 @@ def validate_live_package(skills_root: Path, knowledge_root: Path, identity: str
         skills_root / ".claude-plugin" / "plugin.json",
         skills_root / "SKILLHUB.yaml",
         skills_root / "scripts" / "link-kilo-skills.sh",
-        skills_root / "README.zh-CN.md",
+        skills_root / "kilo-code-installation-and-validation.md",
         knowledge_root / "vllm-dlc" / "model-adaptation-and-main-to-main-decisions.md",
     ]
     if not all(path.is_file() for path in required_files):
