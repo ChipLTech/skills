@@ -1,0 +1,4 @@
+interface:
+  display_name: "DLC Hardware Observability"
+  short_description: "Capture fail-closed cltech_smi evidence"
+  default_prompt: "Use DLC Hardware Observability to qualify the official cltech_smi surface, capture raw and normalized before-launch, after-ready, during-request, and after-cleanup evidence, localize the earliest device/process/HBM boundary, and keep maintenance actions outside the query-only contract."

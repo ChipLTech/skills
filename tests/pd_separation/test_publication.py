@@ -42,7 +42,7 @@ class PDSeparationPublicationTests(unittest.TestCase):
         text = (skill_root / "SKILL.md").read_text(encoding="utf-8")
         adaptation = (skill_root / "references" / "dlc-adaptation.md").read_text(encoding="utf-8")
         deployment = (skill_root / "references" / "deployment-and-troubleshooting.md").read_text(encoding="utf-8")
-        for required in ("request-correlated", "single_node_tcp", "single_node_lyp_full", "single_node_dlccl_direct", "cross_machine_tcp", "blocked_transport_unqualified", "blocked_cleanup_incomplete", "transport qualification", "site recovery", "package/source/build-artifact", "Device execution never authorizes", "HTTP 200", "Cross-machine deployment defaults to TCP", "docker exec"):
+        for required in ("request-correlated", "single_node_tcp", "single_node_lyp_full", "single_node_dlccl_direct", "cross_machine_tcp", "blocked_transport_unqualified", "blocked_missing_observability", "blocked_cleanup_incomplete", "transport qualification", "site recovery", "package/source/build-artifact", "dlc-hardware-observability", "during_request", "Device execution never authorizes", "HTTP 200", "Cross-machine deployment defaults to TCP", "docker exec"):
             self.assertIn(required, text)
         self.assertIn("CPU-Staging Lifecycle", adaptation)
         self.assertIn("KV Cache Layout Contract", adaptation)

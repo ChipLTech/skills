@@ -17,6 +17,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         "blocked_unqualified_daily_base",
         "blocked_unresolved_runtime_contract",
         "blocked_missing_hardware",
+        "blocked_missing_observability",
         "blocked_missing_authorization",
         "blocked_missing_qualified_dlc_base",
         "blocked_unsupported_framework",
@@ -53,6 +54,10 @@ class ModelZooPublicationTests(unittest.TestCase):
         self.assertIn("driver API", text)
         self.assertIn("partial clone", text)
         self.assertIn("source and binary hashes", text)
+        self.assertIn("dlc-hardware-observability", text)
+        self.assertIn("before_launch", text)
+        self.assertIn("during_request", text)
+        self.assertIn("after_cleanup", text)
         self.assertIn("modelzoo_claims", text)
         self.assertIn("execution_evidence", text)
         for blocker in self.PUBLIC_BLOCKERS:
@@ -67,6 +72,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         self.assertIn("Host driver API", tyd)
         self.assertIn("Device execution never authorizes", text)
         self.assertIn("privileged Host integration", runtime)
+        self.assertIn("blocked_missing_observability", runtime)
         self.assertIn("CMake `>3.27.0`", tyd)
         self.assertIn("dlc-thunk -> LLVM -> DLCsim", tyd)
         self.assertIn("an LLVM change invalidates DLCsim", tyd)

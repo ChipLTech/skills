@@ -37,7 +37,7 @@ Role profiles normally share model weights/tokenizer, dtype, quantization, block
 
 ## Read-Only Preflight
 
-1. Observe device health, existing allocations, task-owned processes, and available memory.
+1. Qualify and capture the official `cltech_smi` through `docs/chipltech-smi-observation-contract.md`; preserve raw output and normalized `before_launch` evidence for device health, allocations, holders, and capacity.
 2. Run the approved LYP/RDMA/link test and operator smoke for each declared device group; retain output and pass criteria without generalizing one group to another.
 3. Confirm `DLC_VISIBLE_DEVICES` and `CHIPLTECH_VISIBLE_DEVICES` mapping and ensure co-located Prefill/Decode sets do not overlap.
 4. Verify TP and all distributed dimensions against visible devices and the model profile.
@@ -89,7 +89,7 @@ For protocol-specific launch prerequisites and lazy initialization evidence, fol
 6. Decode requests matching remote request and block identities.
 7. Any deferred transport initialization, transport completion, and DLC-side KV receipt/synchronization are recorded; Decode's local request joins the Prefill request through `remote_request_id` or an equivalent exact identity.
 8. Response satisfies the deterministic assertion and health remains good.
-9. Stop/cleanup returns task processes, ports, and device memory to baseline.
+9. Stop/cleanup returns task processes, ports, and device memory to baseline, and normalized `after_cleanup` closes against `before_launch`.
 
 Only step 7 closes KV transfer. Health and HTTP response remain separate evidence.
 

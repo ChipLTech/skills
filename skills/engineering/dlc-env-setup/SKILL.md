@@ -32,7 +32,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 7. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build. Set the approved PyTorch build version before the first configure; wheel metadata and `torch.__version__` must agree.
 8. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
 9. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
-10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Before Real DLC Hardware model serving, additionally run it with `--require-device-execution` in a fresh process.
+10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Before Real DLC Hardware model serving, additionally run it with `--require-device-execution` in a fresh process and delegate the query-only SMI Observation Envelope to `dlc-hardware-observability`; package/runtime and SMI evidence remain separate.
 
 ## Rebuild Order
 
@@ -81,6 +81,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `scripts/pytorch-preflight.sh`: Python packaging and NumPy preflight before building the wheel.
 - `scripts/vllm-preflight.sh`: editable-install preflight for local `vllm` and `vllm-dlc` work.
 - `scripts/runtime-smoke.sh`: package checks outside source trees, with optional required vLLM imports and an opt-in layered Real DLC Hardware execution gate.
+- `scripts/qualify-vllm-dlc-smi-environment.py` and `scripts/observe-cltech-smi.py`: official `cltech_smi` source/executable qualification and normalized query-only sampling; they do not replace C1b.
 - `agents/openai.yaml`: preserved agent entrypoint for environments that surface skill-specific quick prompts.
 
 ## Related Knowledge-Base Docs
@@ -89,6 +90,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `/work/chipltech-knowledge-base/debugging-workflows/python-build-preflight-for-pytorch-and-vllm.md`
 - `/work/chipltech-knowledge-base/debugging-workflows/post-install-runtime-smoke.md`
 - `/work/chipltech-knowledge-base/runtime-debugging/environment-setup-and-update.md`
+- `/work/chipltech-knowledge-base/runtime-debugging/chipltech-smi-observability.md`
 
 ## Operating Rules
 

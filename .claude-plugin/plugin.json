@@ -4,6 +4,7 @@
     "./skills/engineering/ask-matt",
     "./skills/engineering/diagnosing-bugs",
     "./skills/engineering/dlc-env-setup",
+    "./skills/engineering/dlc-hardware-observability",
     "./skills/engineering/model-adaptation",
     "./skills/engineering/modelzoo-image-validation",
     "./skills/engineering/pd-separation",

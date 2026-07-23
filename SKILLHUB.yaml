@@ -27,6 +27,15 @@ skills:
       - "agents/"
       - "scripts/"
 
+  - name: dlc-hardware-observability
+    description: "Observe Real DLC Hardware with the official cltech_smi and normalized query-only evidence; use when model serving, image qualification, PD, environment repair, or debugging needs device, HBM, process, link, or cleanup snapshots without performing maintenance."
+    path: skills/engineering/dlc-hardware-observability
+    files:
+      - SKILL.md
+      - "agents/"
+      - "references/"
+      - "scripts/"
+
   - name: model-adaptation
     description: "Adapt a specific new or incompatible model for loading or serving on the DLC Platform; use for model-level Attention, MLA, MoE, quantization, multimodal, MTP, or distributed compatibility, not upstream alignment, environment rebuilds, single-operator debugging, independent compile work, or running an existing smoke alone."
     path: skills/engineering/model-adaptation
