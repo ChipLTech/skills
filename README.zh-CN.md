@@ -54,7 +54,7 @@ cd skills
 /grill-with-docs 我想给订单系统增加部分退款能力
 /model-adaptation 请只路由：这个特定新模型在 DLC Platform 上加载失败，检查模型级兼容边界
 /modelzoo-image-validation Qwen2-7B /mnt/jfs/models/Qwen2-7B，先验证本地模型；ModelZoo 同名时记录歧义，必要时用 framework selector 消歧
-/pd-separation 使用单机 TCP 部署 Prefill/Decode/Proxy，并保留 request-correlated KV transfer 与 cleanup evidence
+/pd-separation 先验证 transport，再用 qualified TCP、lyp_full 或 dlccl_direct 部署 Prefill/Decode/Proxy，并保留 request-correlated KV transfer 与 site recovery evidence
 /main-to-main-upgrade 请只路由：分析 vllm-dlc main 对齐 exact upstream full SHA 的完整兼容影响
 ```
 

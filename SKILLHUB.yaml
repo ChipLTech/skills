@@ -45,7 +45,7 @@ skills:
       - "scripts/"
 
   - name: pd-separation
-    description: "Deploy or diagnose vLLM-DLC Prefill/Decode separation with MooncakeDLCConnector; use for single-node TCP or lyp_full, cross-machine TCP, Prefill/Decode/Proxy startup, KV-transfer lifecycle, routing, and PD-specific health or transfer failures."
+    description: "Deploy or diagnose vLLM-DLC Prefill/Decode separation with MooncakeDLCConnector; use for single-node TCP, qualified lyp_full or dlccl_direct, cross-machine TCP, transport qualification, KV-transfer lifecycle, routing, and recovery."
     path: skills/engineering/pd-separation
     files:
       - SKILL.md

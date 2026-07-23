@@ -1,4 +1,4 @@
 interface:
   display_name: "Prefill/Decode Separation"
-  short_description: "Deploy and validate vLLM-DLC PD serving"
-  default_prompt: "Use Prefill/Decode Separation to freeze the topology and KV-transfer contract, validate the monolithic baseline, launch Prefill, Decode, and Proxy in order, and require request-correlated KV-transfer plus cleanup evidence. Keep environment repair and model-specific compatibility in their owning skills."
+  short_description: "Qualify, deploy, and recover vLLM-DLC PD"
+  default_prompt: "Use Prefill/Decode Separation to freeze topology, recovery, and KV-transfer contracts; validate the monolithic baseline and the exact transport with a content-checked payload before loading both roles; then require request-correlated KV consumption and full site recovery evidence. Keep environment repair and model-specific compatibility in their owning skills."
