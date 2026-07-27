@@ -1,0 +1,3 @@
+interface:
+  display_name: "Chipltech Context"
+  short_description: "Retrieve cited Chipltech engineering knowledge"

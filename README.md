@@ -4,11 +4,11 @@
 
 这是一组面向真实软件工程工作的 Agent Skills。它们不试图用一个庞大流程接管开发，而是把需求澄清、研究、原型、规格、任务拆分、实现、测试、审查、排障和维护组织成可组合的小型能力。
 
-当前仓库默认发布并安装 **31 个稳定 skill**：
+当前仓库默认发布并安装 **32 个稳定 skill**：
 
 | 分类 | 数量 | 用途 |
 |---|---:|---|
-| `engineering/` | 22 | 通用工程流程和 DLC/vLLM 专项能力 |
+| `engineering/` | 23 | 通用工程流程和 DLC/vLLM 专项能力 |
 | `productivity/` | 5 | 沟通、教学、交接和 skill 编写 |
 | `misc/` | 4 | Git、测试夹具、课程和提交工具 |
 
@@ -167,13 +167,14 @@ main-to-main-upgrade
 → 只报告 finalize eligibility
 ```
 
-## 31 个稳定 Skill
+## 32 个稳定 Skill
 
-### Engineering：22 个
+### Engineering：23 个
 
 | Skill | 调用方式 | 作用 |
 |---|---|---|
 | [`ask-matt`](./skills/engineering/ask-matt/SKILL.md) | 用户调用 | 根据当前工作选择正确的 skill 或 flow |
+| [`chipltech-context`](./skills/engineering/chipltech-context/SKILL.md) | 自动或用户调用 | 使用带引用的 Chipltech 工程知识路由任务 |
 | [`code-review`](./skills/engineering/code-review/SKILL.md) | 自动或用户调用 | 从 Standards 和 Spec 两条独立轴审查 diff |
 | [`diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md) | 自动或用户调用 | 建立可靠复现循环，通过可证伪假设定位根因 |
 | [`dlc-env-setup`](./skills/engineering/dlc-env-setup/SKILL.md) | 自动或用户调用 | 重建并验证 DLC 工具链、PyTorch wheel 和可选 vLLM 环境 |

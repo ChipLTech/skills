@@ -21,6 +21,7 @@ Reachable only when you type them (`disable-model-invocation: true`).
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
+- **[chipltech-context](./chipltech-context/SKILL.md)** — Route Chipltech tasks with cited engineering knowledge.
 - **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
 - **[research](./research/SKILL.md)** — Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent.

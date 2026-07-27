@@ -11,6 +11,13 @@ skills:
       - SKILL.md
       - "agents/"
 
+  - name: chipltech-context
+    description: "Route Chipltech tasks with cited engineering knowledge."
+    path: skills/engineering/chipltech-context
+    files:
+      - SKILL.md
+      - "agents/"
+
   - name: diagnosing-bugs
     description: "Diagnosis loop for hard bugs and performance regressions; use when diagnosing or debugging broken, failing, or slow behavior"
     path: skills/engineering/diagnosing-bugs

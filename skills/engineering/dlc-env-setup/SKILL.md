@@ -56,7 +56,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 ## Stop Immediately When
 
-- Any required repo cannot be found.
+- Any required repo cannot be found; report `blocked_missing_repository` with the exact missing repository and resume input.
 - A discovered repo is missing its expected build entrypoint.
 - Requested branch switching finds uncommitted changes.
 - The requested branch does not exist locally or on the tracked remote.
@@ -86,11 +86,13 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 
 ## Related Knowledge-Base Docs
 
-- `/work/chipltech-knowledge-base/runtime-debugging/dlc-workstation-env-rebuild.md`
-- `/work/chipltech-knowledge-base/debugging-workflows/python-build-preflight-for-pytorch-and-vllm.md`
-- `/work/chipltech-knowledge-base/debugging-workflows/post-install-runtime-smoke.md`
-- `/work/chipltech-knowledge-base/runtime-debugging/environment-setup-and-update.md`
-- `/work/chipltech-knowledge-base/runtime-debugging/chipltech-smi-observability.md`
+Resolve `<KNOWLEDGE_BASE_ROOT>` through the active Harness configuration or query-only discovery. Stop when multiple candidates are authoritative.
+
+- `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/dlc-workstation-env-rebuild.md`
+- `<KNOWLEDGE_BASE_ROOT>/debugging-workflows/python-build-preflight-for-pytorch-and-vllm.md`
+- `<KNOWLEDGE_BASE_ROOT>/debugging-workflows/post-install-runtime-smoke.md`
+- `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/environment-setup-and-update.md`
+- `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/chipltech-smi-observability.md`
 
 ## Operating Rules
 
