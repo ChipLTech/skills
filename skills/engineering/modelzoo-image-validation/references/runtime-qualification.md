@@ -24,6 +24,8 @@ Any assertion failure blocks benchmark and delivery. CPU Reference is diagnostic
 
 Declare dataset/corpus digest, endpoint, model alias, functional/benchmark profile diff, token policy, request count/rate/concurrency, seed, sampling, timeout, warm-up, and formal attempts. Preserve CLI help, raw logs, structured results, actual token distributions, request success, throughput/latency metrics, Peak concurrent requests, and health-after.
 
+Performance-diagnostic and formal benchmark profiles are separate epochs with an exact profile diff. A diagnostic profile that adds forced device synchronization, blocking execution, debug logging, verbose trace, temporary wrappers, or equivalent timing perturbation cannot satisfy `benchmark_workload_pass` or `benchmark_stability_baseline_pass` unless that instrumentation is explicitly part of the declared production workload. After a performance fix, rerun functional assertions before the formal uninstrumented benchmark.
+
 `benchmark_workload_pass` requires the declared workload to complete. `benchmark_stability_baseline_pass` additionally requires declared repeated attempts and a dispersion summary.
 
 ## Failure And Cleanup

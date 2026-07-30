@@ -24,6 +24,7 @@ skills:
     files:
       - SKILL.md
       - "agents/"
+      - "references/"
       - "scripts/"
 
   - name: dlc-env-setup

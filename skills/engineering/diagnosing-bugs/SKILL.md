@@ -103,7 +103,7 @@ Tool preference:
 
 **Tag every debug log** with a unique prefix, e.g. `[DEBUG-a4f2]`. Cleanup at the end becomes a single grep. Untagged logs survive; tagged logs die.
 
-**Perf branch.** For performance regressions, logs are usually wrong. Instead: establish a baseline measurement (timing harness, `performance.now()`, profiler, query plan), then bisect. Measure first, fix second.
+**Perf branch.** Establish an uninstrumented baseline before profiling. For model-serving or asynchronous accelerator work with nested framework/runtime/device boundaries, load [Hierarchical performance diagnosis](references/hierarchical-performance-diagnosis.md). Diagnostic synchronization and logging may localize a boundary but never establish the final performance result; remove them and rerun the original workload. Measure first, fix second.
 
 ## Phase 5 — Fix + regression test
 

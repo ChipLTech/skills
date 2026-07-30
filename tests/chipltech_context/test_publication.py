@@ -143,6 +143,20 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             (ROOT / "scripts" / "validate-hermes-chipltech-integration.py").is_file()
         )
 
+    def test_performance_regression_routes_to_diagnosis(self):
+        router = (
+            ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        route_row = next(
+            line
+            for line in router.splitlines()
+            if line.startswith("|") and "Model-serving performance regression" in line
+        )
+        self.assertIn("runtime-debugging/performance-profiling.md", route_row)
+        self.assertIn("nearest performance case study", route_row)
+        self.assertIn("`diagnosing-bugs`", route_row)
+        self.assertIn("route the smallest compatibility action to `model-adaptation`", router)
+
 
 if __name__ == "__main__":
     unittest.main()

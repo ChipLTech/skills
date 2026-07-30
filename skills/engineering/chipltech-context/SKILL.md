@@ -52,9 +52,12 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 | Local-model qualification or DLC/TYD image delivery | `vllm-dlc/modelzoo-driven-dlc-tyd-image-contract.md` | `modelzoo-image-validation` |
 | Prefill/Decode separation | `vllm-dlc/prefill-decode-separation.md` | `pd-separation` |
 | Exact upstream vLLM SHA alignment | `vllm-dlc/model-adaptation-and-main-to-main-decisions.md` | `main-to-main-upgrade` |
-| Hard bug or performance regression | Relevant topic and nearest case study | `diagnosing-bugs` |
+| Hard bug | Relevant topic and nearest case study | `diagnosing-bugs` |
+| Model-serving performance regression | `runtime-debugging/performance-profiling.md` and nearest performance case study | `diagnosing-bugs` |
 
 The table is a starting map, not a substitute for reading the current repository and Skill scopes.
+
+If performance diagnosis demonstrates a model/backend compatibility defect, route the smallest compatibility action to `model-adaptation`; diagnosis remains owned by `diagnosing-bugs`. Qualification or image-delivery benchmarks remain owned by `modelzoo-image-validation`.
 
 ## Stop Semantics
 
