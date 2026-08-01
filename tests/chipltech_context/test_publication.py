@@ -77,6 +77,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
         for required in (
             "CONTEXT.md",
             "README.md",
+            "prompt-examples/all-supported-capabilities-quickstart.md",
             "repository-relative path",
             "direct repository evidence",
             "runtime observation",
@@ -85,6 +86,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             "read-only",
             "blocked_ambiguous_knowledge_root",
             "blocked_conflicting_authority",
+            "Claim Boundary:",
         ):
             self.assertIn(required, text)
 
