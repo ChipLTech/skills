@@ -30,6 +30,10 @@ class DiagnosingBugsPublicationTests(unittest.TestCase):
             "invocation count",
             "shape",
             "stride/layout",
+            "contiguity",
+            "storage identity",
+            "storage offset",
+            "logical view relationship",
             "rank/device",
             "Remove temporary synchronization",
         ):

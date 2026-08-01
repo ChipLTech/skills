@@ -39,7 +39,7 @@ A residual that resembles one child cost is a clue, not proof of duplication. Co
 
 ## 5. Bind Hotspots To Execution Identity
 
-For each suspected operation retain parent call, invocation count, cumulative/mean/distribution timing, input/output shape, dtype, stride/layout, rank/device, and execution phase such as prefill/decode. Operation or kernel names alone are insufficient because the same implementation may serve multiple paths and shapes. Complete when the candidate cost is attributable to one declared workload path.
+For each suspected operation retain parent call, invocation count, cumulative/mean/distribution timing, input/output shape, dtype, stride/layout, rank/device, and execution phase such as prefill/decode. For layout, view, alias, or materialization candidates, also retain source/destination contiguity, storage identity, storage offset, and logical view relationship when observable; a shared storage identity does not establish identical logical Tensor semantics. Operation or kernel names alone are insufficient because the same implementation may serve multiple paths and shapes. Complete when the candidate cost is attributable to one declared workload path.
 
 ## 6. Audit Work Ownership
 
