@@ -14,6 +14,14 @@ For serving runtime failures, the target boundary is the sealed lifecycle stage 
 
 Performance diagnosis is owned by `diagnosing-bugs`. Model Adaptation may consume a bounded diagnosis only after it demonstrates a model/backend compatibility mismatch for an exact workload and preserves correctness, execution ownership, and uninstrumented scope. Instrumented timing improvement is not a stable performance baseline, Real DLC Hardware acceptance, or Verified vLLM Alignment; a backend flag observed in one source identity is not a universal capability rule.
 
+## Cross-Repository Interface Boundary
+
+The public operator schema is the caller contract. The ordered KernelDesc descriptor is the host launch contract. The exact DLC Custom Kernel entry ABI and binary are the execution contract. An optional public argument being `None` does not prove that its descriptor slot is absent. Record all three in the applicable v1 capability/dependency evidence before declaring an active model path compatible; this decision does not add fields to `vllm-dlc-contract/v1`.
+
+When main exposes a broader schema than a frozen DLC Custom Kernel supports, preserve caller compatibility and use a bounded host adapter only for the exact proven Kernel ABI. Reject unproved routing metadata, scoring modes, zero-point modes, qzeros combinations, group sizes, dtypes, layouts, and collective semantics before launch. Do not narrow a generic public schema or add a model-name exception to hide a binary pairing problem.
+
+Repository investigation scope, modification scope, and PR count are independent. A no-change DLC_Custom_Kernel Repository conclusion can be correct when the selected path intentionally consumes a frozen binary capability subset. Classify source absence separately from artifact or ABI pairing, and assign each change to its actual owner: generic framework behavior to upstream vLLM, DLC integration behavior to vLLM-DLC, public dispatch and KernelDesc packing to the current PyTorch/extension owner, Kernel implementation to DLC_Custom_Kernel Repository, and native pairing to the owning runtime component.
+
 ## Campaign-Derived Diagnostic Gates
 
 For a stable wrong-output symptom, use an ordered seam diagnosis: loaded-weight integrity, deterministic synthetic fused-op checks, rank-local operations, TP collectives one at a time, one-variable diagnostic probes, real-model Model-Site Dump comparison, then a same-family cross-model comparison. Seal the workload and change one variable per epoch. The first material divergence identifies a boundary to minimize; it does not establish that boundary as the sole cause.

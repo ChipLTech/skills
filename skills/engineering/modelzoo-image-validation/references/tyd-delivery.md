@@ -6,7 +6,7 @@ Load this reference only after runtime qualification passes and image delivery i
 
 Build from the qualified ordinary daily base and sealed runtime inputs. Model weights remain external. Record fixed tag, Image ID, base/source/model identities, dependency/extension hashes, build context, build log, exact-image C1a, exact-image C1b/function/benchmark states, tar path/size/SHA-256, attestation, and cleanup.
 
-If exact-image runtime gates are not repeated, use `delivered_runtime_qualified_by_equivalent_environment` only when the equivalence record binds all inputs and differences.
+If exact-image runtime gates are not repeated for a new Image ID, use `delivered_runtime_qualified_by_equivalent_environment` only when the equivalence record binds all inputs and differences and proves that the PyTorch wheel, imported native extension, DLC Custom Kernel binary, KernelDesc adapter, and DLCSynapse/DLC Runtime/DLCCL libraries are byte-identical. Any changed execution binary or adapter requires exact-artifact C1b and owning workload revalidation; evidence from an older candidate cannot be transferred by tag, source SHA, or an unexplained Image ID relationship.
 
 ## TYD
 

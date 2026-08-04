@@ -56,6 +56,7 @@ Phase 1 is done when the loop is **tight** and **red-capable**: you can name **o
 - [ ] **Deterministic** — same verdict every run (flaky bugs: a pinned, high reproduction rate, per above).
 - [ ] **Fast** — seconds, not minutes.
 - [ ] **Agent-runnable** — you can run it unattended; a human in the loop only via `scripts/hitl-loop.template.sh`.
+- [ ] **Identity-bound** — for accelerator or cross-repository failures, it records the exact source, wheel/image, imported extension, DLC Custom Kernel, toolchain/native stack, deployment, and device identities that the command actually exercises; unknown identities remain explicit.
 
 If you catch yourself reading code to build a theory before this command exists, **stop — jumping straight to a hypothesis is the exact failure this skill prevents.** No red-capable command, no Phase 2.
 
@@ -68,6 +69,7 @@ Confirm:
 - [ ] The loop produces the failure mode the **user** described — not a different failure that happens to be nearby. Wrong bug = wrong fix.
 - [ ] The failure is reproducible across multiple runs (or, for non-deterministic bugs, reproducible at a high enough rate to debug against).
 - [ ] You have captured the exact symptom (error message, wrong output, slow timing) so later phases can verify the fix actually addresses it.
+- [ ] For asynchronous accelerator failures, you have captured the last successful lifecycle stage and first fatal boundary; a later worker, engine, HTTP, or cleanup error is not silently promoted to the cause.
 
 ### Minimise
 

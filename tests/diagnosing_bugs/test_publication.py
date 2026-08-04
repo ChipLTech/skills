@@ -40,6 +40,14 @@ class DiagnosingBugsPublicationTests(unittest.TestCase):
             self.assertIn(required, reference)
         self.assertNotIn("forward_includes_kv_cache_update", reference)
 
+    def test_accelerator_repro_is_identity_and_failure_boundary_bound(self):
+        skill = (
+            ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("**Identity-bound**", skill)
+        self.assertIn("last successful lifecycle stage and first fatal boundary", skill)
+
     def test_project_install_copies_performance_reference(self):
         with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:
             result = subprocess.run(
