@@ -55,6 +55,7 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 | Exact upstream vLLM SHA alignment | `vllm-dlc/model-adaptation-and-main-to-main-decisions.md` | `main-to-main-upgrade` |
 | Hard bug | Relevant topic and nearest case study | `diagnosing-bugs` |
 | Model-serving performance regression | `runtime-debugging/performance-profiling.md` and nearest performance case study | `diagnosing-bugs` |
+| Closed diagnosis needing a short cross-team explanation | `debugging-workflows/technical-issue-summary.md` | `technical-issue-summary` |
 
 The table is a starting map, not a substitute for reading the current repository and Skill scopes.
 

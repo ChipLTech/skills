@@ -4,6 +4,7 @@
     "./skills/engineering/ask-matt",
     "./skills/engineering/chipltech-context",
     "./skills/engineering/diagnosing-bugs",
+    "./skills/engineering/technical-issue-summary",
     "./skills/engineering/dlc-env-setup",
     "./skills/engineering/dlc-hardware-observability",
     "./skills/engineering/model-adaptation",

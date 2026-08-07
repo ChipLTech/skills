@@ -24,6 +24,7 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[chipltech-context](./chipltech-context/SKILL.md)** — Route Chipltech tasks with cited engineering knowledge.
 - **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
+- **[technical-issue-summary](./technical-issue-summary/SKILL.md)** — Compress a closed technical diagnosis into a one- or two-sentence Sprint update, Issue title or summary, owner note, or evidence-linked handoff conclusion. Use when the user asks to summarize, briefly introduce, or explain a diagnosed technical issue across teams.
 - **[research](./research/SKILL.md)** — Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent.
 - **[tdd](./tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
 - **[code-review](./code-review/SKILL.md)** — Review a diff since a fixed point along Standards and Spec axes in parallel sub-agents.

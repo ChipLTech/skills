@@ -1,6 +1,6 @@
 # mattpocock/skills 在 Kilo Code 中的安装与验证
 
-这份文档面向使用 Kilo Code 的用户，说明如何把本仓库当前发布的 32 个稳定 skills 安装到 Kilo Code，并分层验证来源、链接、命令包装器、触发边界和执行能力。
+这份文档面向使用 Kilo Code 的用户，说明如何把本仓库当前发布的 33 个稳定 skills 安装到 Kilo Code，并分层验证来源、链接、命令包装器、触发边界和执行能力。
 
 完整 skill 地图、通用工程主链路和 DLC/vLLM 专项路由见仓库根目录的 [中文 README](./README.md)。本文只维护 Kilo Code 的安装与验证流程，避免与总览重复。
 
@@ -23,7 +23,7 @@ cd skills
 
 主要分为几类：
 
-- `engineering/`：23 个工程开发 skill，包括通用工程链路、`chipltech-context` 知识路由，以及 `dlc-env-setup`、`dlc-hardware-observability`、`model-adaptation`、`modelzoo-image-validation`、`pd-separation` 和 `main-to-main-upgrade` 等 DLC/vLLM 专项能力
+- `engineering/`：24 个工程开发 skill，包括通用工程链路、`chipltech-context` 知识路由、`technical-issue-summary` 技术简述，以及 `dlc-env-setup`、`dlc-hardware-observability`、`model-adaptation`、`modelzoo-image-validation`、`pd-separation` 和 `main-to-main-upgrade` 等 DLC/vLLM 专项能力
 - `productivity/`：生产力类，例如 `grill-me`、`handoff`、`teach`、`writing-great-skills`，并保留本地的 `caveman`
 - `misc/`：杂项工具类，例如 `setup-pre-commit`、`git-guardrails-claude-code`
 - `personal/`：Matt 个人工作流，默认不安装
