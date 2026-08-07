@@ -9,6 +9,7 @@ skills:
     path: skills/engineering/ask-matt
     files:
       - SKILL.md
+      - PHASE-BOUNDARIES.md
       - "agents/"
 
   - name: chipltech-context
@@ -16,6 +17,24 @@ skills:
     path: skills/engineering/chipltech-context
     files:
       - SKILL.md
+      - "agents/"
+
+  - name: codebase-design
+    description: "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary."
+    path: skills/engineering/codebase-design
+    files:
+      - SKILL.md
+      - DEEPENING.md
+      - DESIGN-IT-TWICE.md
+      - "agents/"
+
+  - name: domain-modeling
+    description: "Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model."
+    path: skills/engineering/domain-modeling
+    files:
+      - SKILL.md
+      - ADR-FORMAT.md
+      - CONTEXT-FORMAT.md
       - "agents/"
 
   - name: diagnosing-bugs
@@ -85,12 +104,11 @@ skills:
       - knowledge.md
 
   - name: grill-with-docs
-    description: "Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline"
+    description: "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go."
     path: skills/engineering/grill-with-docs
     files:
       - SKILL.md
-      - "ADR-FORMAT.md"
-      - "CONTEXT-FORMAT.md"
+      - "agents/"
 
   - name: triage
     description: "Triage issues through a state machine of triage roles"
@@ -99,16 +117,15 @@ skills:
       - SKILL.md
       - "AGENT-BRIEF.md"
       - "OUT-OF-SCOPE.md"
+      - "agents/"
 
   - name: improve-codebase-architecture
-    description: "Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/"
+    description: "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick."
     path: skills/engineering/improve-codebase-architecture
     files:
       - SKILL.md
-      - "DEEPENING.md"
       - "HTML-REPORT.md"
-      - "INTERFACE-DESIGN.md"
-      - "LANGUAGE.md"
+      - "agents/"
 
   - name: setup-matt-pocock-skills
     description: "Scaffold the per-repo config issue tracker, triage label vocabulary, and domain doc layout that the other engineering skills consume"
@@ -123,15 +140,13 @@ skills:
       - "triage-labels.md"
 
   - name: tdd
-    description: "Test-driven development with a red-green-refactor loop that builds features or fixes bugs one vertical slice at a time"
+    description: "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions red-green-refactor, or wants integration tests."
     path: skills/engineering/tdd
     files:
       - SKILL.md
-      - "deep-modules.md"
-      - "interface-design.md"
       - "mocking.md"
-      - "refactoring.md"
       - "tests.md"
+      - "agents/"
 
   - name: to-spec
     description: "Turn the current conversation into a spec and publish it to the project issue tracker without an additional interview"
@@ -152,6 +167,14 @@ skills:
     path: skills/engineering/wayfinder
     files:
       - SKILL.md
+      - "agents/"
+
+  - name: wizard
+    description: "Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself."
+    path: skills/engineering/wizard
+    files:
+      - SKILL.md
+      - template.sh
       - "agents/"
 
   - name: implement
@@ -187,14 +210,16 @@ skills:
     path: skills/engineering/zoom-out
     files:
       - SKILL.md
+      - "agents/"
 
   - name: prototype
-    description: "Build a throwaway prototype to flesh out a design, either a runnable terminal app for state and business-logic questions or several radically different UI variations"
+    description: "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like."
     path: skills/engineering/prototype
     files:
       - SKILL.md
       - "LOGIC.md"
       - "UI.md"
+      - "agents/"
 
   # ── Productivity ──────────────────────────────────────────────────────
 
@@ -203,18 +228,28 @@ skills:
     path: skills/productivity/caveman
     files:
       - SKILL.md
+      - "agents/"
 
   - name: grill-me
-    description: "Relentlessly interview the user about a plan or design until every branch of the decision tree is resolved"
+    description: "A relentless interview to sharpen a plan or design."
     path: skills/productivity/grill-me
     files:
       - SKILL.md
+      - "agents/"
+
+  - name: grilling
+    description: "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases."
+    path: skills/productivity/grilling
+    files:
+      - SKILL.md
+      - "agents/"
 
   - name: handoff
     description: "Compact the current conversation into a handoff document so another agent can continue the work"
     path: skills/productivity/handoff
     files:
       - SKILL.md
+      - "agents/"
 
   - name: teach
     description: "Teach the user a new skill or concept within a stateful teaching workspace"
@@ -227,13 +262,27 @@ skills:
       - "MISSION-FORMAT.md"
       - "RESOURCES-FORMAT.md"
 
-  - name: writing-great-skills
-    description: "Reference for writing and editing predictable skills using clear vocabulary and design principles"
-    path: skills/productivity/writing-great-skills
+  - name: to-questionnaire
+    description: "Turn a decision you can't fully answer into a questionnaire for someone else to fill in."
+    path: skills/productivity/to-questionnaire
     files:
       - SKILL.md
       - "agents/"
-      - "GLOSSARY.md"
+
+  - name: wait-what
+    description: "Stop. That last message did not land — re-pitch it."
+    path: skills/productivity/wait-what
+    files:
+      - SKILL.md
+      - "agents/"
+
+  - name: writing-for-agents
+    description: "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md."
+    path: skills/productivity/writing-for-agents
+    files:
+      - SKILL.md
+      - SKILL-MECHANICS.md
+      - "agents/"
 
   # ── Misc ──────────────────────────────────────────────────────────────
 

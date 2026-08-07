@@ -5,7 +5,7 @@ A collection of agent skills (slash commands and behaviors) loaded by Claude Cod
 ## Language
 
 **Issue tracker**:
-The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets`, `to-spec`, `triage`, and `qa` read from and write to it.
+The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets`, `to-spec`, and `triage` read from and write to it.
 _Avoid_: backlog manager, backlog backend, issue host
 
 **Issue**:
@@ -26,6 +26,14 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 - An **Issue** carries one **Triage role** at a time
 - An **Implementation ticket** is an **Issue** produced by `to-tickets`
 - A **Decision ticket** is an **Issue** (a child of a `wayfinder:map`)
+
+## Context Boundaries
+
+**Project context** is the `CONTEXT.md` belonging to the active business or code workspace. Generic skills may read it and, when their contract permits, update it.
+
+**Chipltech knowledge context** is the configured knowledge base's `CONTEXT.md`. It is selected through `chipltech-context`, remains read-only unless a contribution workflow is explicitly authorized, and does not become runtime Evidence.
+
+The two contexts must not be conflated based on filename alone. `domain-modeling`, `grill-with-docs`, and `wait-what` operate on project context; Chipltech execution and Evidence boundaries remain owned by the narrow DLC skills.
 
 ## Flagged ambiguities
 

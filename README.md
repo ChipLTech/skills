@@ -4,12 +4,12 @@
 
 这是一组面向真实软件工程工作的 Agent Skills。它们不试图用一个庞大流程接管开发，而是把需求澄清、研究、原型、规格、任务拆分、实现、测试、审查、排障和维护组织成可组合的小型能力。
 
-当前仓库默认发布并安装 **33 个稳定 skill**：
+当前仓库默认安装 **39 个稳定 skill**，其中 35 个属于 Claude 插件发布面，另有 4 个 Kilo 默认安装的 `misc/` 工具：
 
 | 分类 | 数量 | 用途 |
 |---|---:|---|
-| `engineering/` | 24 | 通用工程流程和 DLC/vLLM 专项能力 |
-| `productivity/` | 5 | 沟通、教学、交接和 skill 编写 |
+| `engineering/` | 27 | 通用工程流程、共享设计语言和 DLC/vLLM 专项能力 |
+| `productivity/` | 8 | 访谈、沟通、教学、交接和 Agent 文档编写 |
 | `misc/` | 4 | Git、测试夹具、课程和提交工具 |
 
 `personal/`、`in-progress/` 和 `deprecated/` 默认不安装。完整的 Kilo Code 安装、命令包装器和验证方法见 [《mattpocock/skills 在 Kilo Code 中的安装与验证》](./kilo-code-installation-and-validation.md)。
@@ -67,6 +67,10 @@
 | 已完成诊断，需要生成 Sprint、Issue、owner 或 handoff 简述 | `technical-issue-summary` |
 | Git 已进入 merge/rebase 冲突 | `resolving-merge-conflicts` |
 | 系统难理解、难测试或模块边界混乱 | `improve-codebase-architecture` |
+| 需要设计深模块、接口或测试 seam | `codebase-design` |
+| 需要更新项目术语或 ADR | `domain-modeling` |
+| 需要固化人工 dashboard、凭据或 cutover 步骤 | `wizard` |
+| 决策信息掌握在另一个人手里 | `to-questionnaire` |
 
 ### 上下文管理
 
@@ -168,19 +172,21 @@ main-to-main-upgrade
 → 只报告 finalize eligibility
 ```
 
-## 33 个稳定 Skill
+## 39 个稳定 Skill
 
-### Engineering：24 个
+### Engineering：27 个
 
 | Skill | 调用方式 | 作用 |
 |---|---|---|
 | [`ask-matt`](./skills/engineering/ask-matt/SKILL.md) | 用户调用 | 根据当前工作选择正确的 skill 或 flow |
 | [`chipltech-context`](./skills/engineering/chipltech-context/SKILL.md) | 自动或用户调用 | 使用带引用的 Chipltech 工程知识路由任务 |
+| [`codebase-design`](./skills/engineering/codebase-design/SKILL.md) | 自动或用户调用 | 提供深模块、接口、seam、leverage 和 locality 的共享设计语言 |
 | [`code-review`](./skills/engineering/code-review/SKILL.md) | 自动或用户调用 | 从 Standards 和 Spec 两条独立轴审查 diff |
 | [`diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md) | 自动或用户调用 | 建立可靠复现循环，通过可证伪假设定位根因 |
 | [`technical-issue-summary`](./skills/engineering/technical-issue-summary/SKILL.md) | 自动或用户调用 | 将已闭合诊断证据压缩成准确、可追溯的跨团队简述 |
 | [`dlc-env-setup`](./skills/engineering/dlc-env-setup/SKILL.md) | 自动或用户调用 | 重建并验证 DLC 工具链、PyTorch wheel 和可选 vLLM 环境 |
 | [`dlc-hardware-observability`](./skills/engineering/dlc-hardware-observability/SKILL.md) | 自动或用户调用 | 使用官方 `cltech_smi` 采集规范化、只读的硬件证据 |
+| [`domain-modeling`](./skills/engineering/domain-modeling/SKILL.md) | 自动或用户调用 | 维护当前项目的领域术语、`CONTEXT.md` 和 ADR |
 | [`grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) | 用户调用 | 对照代码、领域模型和 ADR 逐项澄清设计 |
 | [`implement`](./skills/engineering/implement/SKILL.md) | 用户调用 | 根据 spec/tickets 实现、验证、审查并交付 |
 | [`improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) | 用户调用 | 寻找浅模块、耦合泄漏和测试困难等架构深化机会 |
@@ -188,26 +194,30 @@ main-to-main-upgrade
 | [`model-adaptation`](./skills/engineering/model-adaptation/SKILL.md) | 自动或用户调用 | 处理具体模型的 Attention、MLA、MoE、量化、多模态、MTP 和分布式兼容 |
 | [`modelzoo-image-validation`](./skills/engineering/modelzoo-image-validation/SKILL.md) | 自动或用户调用 | 资格验证本地模型并按门禁交付独立 DLC/TYD 镜像 |
 | [`pd-separation`](./skills/engineering/pd-separation/SKILL.md) | 自动或用户调用 | 部署和诊断 MooncakeDLCConnector Prefill/Decode 分离 |
-| [`prototype`](./skills/engineering/prototype/SKILL.md) | 自动或用户调用 | 创建明确可丢弃的终端或 UI 原型回答设计问题 |
+| [`prototype`](./skills/engineering/prototype/SKILL.md) | 自动或用户调用 | 创建可分享的单文件逻辑演示或多方案 UI 原型回答设计问题 |
 | [`research`](./skills/engineering/research/SKILL.md) | 自动或用户调用 | 基于高可信一手来源生成带引用的研究笔记 |
 | [`resolving-merge-conflicts`](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 自动或用户调用 | 理解双方意图并完成整个 merge/rebase 冲突流程 |
 | [`setup-matt-pocock-skills`](./skills/engineering/setup-matt-pocock-skills/SKILL.md) | 用户调用 | 初始化 issue tracker、triage 标签和领域文档布局 |
-| [`tdd`](./skills/engineering/tdd/SKILL.md) | 自动或用户调用 | 使用公共接口逐行为执行红、绿、重构 |
+| [`tdd`](./skills/engineering/tdd/SKILL.md) | 自动或用户调用 | 在预先确认的公共 seam 上逐垂直切片执行红、绿循环 |
 | [`to-spec`](./skills/engineering/to-spec/SKILL.md) | 用户调用 | 将已经澄清的讨论整理并发布成正式 spec |
 | [`to-tickets`](./skills/engineering/to-tickets/SKILL.md) | 用户调用 | 将 spec 拆成 tracer-bullet tickets 和 blocking edges |
 | [`triage`](./skills/engineering/triage/SKILL.md) | 用户调用 | 通过状态机整理外部进入的 issue |
 | [`wayfinder`](./skills/engineering/wayfinder/SKILL.md) | 用户调用 | 为跨多个 session 的大型模糊工作建立决策地图 |
+| [`wizard`](./skills/engineering/wizard/SKILL.md) | 自动或用户调用 | 为只有人能完成的配置、凭据或 cutover 操作生成交互式脚本 |
 | [`zoom-out`](./skills/engineering/zoom-out/SKILL.md) | 用户调用 | 从局部代码上升到模块、调用关系和领域全景 |
 
-### Productivity：5 个
+### Productivity：8 个
 
 | Skill | 作用 |
 |---|---|
 | [`caveman`](./skills/productivity/caveman/SKILL.md) | 持续使用超压缩表达减少 token，同时保留技术准确性 |
 | [`grill-me`](./skills/productivity/grill-me/SKILL.md) | 在没有代码库的场景下穷尽式访谈计划或设计 |
+| [`grilling`](./skills/productivity/grilling/SKILL.md) | 按决策前沿分轮完成无遗漏访谈 |
 | [`handoff`](./skills/productivity/handoff/SKILL.md) | 将当前会话压缩为下一位 Agent 可直接接续的交接文件 |
 | [`teach`](./skills/productivity/teach/SKILL.md) | 建立长期、有状态的个性化学习工作区 |
-| [`writing-great-skills`](./skills/productivity/writing-great-skills/SKILL.md) | 指导设计、精简和审查可预测的高质量 skill |
+| [`to-questionnaire`](./skills/productivity/to-questionnaire/SKILL.md) | 为掌握缺失信息的人生成异步问卷 |
+| [`wait-what`](./skills/productivity/wait-what/SKILL.md) | 使用项目语言和简化英语重新解释未传达清楚的信息 |
+| [`writing-for-agents`](./skills/productivity/writing-for-agents/SKILL.md) | 指导编写 skills、`AGENTS.md` 和其他 Agent 消费的文档 |
 
 ### Misc：4 个
 
@@ -283,7 +293,8 @@ npx skills@latest add mattpocock/skills
 | `diagnose` | `diagnosing-bugs` |
 | `to-prd` | `to-spec` |
 | `to-issues` | `to-tickets` |
-| `write-a-skill` | `writing-great-skills` |
+| `write-a-skill` | `writing-for-agents` |
+| `writing-great-skills` | `writing-for-agents` |
 | `vllm-dlc-model-adapter` | `model-adaptation` |
 | `vllm-dlc-main2main` | `main-to-main-upgrade` |
 

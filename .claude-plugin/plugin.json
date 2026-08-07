@@ -3,6 +3,8 @@
   "skills": [
     "./skills/engineering/ask-matt",
     "./skills/engineering/chipltech-context",
+    "./skills/engineering/codebase-design",
+    "./skills/engineering/domain-modeling",
     "./skills/engineering/diagnosing-bugs",
     "./skills/engineering/technical-issue-summary",
     "./skills/engineering/dlc-env-setup",
@@ -19,6 +21,7 @@
     "./skills/engineering/to-spec",
     "./skills/engineering/to-tickets",
     "./skills/engineering/wayfinder",
+    "./skills/engineering/wizard",
     "./skills/engineering/implement",
     "./skills/engineering/zoom-out",
     "./skills/engineering/prototype",
@@ -27,8 +30,11 @@
     "./skills/engineering/resolving-merge-conflicts",
     "./skills/productivity/caveman",
     "./skills/productivity/grill-me",
+    "./skills/productivity/grilling",
     "./skills/productivity/handoff",
     "./skills/productivity/teach",
-    "./skills/productivity/writing-great-skills"
+    "./skills/productivity/to-questionnaire",
+    "./skills/productivity/wait-what",
+    "./skills/productivity/writing-for-agents"
   ]
 }

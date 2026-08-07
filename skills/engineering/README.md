@@ -22,13 +22,16 @@ Reachable only when you type them (`disable-model-invocation: true`).
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
 - **[chipltech-context](./chipltech-context/SKILL.md)** — Route Chipltech tasks with cited engineering knowledge.
-- **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
+- **[codebase-design](./codebase-design/SKILL.md)** — Shared vocabulary for deep modules, interfaces, seams, leverage, locality, and testability.
+- **[domain-modeling](./domain-modeling/SKILL.md)** — Build and sharpen the active project's domain language, `CONTEXT.md`, and ADRs.
+- **[prototype](./prototype/SKILL.md)** — Build a shareable single-file logic demo or several radically different UI variations to answer one design question.
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
 - **[technical-issue-summary](./technical-issue-summary/SKILL.md)** — Compress a closed technical diagnosis into a one- or two-sentence Sprint update, Issue title or summary, owner note, or evidence-linked handoff conclusion. Use when the user asks to summarize, briefly introduce, or explain a diagnosed technical issue across teams.
 - **[research](./research/SKILL.md)** — Investigate a question against high-trust primary sources and capture the findings as a cited Markdown file in the repo, run as a background agent.
-- **[tdd](./tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
+- **[tdd](./tdd/SKILL.md)** — Test-driven development through pre-agreed public seams, one red-green vertical slice at a time.
 - **[code-review](./code-review/SKILL.md)** — Review a diff since a fixed point along Standards and Spec axes in parallel sub-agents.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** — Resolve an in-progress merge or rebase hunk by hunk from each side's intent, then finish the operation.
+- **[wizard](./wizard/SKILL.md)** — Generate an interactive bash wizard for setup, credentials, dashboards, migrations, and cutovers only a human can perform.
 - **[dlc-env-setup](./dlc-env-setup/SKILL.md)** — Rebuild and verify a workstation DLC toolchain, PyTorch 2.5.0 wheel, and optional local vLLM runtime.
 - **[dlc-hardware-observability](./dlc-hardware-observability/SKILL.md)** — Observe Real DLC Hardware with the official cltech_smi and normalized query-only evidence; use when model serving, image qualification, PD, environment repair, or debugging needs device, HBM, process, link, or cleanup snapshots without performing maintenance.
 - **[model-adaptation](./model-adaptation/SKILL.md)** — Adapt a specific new or incompatible model for loading or serving on the DLC Platform; use for model-level Attention, MLA, MoE, quantization, multimodal, MTP, or distributed compatibility, not upstream alignment, environment rebuilds, single-operator debugging, independent compile work, or running an existing smoke alone.

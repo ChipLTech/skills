@@ -43,6 +43,13 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 8. Keep the execution workspace unchanged. The knowledge base supplies rationale and contracts; the current business/code repository and task-owned artifact directory supply execution and Evidence.
 9. Return the selected knowledge paths, business contract, execution Skill, first executable action, authorization needs, expected terminal states, and Evidence boundary. When routing to an execution Skill or reporting a terminal blocker, include a literal `Claim Boundary:` label followed by what is and is not established. For knowledge-only questions, return the cited answer without invoking an execution Skill.
 
+### Generic Skill Boundary
+
+- `domain-modeling`, `grill-with-docs`, and `wait-what` use the active business workspace's project context. `<KNOWLEDGE_BASE_ROOT>/CONTEXT.md` remains Chipltech knowledge context and is not an implicit write target.
+- `codebase-design` supplies generic module and interface vocabulary; `grilling` supplies interview mechanics; `to-questionnaire` collects human-held decisions; `wizard` packages authorized human-only procedures; `writing-for-agents` improves agent-facing documents. None replaces an owning DLC Skill or relaxes its Evidence, authorization, Stop Semantics, or Claim Boundary.
+- If the active project context and configured knowledge context resolve to the same path, report that fact and remain read-only unless the user explicitly authorizes a knowledge-base contribution workflow.
+- Skill discovery in Claude, Kilo, Codex, or Hermes proves availability only. It is not business execution or runtime Evidence.
+
 ## Routing Guide
 
 | Request | Knowledge entry | Execution Skill |

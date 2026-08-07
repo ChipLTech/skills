@@ -25,7 +25,7 @@ COMMAND_DEST="$HOME/.config/kilo/command"
 WITH_COMMANDS=0
 INCLUDE_ALL=0
 PROJECT_INSTALL=0
-RETIRED=(diagnose to-prd to-issues write-a-skill review)
+RETIRED=(diagnose to-prd to-issues write-a-skill writing-great-skills review)
 WRAPPER_MARKER="kilo-generated-wrapper: mattpocock-skills/link-kilo-skills.sh/v2"
 PROJECT_SKILL_MARKER=".kilo-link-source"
 
@@ -350,11 +350,19 @@ for name in "${RETIRED[@]}"; do
   if [ -L "$skill_target" ]; then
     rm "$skill_target"
     echo "removed stale skill symlink $skill_target"
+  elif [ -d "$skill_target" ] && [ -f "$skill_target/$PROJECT_SKILL_MARKER" ]; then
+    marker_src="$(cat "$skill_target/$PROJECT_SKILL_MARKER")"
+    case "$marker_src" in
+      "$SKILLS_ROOT"/*)
+        rm -rf "$skill_target"
+        echo "removed linker-owned skill directory $skill_target"
+        ;;
+    esac
   fi
 
   if [ "$WITH_COMMANDS" -eq 1 ]; then
     command_target="$COMMAND_DEST/$name.md"
-    if [ -f "$command_target" ] && grep -Fq "请使用 \`$name\` skill，严格按它的流程处理下面的问题：" "$command_target"; then
+    if [ -f "$command_target" ] && { grep -Fq "请使用 \`$name\` skill，严格按它的流程处理下面的问题：" "$command_target" || grep -Fq "$WRAPPER_MARKER" "$command_target"; }; then
       rm "$command_target"
       echo "removed stale generated command $command_target"
     fi
