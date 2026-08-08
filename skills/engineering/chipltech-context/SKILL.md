@@ -34,6 +34,7 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 ## Workflow
 
 1. Resolve both configured roots to readable absolute paths. Confirm the knowledge root contains `CONTEXT.md` and `README.md`, and the skills root contains `skills/`. If no configured path is usable, perform query-only discovery. Multiple plausible roots without a unique authority stop as `blocked_ambiguous_knowledge_root` or `blocked_ambiguous_skills_root`.
+   Repository-aware qualification uses the injectable `scripts/repository_guard.py` and requires the supplied path to equal the Git top-level root. Artifact-only validators do not invoke this guard and do not assume `/work/vllm-dlc` or any other fixed checkout path.
 2. Read `<KNOWLEDGE_BASE_ROOT>/CONTEXT.md` and `<KNOWLEDGE_BASE_ROOT>/README.md`. Adopt their formal terminology, component boundaries, source-of-truth policy, and maintenance rules before interpreting the task.
 3. For capability discovery, task routing, or an unclear owner, read `<KNOWLEDGE_BASE_ROOT>/prompt-examples/all-supported-capabilities-quickstart.md` as the canonical catalog of supported task entrypoints. Select its linked detailed Prompt, Contract, or Runbook; never execute from the catalog alone or treat catalog coverage as execution Evidence.
 4. Classify the request by problem domain. Search repository-relative filenames, headings, and content before reading broadly. Prefer the relevant topic document, then the nearest applicable case study, then the selected approved contract under `prompt-examples/`.
@@ -62,6 +63,8 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 | Exact upstream vLLM SHA alignment | `vllm-dlc/model-adaptation-and-main-to-main-decisions.md` | `main-to-main-upgrade` |
 | Hard bug | Relevant topic and nearest case study | `diagnosing-bugs` |
 | Model-serving performance regression | `runtime-debugging/performance-profiling.md` and nearest performance case study | `diagnosing-bugs` |
+| Profile artifact completeness or trace-track breakdown | `runtime-debugging/performance-profiling.md` | `diagnosing-bugs` |
+| Model distributed/MoE collective compatibility | `vllm-dlc/distributed-collective-qualification.md` | `model-adaptation` |
 | Closed diagnosis needing a short cross-team explanation | `debugging-workflows/technical-issue-summary.md` | `technical-issue-summary` |
 
 The table is a starting map, not a substitute for reading the current repository and Skill scopes.

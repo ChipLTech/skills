@@ -54,7 +54,16 @@ class VllmDlcPublicationCliTests(unittest.TestCase):
         return report
 
     def test_model_adaptation_is_structurally_published(self):
-        self.assert_passes_live_package("model-adaptation")
+        report = self.assert_passes_live_package("model-adaptation")
+        assets = report["digests"]["qualification_assets"]
+        self.assertIn("scripts/collect-vllm-dlc-live-identity.py", assets)
+        self.assertIn("scripts/identity_provider_seal.py", assets)
+        self.assertIn("scripts/observe-python-package-identity.py", assets)
+        self.assertIn("references/identity-provider-seal-v1.schema.json", assets)
+        self.assertIn("scripts/attest-vllm-dlc-qualification.py", assets)
+        self.assertIn("scripts/_generated_contracts/qualification_artifact.py", assets)
+        self.assertIn("scripts/_generated_contracts/qualification-artifact-envelope-v1.schema.json", assets)
+        self.assertTrue(all(value.startswith("sha256:") for value in assets.values()))
 
     def test_main_to_main_upgrade_is_structurally_published(self):
         self.assert_passes_live_package("main-to-main-upgrade")

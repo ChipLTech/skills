@@ -1,0 +1,52 @@
+{
+  "schema_version": "restricted-reference-governance/v1",
+  "legal_review": {
+    "status": "approved_governance_only",
+    "owner": "Chipltech legal/governance owner",
+    "review_date": "2026-08-08",
+    "decision_reference": "docs/adr/0004-external-restricted-reference-governance.md",
+    "boundary": "Source-specific use remains blocked until its source register disposition is resolved."
+  },
+  "raci": {
+    "accountable": "Chipltech legal/governance owner",
+    "legal_reviewer": "Designated legal reviewer",
+    "restricted_reference_reviewer": "Designated restricted-reference reviewer",
+    "independent_specification_author": "Designated DLC-native specification author",
+    "implementation_author": "Designated implementation author",
+    "publication_reviewer": "Designated publication reviewer",
+    "separation_rule": "For one source, restricted_reference_reviewer and implementation_author must be different people; stricter legal separation controls."
+  },
+  "source_register": [
+    {
+      "id": "synthetic-restricted-test-source",
+      "source_locator": "synthetic://restricted-reference/test-only",
+      "source_revision_or_sha256": "sha256:2931e86df40d6d8ef84c955f0072793049b3d97123887a4fa36fe13591a0882b",
+      "license_metadata": "Synthetic test source; no third-party content.",
+      "classification": "external_restricted",
+      "permitted_use": "Deterministic governance validator tests only.",
+      "prohibited_use": "Any installed or published execution-bearing package member.",
+      "reviewer": "Stage A governance reviewer",
+      "review_date": "2026-08-08",
+      "disposition": "prohibited",
+      "restricted_matches": [
+        "SYNTHETIC_RESTRICTED_IMPORT_R0_A"
+      ]
+    },
+    {
+      "id": "cannbot-local-static-snapshot-20260808",
+      "source_locator": "internal-governance://cannbot-skills-master/static-snapshot",
+      "source_revision_or_sha256": "sha256:6eeb3ded87d6f5fc345d6c83eb57a39e173cd88611e376a65b5d766e4a61e76a",
+      "license_metadata": "CANN Open Software License Agreement Version 2.0; LICENSE sha256:cb282ac2b66d7d6734c3fb354db792b28cf23ab29fbc16d5cfd8bd542bedeb1e; legal applicability to DLC independent implementation not reviewed.",
+      "classification": "external_restricted",
+      "permitted_use": "Restricted reviewer may record general engineering questions and independently author DLC-native behavioral requirements after legal approval.",
+      "prohibited_use": "No Skill text, script, template, eval, schema, code, translation, mechanical rewrite, fixed gain, or bundled reference may enter a DLC execution or publication asset.",
+      "reviewer": "Stage A restricted-reference reviewer",
+      "review_date": "2026-08-08",
+      "disposition": "blocked_legal_boundary",
+      "restricted_matches": [
+        "internal-governance://cannbot-skills-master/static-snapshot"
+      ]
+    }
+  ],
+  "review_allowlist": []
+}

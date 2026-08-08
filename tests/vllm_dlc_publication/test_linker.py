@@ -66,6 +66,26 @@ class KiloLinkerSafetyTests(unittest.TestCase):
             self.assertEqual(second.returncode, 0, second.stderr + second.stdout)
             self.assertEqual((skill / "SKILL.md").read_text(encoding="utf-8"), expected)
 
+    def test_model_adaptation_install_contains_distributed_contract_tools(self):
+        with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:
+            project = Path(directory)
+            result = self.run_linker(project)
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            skill = project / ".kilo" / "skills" / "model-adaptation"
+            for relative in (
+                "references/distributed-collective-qualification.md",
+                "scripts/validate-vllm-dlc-qualification.py",
+                "scripts/run-dlccl-qualification.py",
+                "scripts/inventory-vllm-dlc-collectives.py",
+                "scripts/attest-vllm-dlc-qualification.py",
+                "scripts/collect-vllm-dlc-live-identity.py",
+                "scripts/identity_provider_seal.py",
+                "scripts/observe-python-package-identity.py",
+                "references/identity-provider-seal-v1.schema.json",
+                "scripts/_generated_contracts/qualification_artifact.py",
+            ):
+                self.assertTrue((skill / relative).is_file(), relative)
+
     def test_custom_dest_without_commands_does_not_require_command_dest(self):
         with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:
             destination = Path(directory) / "skills"

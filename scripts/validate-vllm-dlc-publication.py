@@ -138,9 +138,29 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
     hub = skillhub_entry(skills_root / "SKILLHUB.yaml", identity)
     if hub.get("path") != f"skills/engineering/{identity}" or hub.get("description") != description:
         raise ValueError(f"SkillHub mismatch for {identity}")
-    for member in ("SKILL.md", "agents/", "knowledge.md"):
+    required_members = ["SKILL.md", "agents/", "knowledge.md"]
+    if identity == "model-adaptation":
+        required_members.extend(("references/", "scripts/"))
+    for member in required_members:
         if member not in hub.get("files", []):
             raise ValueError(f"SkillHub files mismatch for {identity}")
+    if identity == "model-adaptation":
+        qualification_assets = (
+            "references/distributed-collective-qualification.md",
+            "scripts/validate-vllm-dlc-qualification.py",
+            "scripts/run-dlccl-qualification.py",
+            "scripts/inventory-vllm-dlc-collectives.py",
+            "scripts/attest-vllm-dlc-qualification.py",
+            "scripts/collect-vllm-dlc-live-identity.py",
+            "scripts/identity_provider_seal.py",
+            "scripts/observe-python-package-identity.py",
+            "references/identity-provider-seal-v1.schema.json",
+            "scripts/_generated_contracts/qualification_artifact.py",
+            "scripts/_generated_contracts/qualification-artifact-envelope-v1.schema.json",
+        )
+        for relative in qualification_assets:
+            if not (stable_root / relative).is_file():
+                raise ValueError(f"missing model-adaptation qualification asset: {relative}")
     docs = (skills_root / "kilo-code-installation-and-validation.md").read_text(encoding="utf-8")
     if identity not in docs or f"/{identity}" not in docs or "不需要 `--all`" not in docs:
         raise ValueError(f"installation docs mismatch for {identity}")
@@ -169,6 +189,15 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
             "skill": sha256_file(skill_md),
             "agent": sha256_file(agent_yaml),
             "knowledge": sha256_file(knowledge_md),
+            **(
+                {
+                    "qualification_assets": {
+                        relative: sha256_file(stable_root / relative)
+                        for relative in qualification_assets
+                    }
+                }
+                if identity == "model-adaptation" else {}
+            ),
         },
     }
 

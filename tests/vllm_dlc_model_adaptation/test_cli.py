@@ -15,6 +15,23 @@ FIXTURES = Path(__file__).with_name("fixtures")
 
 
 class ModelAdaptationCliTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls._repository = tempfile.TemporaryDirectory(dir="/tmp/kilo")
+        cls.vllm_dlc_root = Path(cls._repository.name)
+        subprocess.run(["git", "init", "-q", "-b", "dev-skills", str(cls.vllm_dlc_root)], check=True)
+        (cls.vllm_dlc_root / "identity.txt").write_text("fixture\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(cls.vllm_dlc_root), "add", "identity.txt"], check=True)
+        subprocess.run([
+            "git", "-C", str(cls.vllm_dlc_root),
+            "-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid",
+            "commit", "-qm", "fixture",
+        ], check=True)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls._repository.cleanup()
+
     def test_operational_consumer_rejects_synthetic_passed_json(self):
         document = {
             "claims": {
@@ -49,7 +66,7 @@ class ModelAdaptationCliTests(unittest.TestCase):
                 "--knowledge-root",
                 "/work/chipltech-knowledge-base",
                 "--vllm-dlc-root",
-                "/work/vllm-dlc",
+                str(self.vllm_dlc_root),
                 target,
                 str(fixture),
             ],
@@ -111,7 +128,7 @@ class ModelAdaptationCliTests(unittest.TestCase):
         changed: bool = False,
     ) -> None:
         guarded_head = subprocess.run(
-            ["git", "-C", "/work/vllm-dlc", "rev-parse", "HEAD"],
+            ["git", "-C", str(self.vllm_dlc_root), "rev-parse", "HEAD"],
             check=True,
             capture_output=True,
             text=True,

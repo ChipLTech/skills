@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qualification-artifact-envelope/v1",
+  "title": "Qualification Artifact Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_id",
+    "producer",
+    "producer_version",
+    "created_at",
+    "subject_identity",
+    "input_artifact_digests",
+    "evidence_class",
+    "authoritativeness",
+    "acceptance_eligible",
+    "status",
+    "blockers",
+    "primary_blocker",
+    "resume_point",
+    "claim_boundary",
+    "unverified_scope",
+    "digest"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*/v1$"},
+    "artifact_id": {"$ref": "#/$defs/nonEmpty"},
+    "producer": {"$ref": "#/$defs/nonEmpty"},
+    "producer_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "subject_identity": {"$ref": "#/$defs/subjectIdentity"},
+    "input_artifact_digests": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+    "evidence_class": {"enum": ["static_snapshot", "fixture", "diagnostic", "operational_only", "qualification", "formal_acceptance"]},
+    "authoritativeness": {"enum": ["non_authoritative", "operational", "authoritative"]},
+    "acceptance_eligible": {"type": "boolean"},
+    "status": {"enum": ["passed", "failed", "blocked", "not_applicable", "not_verified"]},
+    "blockers": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/blocker"}},
+    "primary_blocker": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/blocker"}]},
+    "resume_point": {"type": ["string", "null"], "minLength": 1},
+    "claim_boundary": {"$ref": "#/$defs/nonEmpty"},
+    "unverified_scope": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}},
+    "digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "nonEmpty": {"type": "string", "minLength": 1},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "nullableRevision": {"type": ["string", "null"], "minLength": 1},
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "code", "path"],
+      "properties": {
+        "status": {"enum": ["failed", "blocked", "not_verified"]},
+        "code": {"$ref": "#/$defs/nonEmpty"},
+        "path": {"type": "string", "pattern": "^\\$"}
+      }
+    },
+    "namedDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "digest"],
+      "properties": {"name": {"$ref": "#/$defs/nonEmpty"}, "version": {"$ref": "#/$defs/nonEmpty"}, "digest": {"$ref": "#/$defs/digest"}}
+    },
+    "subjectIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "installed_package", "native_binary", "image", "runtime", "driver", "toolchain", "model", "tokenizer", "processor", "workload", "hardware", "capability_policy"],
+      "properties": {
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "repository", "revision", "dirty", "snapshot_digest"],
+          "properties": {
+            "kind": {"enum": ["git", "static_snapshot"]},
+            "repository": {"type": ["string", "null"], "minLength": 1},
+            "revision": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+            "dirty": {"type": ["boolean", "null"]},
+            "snapshot_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}
+          }
+        },
+        "installed_package": {
+          "type": "object", "additionalProperties": false,
+          "required": ["name", "version", "path", "digest"],
+          "properties": {"name": {"$ref": "#/$defs/nonEmpty"}, "version": {"$ref": "#/$defs/nonEmpty"}, "path": {"type": "string", "pattern": "^/"}, "digest": {"$ref": "#/$defs/digest"}}
+        },
+        "native_binary": {
+          "type": "object", "additionalProperties": false, "required": ["digest"],
+          "properties": {"digest": {"$ref": "#/$defs/digest"}}
+        },
+        "image": {
+          "type": "object", "additionalProperties": false, "required": ["image_id", "digest"],
+          "properties": {"image_id": {"$ref": "#/$defs/nonEmpty"}, "digest": {"$ref": "#/$defs/digest"}}
+        },
+        "runtime": {"$ref": "#/$defs/namedDigest"},
+        "driver": {"$ref": "#/$defs/namedDigest"},
+        "toolchain": {"$ref": "#/$defs/namedDigest"},
+        "model": {
+          "type": "object", "additionalProperties": false, "required": ["model_id", "revision", "digest"],
+          "properties": {"model_id": {"$ref": "#/$defs/nonEmpty"}, "revision": {"$ref": "#/$defs/nullableRevision"}, "digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}},
+          "anyOf": [
+            {"properties": {"revision": {"type": "string", "minLength": 1}}},
+            {"properties": {"digest": {"$ref": "#/$defs/digest"}}}
+          ]
+        },
+        "tokenizer": {
+          "type": "object", "additionalProperties": false, "required": ["revision", "digest"],
+          "properties": {"revision": {"$ref": "#/$defs/nullableRevision"}, "digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}},
+          "anyOf": [
+            {"properties": {"revision": {"type": "string", "minLength": 1}}},
+            {"properties": {"digest": {"$ref": "#/$defs/digest"}}}
+          ]
+        },
+        "processor": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object", "additionalProperties": false, "required": ["revision", "digest"],
+              "properties": {"revision": {"$ref": "#/$defs/nullableRevision"}, "digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}},
+              "anyOf": [
+                {"properties": {"revision": {"type": "string", "minLength": 1}}},
+                {"properties": {"digest": {"$ref": "#/$defs/digest"}}}
+              ]
+            }
+          ]
+        },
+        "workload": {"type": "object", "additionalProperties": false, "required": ["digest"], "properties": {"digest": {"$ref": "#/$defs/digest"}}},
+        "hardware": {
+          "type": "object", "additionalProperties": false, "required": ["generation", "topology_digest"],
+          "properties": {"generation": {"$ref": "#/$defs/nonEmpty"}, "topology_digest": {"$ref": "#/$defs/digest"}}
+        },
+        "capability_policy": {
+          "type": "object", "additionalProperties": false, "required": ["policy_id", "version", "digest"],
+          "properties": {"policy_id": {"$ref": "#/$defs/nonEmpty"}, "version": {"type": "string", "pattern": "^v[1-9][0-9]*$"}, "digest": {"$ref": "#/$defs/digest"}}
+        }
+      }
+    }
+  }
+}

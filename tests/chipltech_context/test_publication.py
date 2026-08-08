@@ -48,7 +48,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
         rows = [row for row in manifest["skills"] if row["name"] == IDENTITY]
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["description"], description)
-        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/"])
+        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/", "contracts/", "scripts/"])
 
     def test_project_install_copies_skill_and_wrapper(self):
         with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:
@@ -67,6 +67,9 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             installed = Path(directory) / ".kilo" / "skills" / IDENTITY
             self.assertTrue((installed / "SKILL.md").is_file())
             self.assertTrue((installed / "agents" / "openai.yaml").is_file())
+            self.assertTrue((installed / "contracts" / "qualification-artifact-envelope-v1.schema.json").is_file())
+            self.assertTrue((installed / "scripts" / "qualification_artifact.py").is_file())
+            self.assertTrue((installed / "scripts" / "repository_guard.py").is_file())
             wrapper = Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"
             self.assertIn(f"请使用 `{IDENTITY}` skill", wrapper.read_text(encoding="utf-8"))
 
@@ -158,6 +161,24 @@ class ChipltechContextPublicationTests(unittest.TestCase):
         self.assertIn("nearest performance case study", route_row)
         self.assertIn("`diagnosing-bugs`", route_row)
         self.assertIn("route the smallest compatibility action to `model-adaptation`", router)
+
+    def test_stage_a_routes_preserve_adjacent_owner_boundaries(self):
+        router = (
+            ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        profile_row = next(
+            line for line in router.splitlines()
+            if line.startswith("|") and "Profile artifact completeness" in line
+        )
+        distributed_row = next(
+            line for line in router.splitlines()
+            if line.startswith("|") and "distributed/MoE collective" in line
+        )
+        self.assertIn("`diagnosing-bugs`", profile_row)
+        self.assertNotIn("`model-adaptation`", profile_row)
+        self.assertIn("`model-adaptation`", distributed_row)
+        self.assertNotIn("`pd-separation`", distributed_row)
+        self.assertIn("Qualification or image-delivery benchmarks remain owned by `modelzoo-image-validation`", router)
 
 
 if __name__ == "__main__":

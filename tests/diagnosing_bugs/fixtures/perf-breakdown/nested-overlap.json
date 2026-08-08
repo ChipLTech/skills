@@ -1,0 +1,10 @@
+{
+  "traceEvents": [
+    {"name":"parent","ph":"X","pid":"track-a","tid":"thread-a","ts":0,"dur":100,"args":{}},
+    {"name":"child-a","ph":"X","pid":"track-a","tid":"thread-a","ts":10,"dur":50,"args":{}},
+    {"name":"nested","ph":"X","pid":"track-a","tid":"thread-a","ts":20,"dur":10,"args":{}},
+    {"name":"child-b","ph":"X","pid":"track-a","tid":"thread-a","ts":40,"dur":40,"args":{}},
+    {"name":"other-track","ph":"X","pid":"track-a","tid":"device-like-track","ts":50,"dur":20,"args":{}},
+    {"name":"outside","ph":"X","pid":"track-a","tid":"thread-a","ts":110,"dur":5,"args":{}}
+  ]
+}

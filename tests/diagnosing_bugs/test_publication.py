@@ -65,6 +65,26 @@ class DiagnosingBugsPublicationTests(unittest.TestCase):
             self.assertTrue(
                 (installed / "references" / "hierarchical-performance-diagnosis.md").is_file()
             )
+            for relative in (
+                "references/profiling-evidence-contract.md",
+                "references/perf-breakdown.md",
+                "scripts/validate-dlc-profile-artifacts.py",
+                "scripts/analyze-dlc-profile.py",
+                "scripts/_generated_contracts/qualification_artifact.py",
+            ):
+                self.assertTrue((installed / relative).is_file(), relative)
+
+    def test_profile_contracts_are_linked_and_fail_closed(self):
+        skill_root = ROOT / "skills" / "engineering" / IDENTITY
+        skill = (skill_root / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("references/profiling-evidence-contract.md", skill)
+        self.assertIn("references/perf-breakdown.md", skill)
+        profile = (skill_root / "references/profiling-evidence-contract.md").read_text(encoding="utf-8")
+        breakdown = (skill_root / "references/perf-breakdown.md").read_text(encoding="utf-8")
+        for required in ("read-only", "not OS PID/TID", "acceptance-ineligible", "Claim Boundary:"):
+            self.assertIn(required, profile)
+        for required in ("unmatched", "residual", "companion semantic producer", "Claim Boundary:"):
+            self.assertIn(required, breakdown)
 
 
 if __name__ == "__main__":

@@ -18,6 +18,8 @@ skills:
     files:
       - SKILL.md
       - "agents/"
+      - "contracts/"
+      - "scripts/"
 
   - name: codebase-design
     description: "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary."
@@ -77,6 +79,8 @@ skills:
       - SKILL.md
       - "agents/"
       - knowledge.md
+      - "references/"
+      - "scripts/"
 
   - name: modelzoo-image-validation
     description: "Qualify a local model from an ordinary daily base, use ModelZoo as optional read-only reference, then build independent DLC Chip and TYD Chip deliverables only after functional and benchmark gates pass. Use for ModelZoo-to-image workflows, local-model runtime qualification, or DLC/TYD image export."
