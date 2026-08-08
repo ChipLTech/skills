@@ -25,48 +25,48 @@
 
 ## 软件工程主链路
 
-大多数功能开发沿下面的主链路推进：
+**项目前置条件：** Skills 安装完成后，首次在一个业务仓库中运行通用工程 flow 前，执行 `/setup-matt-pocock-skills`。它配置 issue tracker、triage 标签和领域文档布局，不负责安装 Kilo Skills。Chipltech 只读知识路由可以先通过 `chipltech-context` 进行；后续 owning flow 是否需要项目 setup，以它的当前契约为准。
+
+大多数功能开发沿下面的主干推进：
 
 ```text
 选择流程
   ask-matt
       ↓
-需求与领域澄清
-  grill-with-docs / grill-me
+工作目录中的需求与领域澄清
+  grill-with-docs
       ↓
-消除未知
-  research / prototype / wayfinder
+按规模分流
+  小型工作：implement
+  多 session：to-spec → to-tickets → 每个 ticket 独立 implement
       ↓
-形成方案
-  to-spec → to-tickets
-      ↓
-开发交付
-  implement → tdd → code-review
-      ↓
-维护与排障
-  diagnosing-bugs / resolving-merge-conflicts
-  improve-codebase-architecture
+implement 内部
+  tdd（适用时）→ code-review
 ```
+
+`prototype` 是必须用可运行代码回答设计问题时的临时绕行，`research` 为澄清阶段提供一手资料，`wayfinder` 用于路线尚不清晰的超大工作。Bug、外部 issue、merge/rebase 冲突和架构维护分别从自己的入口进入，不是功能开发结束后的固定步骤。没有工作目录时，使用无状态的 `grill-me` 代替 `grill-with-docs`。
 
 ### 如何选择入口
 
 | 当前情况 | 推荐入口 |
 |---|---|
 | 不确定该使用哪个 skill | `ask-matt` |
+| Chipltech-Family Accelerator、DLC Platform、DLC Runtime、Real DLC Hardware 或 vLLM-DLC 工作 | 先用 `chipltech-context` 读取当前知识和能力目录，再加载最窄 owning Skill |
 | 已有代码库，需要把设计问清楚 | `grill-with-docs` |
 | 没有代码库，需要压力测试计划 | `grill-me` |
 | 问题必须通过运行实验才能回答 | `prototype` |
 | 需要阅读官方文档、源码或规范 | `research` |
-| 工作过大，单个 session 无法容纳 | `wayfinder` |
+| 工作巨大、路线尚不清晰，需要跨 session 逐项解决决策问题 | `wayfinder` |
 | 讨论已经成熟，需要形成正式规格 | `to-spec` |
 | 需要将规格拆为可独立实现的垂直切片 | `to-tickets` |
 | 已有明确 spec 或 ticket | `implement` |
 | 只需要测试先行实现一个具体行为 | `tdd` |
 | 需要审查分支或 PR | `code-review` |
 | 出现顽固 bug、偶现失败或性能回退 | `diagnosing-bugs` |
-| 已完成诊断，需要生成 Sprint、Issue、owner 或 handoff 简述 | `technical-issue-summary` |
+| 已完成诊断，需要压缩已闭合证据为 Sprint、Issue、owner 或 handoff 简述 | `technical-issue-summary` |
+| 外部进入的 bug report 或 feature request 尚未 agent-ready | `triage`；不要 triage `to-tickets` 生成的 tickets |
 | Git 已进入 merge/rebase 冲突 | `resolving-merge-conflicts` |
-| 系统难理解、难测试或模块边界混乱 | `improve-codebase-architecture` |
+| 系统难理解、难测试或模块边界混乱 | `improve-codebase-architecture` 做 survey；选中机会后回到 `grill-with-docs` |
 | 需要设计深模块、接口或测试 seam | `codebase-design` |
 | 需要更新项目术语或 ADR | `domain-modeling` |
 | 需要固化人工 dashboard、凭据或 cutover 步骤 | `wizard` |
@@ -76,40 +76,21 @@
 
 `grill-with-docs → to-spec → to-tickets` 尽量保持在同一个完整上下文中，让访谈、领域决策、规格和 tickets 使用同一套思考。每张 implementation ticket 再开启独立 session 执行 `implement`。
 
-当会话接近有效推理上限时，使用 `handoff` 把当前事实、决定、修改、验证和下一步保存到临时交接文件，再由新 session 接续。`handoff` 用于跨 session；内置 `/compact` 用于保留当前会话但压缩历史。
+只在 phase boundary 决定继续、`/clear`、`/handoff`、subagent 或 `/compact`。同一 Harness 和目录中需要保留相关上下文时通常使用 `/compact`；只有需要跨 Harness、目录、同事，或创建可移植侧任务时才使用 `handoff`。完整决策树见 [`PHASE-BOUNDARIES.md`](./skills/engineering/ask-matt/PHASE-BOUNDARIES.md)。
 
 ## DLC/vLLM 专项体系
 
-当前版本新增并稳定发布了五个 DLC/vLLM 专项 skill，与已有的 `dlc-env-setup` 组成完整协作网络：
+Chipltech-Family Accelerator 和 DLC/vLLM 工作统一从 `chipltech-context` 进入：
 
 ```text
-环境和包健康
-  dlc-env-setup
-      ↓
-只读硬件证据
-  dlc-hardware-observability
-      ↓
-特定模型兼容
-  model-adaptation
-      ↓
-专项交付或部署
-  ├── modelzoo-image-validation
-  ├── pd-separation
-  └── main-to-main-upgrade
+Chipltech / DLC / vLLM-DLC 任务
+  → chipltech-context
+  → 读取配置知识库的当前 capability catalog 与正式 Contract
+  → 加载最窄 owning Skill
+  → 在 owning Skill 的授权、停止条件和 Claim Boundary 内执行
 ```
 
-这些 skill 不是简单线性调用。顶层编排器会把子问题委托给明确的 owner，避免重复探测和互相覆盖结论。
-
-### 专项路由
-
-| 用户目标 | 应使用的 Skill | 不负责什么 |
-|---|---|---|
-| 重建或修复 DLC、PyTorch 2.5.0、可选 vLLM 环境 | `dlc-env-setup` | 不证明模型语义正确 |
-| 采集设备、HBM、进程、链路和 cleanup 证据 | `dlc-hardware-observability` | 不执行 reset、驱动维护或模型验收 |
-| 适配一个具体新模型或不兼容模型 | `model-adaptation` | 不更新 Verified vLLM Alignment |
-| 从本地模型资格验证到 DLC/TYD 镜像交付 | `modelzoo-image-validation` | 不把 ModelZoo 当作本地执行权威 |
-| 部署或诊断 Prefill/Decode 分离 | `pd-separation` | 不以 HTTP 200 或非空输出代替 KV transfer 证据 |
-| 对齐 exact upstream vLLM full SHA | `main-to-main-upgrade` | 当前流程只读、no-finalize，不修改 alignment 或 manifest |
+完整业务路由由配置知识库中的 `prompt-examples/all-supported-capabilities-quickstart.md` 维护，README 不复制第二套路由表。`chipltech-context` 是只读 router，不是执行 Evidence；它会实际加载当前 owning Skill，再由 owner 委托环境、硬件观察、诊断或交付子问题。
 
 ### DLC 证据边界
 
@@ -131,6 +112,8 @@ Performance：声明 workload 下的性能证据
 - SMI 观测能证明有界库存、HBM 和进程归属，但不能单独证明 DLC Runtime dispatch、KV transfer 或模型正确性。
 
 ### 推荐组合
+
+以下是 owning Skill 可能建立的委托关系，不是固定顺序，也不要求用户逐个手工调用；实际路由以当前 capability catalog 和 owning Skill 契约为准。
 
 **新模型适配**
 
@@ -161,7 +144,7 @@ pd-separation
 └── transport + request-correlated KV transfer evidence
 ```
 
-**Main-to-main 对齐**
+**Main-to-Main 只读影响分析**
 
 ```text
 main-to-main-upgrade
@@ -169,7 +152,7 @@ main-to-main-upgrade
 → Patch Import Manifest impact report
 → DeepSeek TP=2 与 Llama TP=1 mandatory assignments
 → model-adaptation child evidence
-→ 只报告 finalize eligibility
+→ 只报告 finalize eligibility；alignment unchanged，manifest report-only，finalize action none
 ```
 
 ## 39 个稳定 Skill
@@ -244,6 +227,8 @@ npx skills@latest add mattpocock/skills
 
 它会配置 issue tracker、triage 标签映射和领域文档布局。
 
+这是项目初始化命令，不是 Kilo Skills 安装命令。
+
 ### Kilo Code 全局安装
 
 仅安装 skills：
@@ -267,6 +252,8 @@ npx skills@latest add mattpocock/skills
 默认只安装 `engineering/`、`productivity/` 和 `misc/`。如需包含 `personal/` 和 `in-progress/`，使用 `--all`；`deprecated/` 始终不会安装。
 
 安装后请重启 Kilo Code 或打开新 session。详细目录、验证命令、常见问题和卸载方法见 [Kilo Code 安装与验证手册](./kilo-code-installation-and-validation.md)。
+
+**Kilo 与 Hermes：** Kilo Code 可以直接加载 `chipltech-context` 和 owning Skills，是完整可用入口。Hermes 的 `chipltech-engineering` profile 是可选执行器，不是 Chipltech 工程能力的统一前置条件；只有明确选择 Hermes 时才单独安装和验收。任何 Harness 中的 Skill 可发现性都不构成业务执行或 Runtime Evidence。
 
 ## 验证原则
 
