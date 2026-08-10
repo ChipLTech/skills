@@ -61,6 +61,7 @@ skills:
     files:
       - SKILL.md
       - "agents/"
+      - "references/"
       - "scripts/"
 
   - name: dlc-hardware-observability

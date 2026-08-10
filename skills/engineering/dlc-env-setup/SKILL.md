@@ -20,6 +20,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - Any requested repo-to-branch mapping before rebuild.
 - Any user-provided workspace roots that should be searched before broad filesystem discovery.
 - Host driver API authority surface and any explicitly approved privileged container/mount profile. Device execution authorization never implies privileged Host integration.
+- For workload-start qualification, an immutable Image ID, exact CRT directory, installed DLC Custom Kernel library, LLVM full SHA, Runtime API, and an approved stack compatibility policy. A tag or version family is not a policy identity.
 
 ## Automatic Workflow
 
@@ -32,7 +33,9 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 7. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build only when mutation of the active Python environment is authorized. The script installs/upgrades packages and is not a read-only check. When system Python mutation is forbidden, create a task-local virtual environment or perform equivalent query-only checks instead; never run this script against system Python. Set the approved PyTorch build version before the first configure; wheel metadata and `torch.__version__` must agree.
 8. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
 9. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
-10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Seal the actual Python, build toolchain, PyTorch distribution/wheel/import/native extension, vLLM/vLLM-DLC import, DLC Custom Kernel binary, and loaded DLC Runtime/native-library identities when discoverable; unavailable identities remain explicit instead of inferred from source checkout. Before Real DLC Hardware model serving, additionally run the smoke with `--require-device-execution` in a fresh process and delegate the query-only SMI Observation Envelope to `dlc-hardware-observability`; package/runtime, artifact identity, and SMI evidence remain separate.
+10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Seal the actual Python, build toolchain, PyTorch distribution/wheel/import/native extension, vLLM/vLLM-DLC import, DLC Custom Kernel binary, and loaded DLC Runtime/native-library identities when discoverable; unavailable identities remain explicit instead of inferred from source checkout.
+11. Before Real DLC Hardware model serving or exact-image acceptance, run `scripts/stack-preflight.py` against the immutable Image ID, equal Driver/Runtime API, exact four-file CRT bundle, installed DLC Custom Kernel library, LLVM full SHA, and an approved/revoked policy. Exact approved identity creates only `Static Stack Compatible`; revoked, unknown, incomplete, malformed, mutable, or API-mismatched identities stop before device execution. Policy approval must cite prior qualification evidence; source/tag/version similarity cannot create approval.
+12. Only after static preflight passes, run `scripts/runtime-smoke.sh --require-device-execution` in a fresh process and delegate the query-only SMI Observation Envelope to `dlc-hardware-observability`. Allocation/H2D submission is not sufficient: device operation completion, synchronize, D2H, and correctness must pass. Static compatibility, C1b, and SMI evidence remain separate.
 
 ## Rebuild Order
 
@@ -63,6 +66,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - A build step fails and the failure is not resolved by the documented clean rebuild path.
 - Package smoke fails after reinstall, especially if `torch.tensor(...).numpy()` or `import torch` outside the repo is broken.
 - A requested Real DLC Hardware execution smoke fails or times out at device enumeration, allocation, H2D, device operation, synchronize, D2H, or correctness.
+- Stack preflight returns revoked, unknown, incomplete, malformed, mutable, API-mismatched, or unavailable identity. Report `blocked_unqualified_stack_identity`; do not use device execution to auto-approve an unknown policy entry during an ordinary startup flow.
 - Multiple candidate repos share the same name and the authoritative root is ambiguous.
 
 ## Verification Standard
@@ -74,6 +78,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `/usr/local/chipltech/synapse/bin` contains the installed custom-kernel test tools.
 - If optional `vllm` work was requested, inspect the fixed source packaging mode before setting a device target. A core `empty` platform plus independent `vllm-dlc` plugin is valid when the source implements that mode; do not force an unsupported core device target. `import vllm` and its `pip show` metadata checks succeed. `import vllm_dlc` and its metadata are additionally required only when the deployment contract uses the plugin.
 - Before Real DLC Hardware model serving, `scripts/runtime-smoke.sh /tmp --require-device-execution` passes in a fresh process on every requested logical device. Use `--require-vllm` when vLLM is part of the contract. Plugin deployments add `--require-vllm-dlc`; a built-in DLC Platform deployment uses `--skip-vllm-dlc` after verifying its platform and entry-point identity.
+- Before that C1b, `scripts/stack-preflight.py` returns exit `0` and `reason_code=approved_profile` for the exact immutable image/artifact identity. This does not replace C1b and cannot approve a profile by itself.
 - A native component is complete only when task build output exists, the build and install logs have terminal success, the installed target timestamp/hash matches the task output, and applicable `ldd`, `nm`, or fresh import validation succeeds. Finding a same-named base-image library is not evidence of the current rebuild.
 
 ## Script Assets
@@ -81,6 +86,8 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `scripts/pytorch-preflight.sh`: Python packaging and NumPy preflight before building the wheel.
 - `scripts/vllm-preflight.sh`: editable-install preflight for local `vllm` and `vllm-dlc` work.
 - `scripts/runtime-smoke.sh`: package checks outside source trees, with optional required vLLM imports and an opt-in layered Real DLC Hardware execution gate.
+- `scripts/stack-preflight.py`: read-only fail-closed exact stack identity gate for immutable image, Driver/Runtime API, four CRT files, DLC Custom Kernel library, and LLVM identity.
+- `references/stack-preflight-policy.schema.json`: policy schema for explicitly approved or revoked exact stack profiles; unknown profiles remain blocked.
 - `scripts/qualify-vllm-dlc-smi-environment.py` and `scripts/observe-cltech-smi.py`: official `cltech_smi` source/executable qualification and normalized query-only sampling; they do not replace C1b.
 - `agents/openai.yaml`: preserved agent entrypoint for environments that surface skill-specific quick prompts.
 
@@ -91,6 +98,7 @@ Resolve `<KNOWLEDGE_BASE_ROOT>` through the active Harness configuration or quer
 - `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/dlc-workstation-env-rebuild.md`
 - `<KNOWLEDGE_BASE_ROOT>/debugging-workflows/python-build-preflight-for-pytorch-and-vllm.md`
 - `<KNOWLEDGE_BASE_ROOT>/debugging-workflows/post-install-runtime-smoke.md`
+- `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/stack-preflight-and-cold-completion.md`
 - `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/environment-setup-and-update.md`
 - `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/chipltech-smi-observability.md`
 

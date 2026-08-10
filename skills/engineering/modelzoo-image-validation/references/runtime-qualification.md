@@ -12,7 +12,7 @@ Before mutation, verify every task-owned source ref, recursive submodule worktre
 
 ## C1a And C1b
 
-Use `dlc-env-setup` for C1a package/import origins and fresh-process C1b allocation, H2D, nontrivial operation, synchronize, D2H, and correctness. Invoke C1b separately for each requested logical device, then run simultaneous/collective probes required by the deployment profile. When the same driver/runtime/base fingerprint has a validated driver-compatible profile and every privilege/mount is explicitly authorized, use it on the first attempt. Otherwise use the minimal profile; recreation with a broader profile requires an authorized exact profile diff and a C1b failure proven to be a container-profile mismatch.
+Use `dlc-env-setup` for C1a package/import origins, exact stack preflight, and fresh-process C1b allocation, H2D, nontrivial operation, synchronize, D2H, and correctness. Before C1b, require `approved_profile` for the immutable Image ID, equal Driver/Runtime API, exact four-file CRT bundle, DLC Custom Kernel library, and LLVM full SHA. Revoked and unknown profiles block startup; static approval never replaces C1b. Invoke C1b separately for each requested logical device, then run simultaneous/collective probes required by the deployment profile. When the same driver/runtime/base fingerprint has a validated driver-compatible profile and every privilege/mount is explicitly authorized, use it on the first attempt. Otherwise use the minimal profile; recreation with a broader profile requires an authorized exact profile diff and a C1b failure proven to be a container-profile mismatch.
 
 ## Functional Gate
 

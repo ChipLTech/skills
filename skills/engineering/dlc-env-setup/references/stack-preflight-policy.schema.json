@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chipltech.local/schemas/stack-compatibility-policy-v1.json",
+  "type": "object",
+  "required": ["schema", "profiles"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "io.chipltech.stack-compatibility-policy/v1"},
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "profile_id",
+          "status",
+          "target",
+          "marker_hex",
+          "driver_api",
+          "runtime_api",
+          "crt",
+          "kernel_library_sha256",
+          "llvm_sha",
+          "qualification_evidence",
+          "image_ids"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {"properties": {"status": {"const": "approved"}, "target": {"const": "dlc"}}, "required": ["status", "target"]},
+            "then": {"properties": {"marker_hex": {"const": "30444c43"}}}
+          },
+          {
+            "if": {"properties": {"status": {"const": "approved"}, "target": {"const": "tyd"}}, "required": ["status", "target"]},
+            "then": {"properties": {"marker_hex": {"const": "30545944"}}}
+          },
+          {
+            "if": {"properties": {"status": {"const": "approved"}, "target": {"const": "hhp"}}, "required": ["status", "target"]},
+            "then": {"properties": {"marker_hex": {"const": "30484850"}}}
+          }
+        ],
+        "properties": {
+          "profile_id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["approved", "revoked"]},
+          "target": {"enum": ["dlc", "tyd", "hhp"]},
+          "marker_hex": {"type": "string", "pattern": "^[0-9a-f]{8}$"},
+          "driver_api": {"type": "integer", "minimum": 1},
+          "runtime_api": {"type": "integer", "minimum": 1},
+          "crt": {
+            "type": "object",
+            "required": ["dlc_crt.hex", "dlc_crt_xys1.hex", "dlc_crt_cmem.hex", "dlc_crt_cmem_xys1.hex"],
+            "additionalProperties": false,
+            "properties": {
+              "dlc_crt.hex": {"$ref": "#/$defs/artifact"},
+              "dlc_crt_xys1.hex": {"$ref": "#/$defs/artifact"},
+              "dlc_crt_cmem.hex": {"$ref": "#/$defs/artifact"},
+              "dlc_crt_cmem_xys1.hex": {"$ref": "#/$defs/artifact"}
+            }
+          },
+          "kernel_library_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "llvm_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "qualification_evidence": {"type": "string", "minLength": 1},
+          "image_ids": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["sha256", "size"],
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "size": {"type": "integer", "minimum": 5}
+      },
+      "additionalProperties": false
+    }
+  }
+}

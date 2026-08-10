@@ -20,6 +20,7 @@ class ModelZooPublicationTests(unittest.TestCase):
         "blocked_missing_observability",
         "blocked_missing_authorization",
         "blocked_missing_qualified_dlc_base",
+        "blocked_unqualified_stack_identity",
         "blocked_unsupported_framework",
         "blocked_cleanup_incomplete",
     }
