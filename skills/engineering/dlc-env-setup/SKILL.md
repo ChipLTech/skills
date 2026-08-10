@@ -101,10 +101,14 @@ Resolve `<KNOWLEDGE_BASE_ROOT>` through the active Harness configuration or quer
 - `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/stack-preflight-and-cold-completion.md`
 - `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/environment-setup-and-update.md`
 - `<KNOWLEDGE_BASE_ROOT>/runtime-debugging/chipltech-smi-observability.md`
+- `<KNOWLEDGE_BASE_ROOT>/case-studies/host-api22-fullstack-main-to-main-update.md`
 
 ## Operating Rules
 
 - Echo the discovered repo map before long rebuild steps.
+- Before updating a running repo, confirm the actual editable source via install metadata (`direct_url.json`), `module.__file__`, and process command; editable metadata version strings do not track source checkout updates. Record both the editable `direct_url.json` and the source Git SHA, not just the package version.
+- Verify native binary identity from the artifact itself (e.g. compiler binary self-reported SHA), not only from source Git HEAD; a source HEAD can be newer than the binary it produced. Record source HEAD, dirty state, build command, binary hash/source identity, install target hash, and consumer identity; when undiscoverable, record `identity_unavailable` instead of inferring from the source checkout.
+- A background wrapper stop does not guarantee child processes inside a container exit; after stopping a served workload, verify HTTP endpoint, `docker top`, EngineCore, TP/EP workers, and port listen before declaring cleanup complete.
 - Do not use destructive git commands unless the user explicitly asks.
 - Keep platform-specific wrappers in this skill, not in the knowledge base.
 - Treat the knowledge base as the source of reusable rationale, and this skill as the source of execution order.
