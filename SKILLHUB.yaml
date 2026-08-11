@@ -100,6 +100,13 @@ skills:
       - "agents/"
       - "references/"
 
+  - name: pytorch-dlc-plugin-migration
+    description: "Migrate an existing production PyTorch DLC Backend component into a standard PrivateUse1 loadable plugin while preserving operator semantics and DLC kernel ABIs; use for component migration, phase audits, compile/link/wheel closure, and deferred-test accounting, not for inventing new DLC Custom Kernel semantics."
+    path: skills/engineering/pytorch-dlc-plugin-migration
+    files:
+      - SKILL.md
+      - "agents/"
+
   - name: main-to-main-upgrade
     description: "Upgrade vllm-dlc main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests."
     path: skills/engineering/main-to-main-upgrade

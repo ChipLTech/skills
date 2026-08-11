@@ -12,6 +12,7 @@
     "./skills/engineering/model-adaptation",
     "./skills/engineering/modelzoo-image-validation",
     "./skills/engineering/pd-separation",
+    "./skills/engineering/pytorch-dlc-plugin-migration",
     "./skills/engineering/main-to-main-upgrade",
     "./skills/engineering/grill-with-docs",
     "./skills/engineering/triage",

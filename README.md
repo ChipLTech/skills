@@ -4,11 +4,11 @@
 
 这是一组面向真实软件工程工作的 Agent Skills。它们不试图用一个庞大流程接管开发，而是把需求澄清、研究、原型、规格、任务拆分、实现、测试、审查、排障和维护组织成可组合的小型能力。
 
-当前仓库默认安装 **39 个稳定 skill**，其中 35 个属于 Claude 插件发布面，另有 4 个 Kilo 默认安装的 `misc/` 工具：
+当前仓库默认安装 **40 个稳定 skill**，其中 36 个属于 Claude 插件发布面，另有 4 个 Kilo 默认安装的 `misc/` 工具：
 
 | 分类 | 数量 | 用途 |
 |---|---:|---|
-| `engineering/` | 27 | 通用工程流程、共享设计语言和 DLC/vLLM 专项能力 |
+| `engineering/` | 28 | 通用工程流程、共享设计语言和 DLC/vLLM 专项能力 |
 | `productivity/` | 8 | 访谈、沟通、教学、交接和 Agent 文档编写 |
 | `misc/` | 4 | Git、测试夹具、课程和提交工具 |
 
@@ -155,9 +155,9 @@ main-to-main-upgrade
 → 只报告 finalize eligibility；alignment unchanged，manifest report-only，finalize action none
 ```
 
-## 39 个稳定 Skill
+## 40 个稳定 Skill
 
-### Engineering：27 个
+### Engineering：28 个
 
 | Skill | 调用方式 | 作用 |
 |---|---|---|
@@ -177,6 +177,7 @@ main-to-main-upgrade
 | [`model-adaptation`](./skills/engineering/model-adaptation/SKILL.md) | 自动或用户调用 | 处理具体模型的 Attention、MLA、MoE、量化、多模态、MTP 和分布式兼容 |
 | [`modelzoo-image-validation`](./skills/engineering/modelzoo-image-validation/SKILL.md) | 自动或用户调用 | 资格验证本地模型并按门禁交付独立 DLC/TYD 镜像 |
 | [`pd-separation`](./skills/engineering/pd-separation/SKILL.md) | 自动或用户调用 | 部署和诊断 MooncakeDLCConnector Prefill/Decode 分离 |
+| [`pytorch-dlc-plugin-migration`](./skills/engineering/pytorch-dlc-plugin-migration/SKILL.md) | 自动或用户调用 | 将现有生产 PyTorch DLC Backend 行为迁移为标准 PrivateUse1 插件 |
 | [`prototype`](./skills/engineering/prototype/SKILL.md) | 自动或用户调用 | 创建可分享的单文件逻辑演示或多方案 UI 原型回答设计问题 |
 | [`research`](./skills/engineering/research/SKILL.md) | 自动或用户调用 | 基于高可信一手来源生成带引用的研究笔记 |
 | [`resolving-merge-conflicts`](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 自动或用户调用 | 理解双方意图并完成整个 merge/rebase 冲突流程 |

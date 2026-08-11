@@ -56,6 +56,7 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 | Request | Knowledge entry | Execution Skill |
 | --- | --- | --- |
 | Workstation rebuild or package/runtime repair | `runtime-debugging/`, `debugging-workflows/` | `dlc-env-setup` |
+| Built-in PyTorch DLC Backend to PrivateUse1 plugin migration | `prompt-examples/pytorch-dlc-plugin-migration-prompts.md` | `pytorch-dlc-plugin-migration` |
 | Query-only device, HBM, process, link, or cleanup evidence | `runtime-debugging/chipltech-smi-observability.md` | `dlc-hardware-observability` |
 | One model's loading or serving compatibility | `vllm-dlc/model-adaptation-and-main-to-main-decisions.md` | `model-adaptation` |
 | Local-model qualification or DLC/TYD image delivery | `vllm-dlc/modelzoo-driven-dlc-tyd-image-contract.md` | `modelzoo-image-validation` |

@@ -50,14 +50,13 @@ Proceed only when every required check has an explicit result.
 
 ## Launch Skeleton
 
-Construct commands from actual `--help`. The documented shape is:
+Construct commands from captured actual `--help`; omit every unsupported literal. Keep TCP and `lyp_full` as separate generated branches. The documented shape is illustrative:
 
 ```bash
 python3 -m mooncake.pd_launcher \
   --visible-devices <ROLE_DEVICE_LIST> \
   --mooncake-protocol <tcp|lyp_full|dlccl_direct-if-supported> \
-  --lyp-store-host <DECLARED_STORE_HOST> \
-  --lyp-store-port <DECLARED_STORE_BASE> \
+  <VALIDATED_TRANSPORT_SPECIFIC_ARGS> \
   --side-channel-port <ROLE_SIDE_CHANNEL_BASE> \
   -- \
   --host <ROLE_BIND_ADDRESS> \
@@ -69,6 +68,18 @@ python3 -m mooncake.pd_launcher \
 ```
 
 Use producer JSON on Prefill and consumer JSON on Decode. Quote JSON as one shell argument. Bind addresses and advertised addresses are different concerns: `0.0.0.0` may bind a service but is not a peer destination. Exposing unauthenticated APIs on `0.0.0.0` requires a trusted network or source-restricted firewall.
+
+For `lyp_full`, include store host/base through the exact parser's accepted flags or environment, and require P/D to agree on every rank-derived port. TCP commands omit LYP store options. Add `--trust-remote-code` only when the model source is approved and revision-pinned; it is never a generic default.
+
+## Request-Isolated Profiling
+
+1. Use a temporary Proxy containing one P and one D, or profile every candidate and preserve the actual selected pair.
+2. Start from a clean server epoch with prefix cache and request counters reset. Run warm-up before framework and DLC profiling begins.
+3. Validate profiler control routes from exact source. Record each selected rank's writer byte offset only after writers are quiet.
+4. Send exactly one measured request, preserve external/local/remote request IDs, then record end offsets before stopping and flushing profilers.
+5. Slice ANSI artifacts by recorded byte range, retain per-rank identities and hashes, and report Prefill compute after observed prefix hits separately from KV export, transfer, Decode receive/sync, and token iterations.
+
+Empty profiles on unselected replicas are not failures. Rank cycles and P/D cycles are parallel/distributed observations, not additive end-to-end latency; bind wall time to the Proxy/client timeline.
 
 Launch order:
 

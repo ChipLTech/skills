@@ -1,6 +1,6 @@
 # mattpocock/skills 在 Kilo Code 中的安装与验证
 
-这份文档面向使用 Kilo Code 的用户，说明如何把本仓库当前发布的 39 个稳定 skills 安装到 Kilo Code，并分层验证来源、链接、命令包装器、触发边界和执行能力。
+这份文档面向使用 Kilo Code 的用户，说明如何把本仓库当前发布的 40 个稳定 skills 安装到 Kilo Code，并分层验证来源、链接、命令包装器、触发边界和执行能力。
 
 完整 skill 地图、通用工程主链路和 DLC/vLLM 专项路由见仓库根目录的 [中文 README](./README.md)。本文只维护 Kilo Code 的安装与验证流程，避免与总览重复。
 
@@ -23,7 +23,7 @@ cd skills
 
 主要分为几类：
 
-- `engineering/`：27 个工程开发 skill，包括 `codebase-design`、`domain-modeling`、`wizard`、通用工程链路、`chipltech-context` 知识路由，以及 DLC/vLLM 专项能力
+- `engineering/`：28 个工程开发 skill，包括 `codebase-design`、`domain-modeling`、`wizard`、通用工程链路、`chipltech-context` 知识路由，以及 DLC/vLLM 专项能力
 - `productivity/`：8 个生产力 skill，包括 `grilling`、`to-questionnaire`、`wait-what`、`writing-for-agents`，并保留本地的 `caveman`
 - `misc/`：杂项工具类，例如 `setup-pre-commit`、`git-guardrails-claude-code`
 - `personal/`：Matt 个人工作流，默认不安装
@@ -90,11 +90,13 @@ cd skills
 ~/.config/kilo/skills/model-adaptation -> <repo>/skills/engineering/model-adaptation
 ~/.config/kilo/skills/modelzoo-image-validation -> <repo>/skills/engineering/modelzoo-image-validation
 ~/.config/kilo/skills/pd-separation -> <repo>/skills/engineering/pd-separation
+~/.config/kilo/skills/pytorch-dlc-plugin-migration -> <repo>/skills/engineering/pytorch-dlc-plugin-migration
 ~/.config/kilo/skills/main-to-main-upgrade -> <repo>/skills/engineering/main-to-main-upgrade
 ~/.config/kilo/command/diagnosing-bugs.md
 ~/.config/kilo/command/model-adaptation.md
 ~/.config/kilo/command/modelzoo-image-validation.md
 ~/.config/kilo/command/pd-separation.md
+~/.config/kilo/command/pytorch-dlc-plugin-migration.md
 ~/.config/kilo/command/main-to-main-upgrade.md
 ```
 
@@ -155,7 +157,7 @@ cd skills
 - `productivity/`
 - `misc/`
 
-因此默认安装不需要 `--all`，会包含 `dlc-hardware-observability`、`model-adaptation`、`modelzoo-image-validation`、`pd-separation` 和 `main-to-main-upgrade` 这些 stable engineering skills 及其 slash command 包装器。只读设备、HBM、进程、链路和 cleanup 证据应路由到 `dlc-hardware-observability`；ModelZoo 模型名解析和 DLC/TYD 镜像 workflow 应路由到 `modelzoo-image-validation`；Prefill/Decode 拓扑、MooncakeDLCConnector、KV transfer 和 PD 启停排障应路由到 `pd-separation`；特定模型加载/服务兼容问题应路由到 `model-adaptation`；exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
+因此默认安装不需要 `--all`，会包含 `dlc-hardware-observability`、`model-adaptation`、`modelzoo-image-validation`、`pd-separation`、`pytorch-dlc-plugin-migration` 和 `main-to-main-upgrade` 这些 stable engineering skills 及其 slash command 包装器。只读设备、HBM、进程、链路和 cleanup 证据应路由到 `dlc-hardware-observability`；ModelZoo 模型名解析和 DLC/TYD 镜像 workflow 应路由到 `modelzoo-image-validation`；Prefill/Decode 拓扑、MooncakeDLCConnector、KV transfer 和 PD 启停排障应路由到 `pd-separation`；生产 PyTorch DLC Backend 到标准 PrivateUse1 插件的迁移应路由到 `pytorch-dlc-plugin-migration`；特定模型加载/服务兼容问题应路由到 `model-adaptation`；exact upstream full SHA 对齐或完整兼容影响分析应路由到 `main-to-main-upgrade`。
 
 默认不会安装：
 

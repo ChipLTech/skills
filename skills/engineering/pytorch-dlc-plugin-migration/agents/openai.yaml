@@ -1,0 +1,4 @@
+interface:
+  display_name: "PyTorch DLC Plugin Migration"
+  short_description: "Migrate built-in DLC behavior to PrivateUse1"
+  default_prompt: "Use pytorch-dlc-plugin-migration to map the production backend, standard PyTorch extension contract, and target plugin; preserve operator and DLC kernel semantics while replacing built-in registration with PrivateUse1 plugin integration; close compile, wheel, import, and authorized device gates with exact evidence."

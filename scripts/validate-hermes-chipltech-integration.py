@@ -55,6 +55,17 @@ SCENARIOS = (
             "devices, endpoints, or authorization was provided."
         ),
     },
+    {
+        "name": "pytorch_dlc_plugin_migration",
+        "owner": "pytorch-dlc-plugin-migration",
+        "knowledge": "prompt-examples/pytorch-dlc-plugin-migration-prompts.md",
+        "blocker": "blocked_ambiguous_source",
+        "request": (
+            "I need to migrate a production PyTorch DLC Backend component to "
+            "PrivateUse1, but no source roots, migration slice, or authorization "
+            "was provided."
+        ),
+    },
 )
 
 

@@ -54,6 +54,22 @@ class PDSeparationPublicationTests(unittest.TestCase):
         self.assertIn("pre-existing workload", deployment)
         self.assertIn("capability-derived readiness", deployment)
         self.assertIn("Only step 7 closes KV transfer", deployment)
+        for required in (
+            "profiling is requested",
+            "separate TCP and `lyp_full` commands",
+            "one fixed P/D pair",
+            "per-rank byte offsets",
+            "Do not sum rank or P/D cycles",
+        ):
+            self.assertIn(required, text)
+        for required in (
+            "captured actual `--help`",
+            "Request-Isolated Profiling",
+            "exact parser's accepted flags or environment",
+            "approved and revision-pinned",
+            "not additive end-to-end latency",
+        ):
+            self.assertIn(required, deployment)
         public_package = "\n".join((text, adaptation, deployment))
         for unsafe in ("hangzhou-office-harbor", "177.177.177.153", "177.177.177.154", "rmmod chipltech", "kill -KILL"):
             self.assertNotIn(unsafe, public_package)

@@ -99,6 +99,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             "model-adaptation",
             "modelzoo-image-validation",
             "pd-separation",
+            "pytorch-dlc-plugin-migration",
         ):
             text = (
                 ROOT / "skills" / "engineering" / identity / "SKILL.md"
@@ -129,6 +130,11 @@ class ChipltechContextPublicationTests(unittest.TestCase):
                 "pd-separation",
                 "vllm-dlc/prefill-decode-separation.md",
                 "blocked_missing_contract",
+            ),
+            (
+                "pytorch-dlc-plugin-migration",
+                "prompt-examples/pytorch-dlc-plugin-migration-prompts.md",
+                "blocked_ambiguous_source",
             ),
         )
         for skill_name, knowledge_path, blocker in matrix:
