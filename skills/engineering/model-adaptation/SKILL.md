@@ -7,7 +7,7 @@ description: Adapt a specific new or incompatible model for loading or serving o
 
 shared_contract: vllm-dlc-contract/v1
 
-Use this stable workflow for one approved model and deployment profile. It may consume a one-way Main-to-Main parent assignment, but it does not recover, update, finalize, or claim Verified vLLM Alignment.
+Use this stable workflow for one approved model and deployment profile. It may consume a one-way Main-to-Main parent assignment, but it does not recover, update, finalize, or claim Verified vLLM Alignment. If the request only asks to turn already-bound adaptation evidence into a reader-facing report, use the linked report prompt in `knowledge.md` and keep this execution workflow's gates unchanged.
 
 1. Run preflight over approved model weights, revisions, tokenizer and applicable processor, deployment, repository, contract, hardware requirement, and external artifact identities. Complete when: every required identity is unique and available, or one stable blocker and resume point has been emitted before execution.
 2. Build the v1 closed-world capability matrix for text generation, Attention, MLA, MoE, quantization, multimodal, distributed, MTP, tokenizer, processor, and model-specific paths. In each applicable capability's existing evidence record, inspect routing metadata, scoring mode, zero-point/qzeros mode, group size, dtype, layout, and distributed ownership predicates rather than relying on the model name or top-level method. Complete when: every v1 capability is required, resolved conditional, or evidence-backed not applicable, with no unknown or unresolved path; any unsupported active path sets `required_execution_path_supported` false before launch.
