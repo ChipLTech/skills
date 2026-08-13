@@ -4,11 +4,11 @@
 
 这是一组面向真实软件工程工作的 Agent Skills。它们不试图用一个庞大流程接管开发，而是把需求澄清、研究、原型、规格、任务拆分、实现、测试、审查、排障和维护组织成可组合的小型能力。
 
-当前仓库默认安装 **40 个稳定 skill**，其中 36 个属于 Claude 插件发布面，另有 4 个 Kilo 默认安装的 `misc/` 工具：
+当前仓库默认安装 **41 个稳定 skill**，其中 37 个属于 Claude 插件发布面，另有 4 个 Kilo 默认安装的 `misc/` 工具：
 
 | 分类 | 数量 | 用途 |
 |---|---:|---|
-| `engineering/` | 28 | 通用工程流程、共享设计语言和 DLC/vLLM 专项能力 |
+| `engineering/` | 29 | 通用工程流程、共享设计语言和 DLC/vLLM 专项能力 |
 | `productivity/` | 8 | 访谈、沟通、教学、交接和 Agent 文档编写 |
 | `misc/` | 4 | Git、测试夹具、课程和提交工具 |
 
@@ -64,6 +64,7 @@ implement 内部
 | 需要审查分支或 PR | `code-review` |
 | 出现顽固 bug、偶现失败或性能回退 | `diagnosing-bugs` |
 | 已完成诊断，需要压缩已闭合证据为 Sprint、Issue、owner 或 handoff 简述 | `technical-issue-summary` |
+| 已完成技术交付，需要面向 review、日报或跨团队提炼一句话能力总结 | `technical-delivery-summary` |
 | 外部进入的 bug report 或 feature request 尚未 agent-ready | `triage`；不要 triage `to-tickets` 生成的 tickets |
 | Git 已进入 merge/rebase 冲突 | `resolving-merge-conflicts` |
 | 系统难理解、难测试或模块边界混乱 | `improve-codebase-architecture` 做 survey；选中机会后回到 `grill-with-docs` |
@@ -155,9 +156,9 @@ main-to-main-upgrade
 → 只报告 finalize eligibility；alignment unchanged，manifest report-only，finalize action none
 ```
 
-## 40 个稳定 Skill
+## 41 个稳定 Skill
 
-### Engineering：28 个
+### Engineering：29 个
 
 | Skill | 调用方式 | 作用 |
 |---|---|---|
@@ -166,6 +167,7 @@ main-to-main-upgrade
 | [`codebase-design`](./skills/engineering/codebase-design/SKILL.md) | 自动或用户调用 | 提供深模块、接口、seam、leverage 和 locality 的共享设计语言 |
 | [`code-review`](./skills/engineering/code-review/SKILL.md) | 自动或用户调用 | 从 Standards 和 Spec 两条独立轴审查 diff |
 | [`diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md) | 自动或用户调用 | 建立可靠复现循环，通过可证伪假设定位根因 |
+| [`technical-delivery-summary`](./skills/engineering/technical-delivery-summary/SKILL.md) | 自动或用户调用 | 将已完成技术工作提炼为面向读者、证据绑定的一句话交付能力总结 |
 | [`technical-issue-summary`](./skills/engineering/technical-issue-summary/SKILL.md) | 自动或用户调用 | 将已闭合诊断证据压缩成准确、可追溯的跨团队简述 |
 | [`dlc-env-setup`](./skills/engineering/dlc-env-setup/SKILL.md) | 自动或用户调用 | 重建并验证 DLC 工具链、PyTorch wheel 和可选 vLLM 环境 |
 | [`dlc-hardware-observability`](./skills/engineering/dlc-hardware-observability/SKILL.md) | 自动或用户调用 | 使用官方 `cltech_smi` 采集规范化、只读的硬件证据 |

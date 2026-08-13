@@ -66,6 +66,7 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 | Model-serving performance regression | `runtime-debugging/performance-profiling.md` and nearest performance case study | `diagnosing-bugs` |
 | Profile artifact completeness or trace-track breakdown | `runtime-debugging/performance-profiling.md` | `diagnosing-bugs` |
 | Model distributed/MoE collective compatibility | `vllm-dlc/distributed-collective-qualification.md` | `model-adaptation` |
+| Completed technical delivery needing a one-sentence cross-team summary | `foundation/technical-delivery-summary.md` | `technical-delivery-summary` |
 | Closed diagnosis needing a short cross-team explanation | `debugging-workflows/technical-issue-summary.md` | `technical-issue-summary` |
 
 The table is a starting map, not a substitute for reading the current repository and Skill scopes.

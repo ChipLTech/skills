@@ -45,6 +45,8 @@ A starting situation that generates work, then merges onto the main flow.
 
 - **The diagnosis is closed but needs a short cross-team explanation** → **`/technical-issue-summary`**. It compresses bound evidence into a Sprint update, Issue title or summary, owner note, or handoff conclusion without replacing `/diagnosing-bugs`.
 
+- **Completed technical work needs a one-sentence delivery update** → **`/technical-delivery-summary`**. It compresses implementation, integration, validation, or release evidence into the capability delivered, without turning repository plumbing into the headline or upgrading the delivery state.
+
 - **A huge, foggy effort — a greenfield project or a huge feature build, too big for one session** → **`/wayfinder`**, the most cognitively demanding flow here. When the way from here to the destination isn't visible yet, it charts a **shared map** of **decision tickets** on the issue tracker and resolves them one at a time — producing **decisions, not deliverables** — until the fog is pushed back and the way is clear. Where **`/grill-with-docs`** sharpens an idea you can hold in one session, wayfinder is for the idea you can't — and it's slower and denser, so save it for exactly that, never a well-scoped feature.
 
   When the map clears, **it hands off, it doesn't build**: merge onto the main flow at **`/to-spec`**, which collapses the map's linked decisions into a buildable plan, then `/to-tickets` and `/implement` as usual. Looping the map straight into `/implement` skips that collapse and throws the linked detail away — go straight to `/implement` only when the effort turned out genuinely small.

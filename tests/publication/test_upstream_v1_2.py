@@ -49,7 +49,7 @@ class UpstreamV12PublicationTests(unittest.TestCase):
         )
         published = {Path(entry).name for entry in plugin["skills"]}
 
-        self.assertEqual(len(promoted), 36)
+        self.assertEqual(len(promoted), 37)
         self.assertEqual(promoted, published)
         self.assertTrue(IMPORTED <= promoted)
         self.assertNotIn("writing-great-skills", promoted)
@@ -107,7 +107,11 @@ class UpstreamV12PublicationTests(unittest.TestCase):
             ROOT / "skills" / "engineering" / "chipltech-context" / "SKILL.md"
         ).read_text(encoding="utf-8")
 
-        for identity in IMPORTED | {"chipltech-context", "technical-issue-summary"}:
+        for identity in IMPORTED | {
+            "chipltech-context",
+            "technical-delivery-summary",
+            "technical-issue-summary",
+        }:
             self.assertIn(f"`/{identity}`", router, identity)
         self.assertIn("Generic Skill Boundary", context)
         self.assertIn("active business workspace's project context", context)
@@ -160,7 +164,7 @@ class UpstreamV12PublicationTests(unittest.TestCase):
             installed = Path(directory) / ".kilo" / "skills"
             self.assertEqual(
                 len([path for path in installed.iterdir() if not path.name.startswith(".")]),
-                40,
+                41,
             )
             for identity in IMPORTED:
                 self.assertTrue((installed / identity / "SKILL.md").is_file(), identity)

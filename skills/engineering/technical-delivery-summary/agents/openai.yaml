@@ -1,0 +1,3 @@
+interface:
+  display_name: "Technical Delivery Summary"
+  short_description: "Distill technical delivery into one sentence"

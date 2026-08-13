@@ -55,6 +55,13 @@ skills:
       - SKILL.md
       - "agents/"
 
+  - name: technical-delivery-summary
+    description: "Distill completed technical work into an audience-ready one-sentence delivery summary. Use for cross-team updates, review updates, daily reports, release summaries, or multi-repository implementations when the reader needs the delivered capability rather than implementation detail."
+    path: skills/engineering/technical-delivery-summary
+    files:
+      - SKILL.md
+      - "agents/"
+
   - name: dlc-env-setup
     description: "Rebuild and verify a workstation DLC toolchain, PyTorch 2.5.0 wheel, and optional local vLLM runtime after rediscovering repo locations and checking git safety. Use when the user needs to bootstrap or repair a local DLC development environment, switch rebuild branches safely, or rerun PyTorch or vLLM install validation."
     path: skills/engineering/dlc-env-setup
