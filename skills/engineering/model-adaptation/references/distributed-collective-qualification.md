@@ -23,6 +23,14 @@ from the injected checkout rather than copied from a model fixture, and remains
 
 For AllReduce, AllGather/AllGatherIntoTensor, Gather, ReduceScatter, ReduceScatterV, AllGatherV, AllToAll, Send/Recv, and active MoE dispatch/combine, record backend, dtype, shape/count, rank/world size, rank order, stream, async/completion boundary, fallback, and qualification state. An inactive anti-route remains in the inventory with `active: false` and must not appear in `required_route_ids`. Required route IDs equal the active route set exactly.
 
+## Topology/Payload-Aware Selection
+
+For a route with multiple topology-specific implementations, inventory the initialized communicator as the owner of actual LYP topology, formal algorithm lookup, root metadata, and rank order. Record every selector input, including payload bytes and applicable dtype/layout constraints; world size identifies participant count only. The framework adapter must cache by every decision input and pass a stable strategy plus explicit rank-domain metadata to the DLC Custom Kernel. The kernel dispatches the strategy and may reject illegal strategy or strategy/rank descriptor contradictions, while payload capacity, alignment, root availability, and preferred-implementation support remain pre-launch selection conditions.
+
+Fallback is a state transition, not an enum substitution. Begin from Unknown, validate the candidate's graph, channel, complete rank order, rank range, uniqueness, root metadata, payload, and alignment prerequisites, then commit the candidate only after all applicable checks pass. A formal selector may downgrade a multi-root implementation to a verified single-root implementation when that transition is explicitly defined; otherwise it must validate the generic fallback or remain Unknown and fail closed.
+
+Qualification fixtures cover each formal threshold boundary, aligned and unaligned payloads, missing/out-of-range/duplicate roots, unknown mapping, incomplete or duplicate rank order, fallback validation failure, and changed payload on one communicator. Static/source checks establish selection structure only. Real qualification binds exact selector source, loaded native and kernel binaries, actual LYP topology, payload, all-rank content correctness, and task-owned cleanup evidence.
+
 ## Preflight And Stops
 
 Preflight runs before any harness launch. The artifact is a Qualification Artifact Envelope v1 extension and must pass the generated `validate_envelope(document, ("qualification",))` validator. Envelope blockers use only canonical `status`, `code`, and `path` fields; distributed phase, message, and resume detail remains under `qualification.blocker_details`. Status aggregation is always `failed` before `blocked` before `not_verified`.
