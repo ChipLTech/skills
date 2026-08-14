@@ -112,15 +112,15 @@ cd skills
 ./scripts/link-kilo-skills.sh --project /path/to/your-project --with-commands
 ```
 
-安装后目录结构类似：
+安装后目录结构类似。下面是示例，不是完整 inventory；稳定 Skill 清单以 `SKILLHUB.yaml` 和 linker 实际输出为准：
 
 ```text
 /path/to/your-project/
 └── .kilo/
     ├── skills/
-    │   ├── diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
-    │   ├── tdd -> <repo>/skills/engineering/tdd
-    │   └── grill-with-docs -> <repo>/skills/engineering/grill-with-docs
+    │   ├── diagnosing-bugs/       # copied package with .kilo-link-source
+    │   ├── tdd/                   # copied package with .kilo-link-source
+    │   └── grill-with-docs/       # copied package with .kilo-link-source
     └── command/
         ├── diagnosing-bugs.md
         ├── tdd.md
@@ -384,7 +384,7 @@ skip diagnosing-bugs: ~/.config/kilo/skills/diagnosing-bugs already exists and i
 
 ### 8.5 修改了本仓库里的 skill，Kilo 里会同步吗
 
-会。脚本使用的是 symlink，不是复制。
+取决于安装模式。全局默认安装和显式 `--dest` 使用 symlink，会读取同一份 source；`--project` 使用带 `.kilo-link-source` ownership marker 的 copied package，必须重新运行 linker 才会刷新。
 
 例如：
 
@@ -392,9 +392,9 @@ skip diagnosing-bugs: ~/.config/kilo/skills/diagnosing-bugs already exists and i
 ~/.config/kilo/skills/diagnosing-bugs -> <repo>/skills/engineering/diagnosing-bugs
 ```
 
-所以你修改 `<repo>/skills/engineering/diagnosing-bugs/SKILL.md` 后，Kilo 读取到的也是同一份文件。
+所以全局 symlink 安装会直接看到 source 修改；project install 不会自动同步。两种模式在当前 session 已加载旧内容时，都建议打开新 session。
 
-如果 Kilo 当前 session 已经加载过旧内容，建议打开新 session。
+不要通过手工复制 Skill 目录来刷新 inventory，也不要编辑 Agent Manager recovery state。使用 linker，稳定清单由 `SKILLHUB.yaml` 驱动。
 
 ## 9. 推荐新人先验证的 5 个 skill
 

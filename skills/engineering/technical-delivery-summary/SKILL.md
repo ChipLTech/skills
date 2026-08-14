@@ -114,6 +114,13 @@ For Chipltech-Family Accelerator, DLC Platform, DLC Ecosystem, PyTorch DLC Backe
 
 Preserve distinctions among source implementation, build evidence, DLC Runtime execution, Real DLC Hardware validation, model acceptance, performance evidence, and release. A cross-repository implementation may be summarized as one end-to-end capability, but its evidence does not become stronger through compression.
 
+Unlike the generic output, every Chipltech result has exactly two required parts:
+
+1. One summary sentence.
+2. One literal `Claim Boundary:` line naming every material unproved dimension.
+
+Prefer “source 中已实现” over bare “支持” when evidence is source-only. `scripts/format-delivery-summary.py` provides the deterministic delivery-verb seam. This wording workflow does not create a Qualification Artifact.
+
 ## Completion Criterion
 
 The run is complete when a reader outside the implementation can state what capability changed and why it matters after reading one sentence, every clause is evidence-bound, and removing any remaining implementation detail would change the claim rather than merely shorten it.

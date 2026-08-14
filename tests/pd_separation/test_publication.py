@@ -8,6 +8,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[2]
+KNOWLEDGE_ROOT = Path("/work/chipltech-knowledge-base")
 IDENTITY = "pd-separation"
 
 
@@ -73,6 +74,40 @@ class PDSeparationPublicationTests(unittest.TestCase):
         public_package = "\n".join((text, adaptation, deployment))
         for unsafe in ("hangzhou-office-harbor", "177.177.177.153", "177.177.177.154", "rmmod chipltech", "kill -KILL"):
             self.assertNotIn(unsafe, public_package)
+
+    def test_practical_guide_matches_authorization_and_terminal_contract(self):
+        guide = (KNOWLEDGE_ROOT / "vllm-dlc" / "prefill-decode-separation-practical-guide.md").read_text(encoding="utf-8")
+        authorization = guide.split("### 2.1.1 授权与恢复", 1)[1].split("### 2.2", 1)[0]
+        terminal = guide.split("## 12. 最终验收表", 1)[1].split("## 13.", 1)[0]
+
+        for category in (
+            "Passive local socket/process inspection",
+            "Active network connect/health probe",
+            "Functional model request",
+            "Service bind",
+            "Device execution",
+            "Cleanup / task-owned graceful stop / KILL",
+            "Privileged Host integration",
+            "Host maintenance",
+        ):
+            self.assertIn(category, authorization)
+        self.assertNotIn("Query-only network probe", authorization)
+        self.assertIn("`curl` 和 `nc` 是主动 network probe", guide)
+
+        for core_gate in (
+            "Static configuration",
+            "Transport qualification",
+            "Service readiness",
+            "Request routing",
+            "KV transfer",
+            "Functional equivalence",
+            "Lifecycle / cleanup",
+            "Applicable site recovery",
+        ):
+            self.assertIn(core_gate, terminal)
+        self.assertIn("`blocked_cleanup_incomplete` 优先级最高", terminal)
+        self.assertIn("全部 applicable core gates", terminal)
+        self.assertIn("Performance workload 和 stability baseline 独立报告", terminal)
 
     def test_default_project_install_copies_references_and_wrapper(self):
         with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "io.chipltech.plugin-migration-evidence/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source_governance", "source_migration", "compile_link", "wheel_import", "stack_preflight", "package_seal", "dlc_runtime_execution", "real_dlc_hardware_behavior", "smi_observation", "distributed_behavior", "cleanup", "device_deferral_permitted"],
+  "properties": {
+    "schema": {"const": "io.chipltech.plugin-migration-evidence/v1"},
+    "device_deferral_permitted": {"type": "boolean"},
+    "source_governance": {"$ref": "#/$defs/evidence"},
+    "source_migration": {"$ref": "#/$defs/evidence"},
+    "compile_link": {"$ref": "#/$defs/evidence"},
+    "wheel_import": {"$ref": "#/$defs/evidence"},
+    "stack_preflight": {"$ref": "#/$defs/evidence"},
+    "package_seal": {"$ref": "#/$defs/evidence"},
+    "dlc_runtime_execution": {"$ref": "#/$defs/evidence"},
+    "real_dlc_hardware_behavior": {"$ref": "#/$defs/evidence"},
+    "smi_observation": {"$ref": "#/$defs/evidence"},
+    "distributed_behavior": {"$ref": "#/$defs/evidence"},
+    "cleanup": {"$ref": "#/$defs/evidence"}
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "owner", "artifact_path", "artifact_id", "fresh", "authority"],
+      "properties": {
+        "status": {"enum": ["pass", "failed", "missing", "stale", "not_applicable", "not_verified", "unresolved", "unqualified", "incomplete", "unsupported"]},
+        "owner": {"type": "string", "minLength": 1},
+        "artifact_path": {"type": "string", "minLength": 1},
+        "artifact_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "fresh": {"type": "boolean"},
+        "authority": {"const": "operational_only"}
+      }
+    }
+  }
+}

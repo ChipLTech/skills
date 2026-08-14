@@ -8,6 +8,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[2]
+KNOWLEDGE_ROOT = Path("/work/chipltech-knowledge-base")
 IDENTITY = "pytorch-dlc-plugin-migration"
 
 
@@ -40,7 +41,7 @@ class PyTorchDLCPluginMigrationPublicationTests(unittest.TestCase):
         rows = [row for row in manifest["skills"] if row["name"] == IDENTITY]
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["description"], description)
-        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/"])
+        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/", "references/", "scripts/"])
 
     def test_skill_preserves_semantics_and_evidence_boundaries(self):
         text = (
@@ -63,6 +64,25 @@ class PyTorchDLCPluginMigrationPublicationTests(unittest.TestCase):
             self.assertIn(required, text)
         self.assertNotIn("/work/chipltech-knowledge-base", text)
 
+    def test_skill_and_prompt_require_source_classification_before_reference_use(self):
+        skill = (ROOT / "skills" / "engineering" / IDENTITY / "SKILL.md").read_text(encoding="utf-8")
+        prompt = (KNOWLEDGE_ROOT / "prompt-examples" / "pytorch-dlc-plugin-migration-prompts.md").read_text(encoding="utf-8")
+        for text in (skill, prompt):
+            for required in (
+                "source classification gate",
+                "source locator",
+                "revision or SHA-256",
+                "license metadata",
+                "intended use",
+                "disposition",
+                "blocked_legal_boundary",
+                "independent DLC-native specification",
+            ):
+                self.assertIn(required, text)
+            self.assertIn("production PyTorch DLC Backend", text)
+            self.assertIn("不得复制、翻译或机械改写", text)
+            self.assertIn("关键词只触发 review", text)
+
     def test_default_project_install_creates_wrapper(self):
         with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:
             result = subprocess.run(
@@ -79,6 +99,8 @@ class PyTorchDLCPluginMigrationPublicationTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
             installed = Path(directory) / ".kilo" / "skills" / IDENTITY
             self.assertTrue((installed / "SKILL.md").is_file())
+            self.assertTrue((installed / "references" / "plugin-migration-result-v1.schema.json").is_file())
+            self.assertTrue((installed / "scripts" / "evaluate-plugin-migration.py").is_file())
             wrapper = (
                 Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"
             ).read_text(encoding="utf-8")

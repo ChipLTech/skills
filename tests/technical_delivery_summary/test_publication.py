@@ -8,6 +8,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[2]
+KNOWLEDGE_ROOT = Path("/work/chipltech-knowledge-base")
 IDENTITY = "technical-delivery-summary"
 
 
@@ -41,7 +42,7 @@ class TechnicalDeliverySummaryPublicationTests(unittest.TestCase):
         rows = [row for row in manifest["skills"] if row["name"] == IDENTITY]
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["description"], frontmatter["description"])
-        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/"])
+        self.assertEqual(rows[0]["files"], ["SKILL.md", "agents/", "scripts/"])
 
     def test_project_install_copies_skill_and_wrapper(self):
         with tempfile.TemporaryDirectory(dir="/tmp/kilo") as directory:
@@ -60,6 +61,7 @@ class TechnicalDeliverySummaryPublicationTests(unittest.TestCase):
             installed = Path(directory) / ".kilo" / "skills" / IDENTITY
             self.assertTrue((installed / "SKILL.md").is_file())
             self.assertTrue((installed / "agents" / "openai.yaml").is_file())
+            self.assertTrue((installed / "scripts" / "format-delivery-summary.py").is_file())
             wrapper = Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"
             self.assertIn(f"请使用 `{IDENTITY}` skill", wrapper.read_text(encoding="utf-8"))
 
@@ -89,11 +91,25 @@ class TechnicalDeliverySummaryPublicationTests(unittest.TestCase):
         self.assertIn("release does not establish validation", skill)
         self.assertIn("`diagnosing-bugs` for unresolved failures", skill)
         self.assertNotIn("merged, published, deployed", skill)
+        self.assertIn("literal `Claim Boundary:` line", skill)
+        self.assertIn("does not create a Qualification Artifact", skill)
 
         router = (
             ROOT / "skills" / "engineering" / "chipltech-context" / "SKILL.md"
         ).read_text(encoding="utf-8")
         self.assertIn(f"`{IDENTITY}`", router)
+
+    def test_historical_cases_are_not_inherited_as_current_evidence(self):
+        for name in (
+            "qknorm-topology-aware-allreduce-selection.md",
+            "host-api22-fullstack-main-to-main-update.md",
+            "model-adaptation-analysis-report-production.md",
+        ):
+            text = (KNOWLEDGE_ROOT / "case-studies" / name).read_text(encoding="utf-8")
+            self.assertIn("Evidence status:", text)
+            self.assertIn("historical_report_derived_observation", text)
+            self.assertIn("identity_unavailable", text)
+            self.assertIn("不可继承", text)
 
 
 if __name__ == "__main__":
