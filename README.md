@@ -112,6 +112,12 @@ Performance：声明 workload 下的性能证据
 - Dummy、fake server、DLCsim 和静态证据不等于 Real DLC Hardware acceptance；
 - SMI 观测能证明有界库存、HBM 和进程归属，但不能单独证明 DLC Runtime dispatch、KV transfer 或模型正确性。
 
+### DLC 机器合同
+
+`model-adaptation` 的 distributed qualification 同时保留 frozen `vllm-dlc-distributed-collective-qualification/v1` 和 exact `v2`。v2 使用发布的 `vllm-dlc-collective-selection/v1` 子合同，机器验证 communicator-owned topology/payload selection、rank/root domain、完整 cache key、exact native consumer ABI 和 validate-then-commit fallback；controlled runner 仍只产生 non-authoritative fixture evidence。
+
+Identity Provider freshness 的 library consumer 接受 timezone-aware UTC clock context，使一次 collection epoch 与稳定性复核共享同一时刻。Production CLI 不暴露 clock override；该 seam 只提供确定性 future/expiry/stale 测试，不证明 Host clock 可信或 Provider Seal 已认证。详细字段、状态和 Claim Boundary 见 [`model-adaptation` distributed reference](./skills/engineering/model-adaptation/references/distributed-collective-qualification.md)。
+
 ### 推荐组合
 
 以下是 owning Skill 可能建立的委托关系，不是固定顺序，也不要求用户逐个手工调用；实际路由以当前 capability catalog 和 owning Skill 契约为准。
@@ -176,7 +182,7 @@ main-to-main-upgrade
 | [`implement`](./skills/engineering/implement/SKILL.md) | 用户调用 | 根据 spec/tickets 实现、验证、审查并交付 |
 | [`improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) | 用户调用 | 寻找浅模块、耦合泄漏和测试困难等架构深化机会 |
 | [`main-to-main-upgrade`](./skills/engineering/main-to-main-upgrade/SKILL.md) | 自动或用户调用 | 分析 vllm-dlc main 对齐 exact upstream full SHA 的完整影响 |
-| [`model-adaptation`](./skills/engineering/model-adaptation/SKILL.md) | 自动或用户调用 | 处理具体模型的 Attention、MLA、MoE、量化、多模态、MTP 和分布式兼容 |
+| [`model-adaptation`](./skills/engineering/model-adaptation/SKILL.md) | 自动或用户调用 | 处理具体模型的 Attention、MLA、MoE、量化、多模态、MTP 和分布式兼容，并为 topology-aware collective 提供版本化机器合同 |
 | [`modelzoo-image-validation`](./skills/engineering/modelzoo-image-validation/SKILL.md) | 自动或用户调用 | 资格验证本地模型并按门禁交付独立 DLC/TYD 镜像 |
 | [`pd-separation`](./skills/engineering/pd-separation/SKILL.md) | 自动或用户调用 | 部署和诊断 MooncakeDLCConnector Prefill/Decode 分离 |
 | [`pytorch-dlc-plugin-migration`](./skills/engineering/pytorch-dlc-plugin-migration/SKILL.md) | 自动或用户调用 | 将现有生产 PyTorch DLC Backend 行为迁移为标准 PrivateUse1 插件 |
