@@ -24,6 +24,7 @@ def main() -> int:
     root = arguments.root.resolve()
     canonical = (
         root / "skills/engineering/chipltech-context/contracts/qualification-artifact-envelope-v1.schema.json",
+        root / "skills/engineering/chipltech-context/contracts/vllm-dlc-collective-selection-v1.schema.json",
         root / "skills/engineering/chipltech-context/scripts/qualification_artifact.py",
     )
     drift = []

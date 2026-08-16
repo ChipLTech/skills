@@ -63,6 +63,7 @@ class VllmDlcPublicationCliTests(unittest.TestCase):
         self.assertIn("scripts/attest-vllm-dlc-qualification.py", assets)
         self.assertIn("scripts/_generated_contracts/qualification_artifact.py", assets)
         self.assertIn("scripts/_generated_contracts/qualification-artifact-envelope-v1.schema.json", assets)
+        self.assertIn("scripts/_generated_contracts/vllm-dlc-collective-selection-v1.schema.json", assets)
         self.assertTrue(all(value.startswith("sha256:") for value in assets.values()))
 
     def test_main_to_main_upgrade_is_structurally_published(self):

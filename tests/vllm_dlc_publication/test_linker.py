@@ -83,6 +83,7 @@ class KiloLinkerSafetyTests(unittest.TestCase):
                 "scripts/observe-python-package-identity.py",
                 "references/identity-provider-seal-v1.schema.json",
                 "scripts/_generated_contracts/qualification_artifact.py",
+                "scripts/_generated_contracts/vllm-dlc-collective-selection-v1.schema.json",
             ):
                 self.assertTrue((skill / relative).is_file(), relative)
 

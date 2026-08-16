@@ -1,3 +1,4 @@
+import datetime
 import importlib.util
 import json
 import subprocess
@@ -334,16 +335,25 @@ class LiveIdentityCollectorTests(unittest.TestCase):
             "search_paths": [str(self.root)],
         }
 
-        result = self.collector.collect(spec)
+        clock_calls = []
+
+        def valid_clock():
+            clock_calls.append(None)
+            return datetime.datetime(
+                2026, 8, 8, 12, tzinfo=datetime.timezone.utc
+            )
+
+        result = self.collector.collect(spec, clock=valid_clock)
 
         self.assertEqual(result["status"], "not_verified")
         self.assertEqual(result["authoritativeness"], "non_authoritative")
         self.assertFalse(result["acceptance_eligible"])
         self.assertEqual(result["subject_identity"]["installed_package"]["name"], "provider-package")
         self.assertIn(seal["digest"], result["input_artifact_digests"])
+        self.assertEqual(len(clock_calls), 1)
 
         (package / "native.so").write_bytes(b"changed\n")
-        stale = self.collector.collect(spec)
+        stale = self.collector.collect(spec, clock=valid_clock)
         self.assertEqual(stale["status"], "blocked")
         self.assertEqual(stale["primary_blocker"]["code"], "blocked_stale_package_provider_seal")
 
@@ -352,7 +362,7 @@ class LiveIdentityCollectorTests(unittest.TestCase):
             "2026-08-06T00:00:00Z", "2026-08-07T00:00:00Z",
         )
         seal_path.write_text(json.dumps(expired), encoding="utf-8")
-        expired_result = self.collector.collect(spec)
+        expired_result = self.collector.collect(spec, clock=valid_clock)
         self.assertEqual(expired_result["status"], "blocked")
         self.assertEqual(
             expired_result["primary_blocker"]["code"],
@@ -364,12 +374,49 @@ class LiveIdentityCollectorTests(unittest.TestCase):
             "2099-08-06T00:00:00Z", "2099-08-07T00:00:00Z",
         )
         seal_path.write_text(json.dumps(future), encoding="utf-8")
-        future_result = self.collector.collect(spec)
+        future_result = self.collector.collect(spec, clock=valid_clock)
         self.assertEqual(future_result["status"], "blocked")
         self.assertEqual(
             future_result["primary_blocker"]["code"],
             "blocked_future_package_provider_observation",
         )
+
+        exact_expiry = self.package_provider.observe(
+            "provider-package", [self.root], "exact-expiry-package-seal",
+            "2026-08-08T00:00:00Z", "2026-08-08T12:00:00Z",
+        )
+        seal_path.write_text(json.dumps(exact_expiry), encoding="utf-8")
+        exact_expiry_result = self.collector.collect(spec, clock=valid_clock)
+        self.assertEqual(exact_expiry_result["status"], "blocked")
+        self.assertEqual(
+            exact_expiry_result["primary_blocker"]["code"],
+            "blocked_expired_package_provider_seal",
+        )
+
+    def test_cli_does_not_expose_a_clock_rollback_option(self):
+        result = subprocess.run(
+            ["python3", str(SCRIPT), "--help"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertNotIn("--now", result.stdout)
+
+    def test_invalid_library_clock_fails_closed(self):
+        for clock in (
+            lambda: datetime.datetime(2026, 8, 8),
+            lambda: "2026-08-08T00:00:00Z",
+            lambda: (_ for _ in ()).throw(RuntimeError("clock failed")),
+        ):
+            with self.subTest(clock=clock):
+                result = self.collector.collect(self.spec(), clock=clock)
+                self.assertEqual(result["status"], "blocked")
+                self.assertEqual(
+                    result["primary_blocker"]["code"],
+                    "blocked_invalid_clock_context",
+                )
 
 
 if __name__ == "__main__":

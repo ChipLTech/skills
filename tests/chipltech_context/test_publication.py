@@ -68,6 +68,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             self.assertTrue((installed / "SKILL.md").is_file())
             self.assertTrue((installed / "agents" / "openai.yaml").is_file())
             self.assertTrue((installed / "contracts" / "qualification-artifact-envelope-v1.schema.json").is_file())
+            self.assertTrue((installed / "contracts" / "vllm-dlc-collective-selection-v1.schema.json").is_file())
             self.assertTrue((installed / "scripts" / "qualification_artifact.py").is_file())
             self.assertTrue((installed / "scripts" / "repository_guard.py").is_file())
             wrapper = Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"

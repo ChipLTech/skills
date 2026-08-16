@@ -24,8 +24,19 @@ class DlcclQualificationRunnerTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
 
-    def template(self, mutate=None):
+    def template(self, mutate=None, version="v1"):
         document = json.loads((FIXTURES / "qualified-controlled-template.json").read_text())
+        if version == "v2":
+            selection = json.loads((FIXTURES / "qualified-controlled-v2-base.json").read_text())
+            document["schema_version"] = "vllm-dlc-distributed-collective-qualification/v2"
+            for route in document["qualification"]["route_inventory"]:
+                route["selection"] = None
+            document["qualification"]["route_inventory"][2].update(
+                rank_order=[1, 0], selection=selection
+            )
+            CONTRACT.refresh_selection_digests(
+                selection, document["qualification"]["route_inventory"][2]
+            )
         if mutate:
             mutate(document)
         CONTRACT.normalize_status(document)
@@ -34,10 +45,10 @@ class DlcclQualificationRunnerTests(unittest.TestCase):
         path.write_text(json.dumps(document))
         return path
 
-    def run_runner(self, harness, *extra, mutate=None):
+    def run_runner(self, harness, *extra, mutate=None, version="v1"):
         output = self.root / "result.json"
         result = subprocess.run(
-            [sys.executable, str(RUNNER), str(self.template(mutate)), str(output), "--harness", str((FIXTURES / harness).resolve()), *extra],
+            [sys.executable, str(RUNNER), str(self.template(mutate, version)), str(output), "--harness", str((FIXTURES / harness).resolve()), *extra],
             capture_output=True,
             text=True,
             check=False,
@@ -59,6 +70,16 @@ class DlcclQualificationRunnerTests(unittest.TestCase):
         self.assertFalse(document["acceptance_eligible"])
         self.assertTrue(document["claim_boundary"].startswith("Claim Boundary:"))
         self.assertIn("blocked_missing_hardware", {row["code"] for row in document["blockers"]})
+
+    def test_v2_controlled_harness_remains_fixture_and_preserves_selection(self):
+        result, document = self.run_runner(
+            "harness-pass.py", "--controlled-harness", version="v2"
+        )
+        self.assertEqual(result.returncode, 24, result.stdout)
+        self.assertEqual(document["schema_version"], "vllm-dlc-distributed-collective-qualification/v2")
+        self.assertEqual(document["evidence_class"], "fixture")
+        self.assertEqual(document["authoritativeness"], "non_authoritative")
+        self.assertEqual(document["qualification"]["route_inventory"][2]["selection"]["rank_order"], [1, 0])
 
     def test_timeout_watchdog_kills_process_tree_and_records_health(self):
         result, document = self.run_runner("harness-hang.py", "--controlled-harness", "--timeout-seconds", "1")
@@ -132,7 +153,7 @@ class DlcclQualificationRunnerTests(unittest.TestCase):
                 value["qualification"]["preflight"].update(
                     hardware_environment="real_dlc_hardware", hardware_available=True
                 ),
-                value["qualification"]["route_inventory"][0].update(
+                value["qualification"]["route_inventory"][2].update(
                     qualification_status="not_qualified"
                 ),
             ),

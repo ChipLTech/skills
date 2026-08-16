@@ -111,7 +111,10 @@ PRODUCER_POLICY = {
             "acceptance_eligible": False,
         },
         "model-adaptation/distributed-collective-fixture": {
-            "schemas": ("vllm-dlc-distributed-collective-qualification/v1",),
+            "schemas": (
+                "vllm-dlc-distributed-collective-qualification/v1",
+                "vllm-dlc-distributed-collective-qualification/v2",
+            ),
             "excluded_schemas": (),
             "max_evidence_class": "fixture",
             "max_authoritativeness": "non_authoritative",
@@ -125,7 +128,10 @@ PRODUCER_POLICY = {
             "acceptance_eligible": False,
         },
         "model-adaptation/dlccl-qualification-runner": {
-            "schemas": ("vllm-dlc-distributed-collective-qualification/v1",),
+            "schemas": (
+                "vllm-dlc-distributed-collective-qualification/v1",
+                "vllm-dlc-distributed-collective-qualification/v2",
+            ),
             "excluded_schemas": (),
             "max_evidence_class": "qualification",
             "max_authoritativeness": "operational",
@@ -136,6 +142,7 @@ PRODUCER_POLICY = {
                 ENVELOPE_VERSION,
                 "vllm-dlc-local-kv-qualification/v1",
                 "vllm-dlc-distributed-collective-qualification/v1",
+                "vllm-dlc-distributed-collective-qualification/v2",
                 "vllm-dlc-graph-qualification/v1",
                 "vllm-dlc-model-precision-qualification/v1",
                 "vllm-dlc-quantization-qualification/v1",
@@ -251,7 +258,9 @@ def aggregate_blockers(
 
 
 def validate_envelope(
-    document: Any, extension_fields: Sequence[str] = ()
+    document: Any,
+    extension_fields: Sequence[str] = (),
+    accepted_schema_versions: Sequence[str] = (),
 ) -> List[Dict[str, str]]:
     """Validate Envelope v1 and producer policy, returning deterministic errors."""
     if not isinstance(document, Mapping):
@@ -270,7 +279,13 @@ def validate_envelope(
 
     schema_version = document.get("schema_version")
     match = _SCHEMA_VERSION.fullmatch(schema_version) if isinstance(schema_version, str) else None
-    if match is None or match.group(1) != "1":
+    if (
+        match is None
+        or (
+            match.group(1) != "1"
+            and schema_version not in set(accepted_schema_versions)
+        )
+    ):
         errors.append(_error("unsupported_schema_version", "$.schema_version"))
 
     errors.extend(_validate_producer_policy(document))

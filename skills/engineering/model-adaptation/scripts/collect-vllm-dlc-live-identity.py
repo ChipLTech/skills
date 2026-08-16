@@ -11,7 +11,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 
 CONTRACT_PATH = Path(__file__).with_name("_generated_contracts") / "qualification_artifact.py"
@@ -61,6 +61,24 @@ class CollectionError(Exception):
         super().__init__(code)
         self.code = code
         self.path = path
+
+
+def _utc_now() -> datetime.datetime:
+    return datetime.datetime.now(datetime.timezone.utc)
+
+
+def _clock_instant(clock: Callable[[], datetime.datetime]) -> datetime.datetime:
+    try:
+        now = clock()
+    except Exception as error:
+        raise CollectionError("blocked_invalid_clock_context", "$.clock") from error
+    if (
+        not isinstance(now, datetime.datetime)
+        or now.tzinfo is None
+        or now.utcoffset() != datetime.timedelta(0)
+    ):
+        raise CollectionError("blocked_invalid_clock_context", "$.clock")
+    return now
 
 
 def _sha256(content: bytes) -> str:
@@ -287,7 +305,9 @@ def _blocked(code: str, path: str) -> dict[str, Any]:
 
 
 def _package_provider_identity(
-    provider_spec: Mapping[str, Any], observed_paths: dict[str, str]
+    provider_spec: Mapping[str, Any],
+    observed_paths: dict[str, str],
+    now: datetime.datetime,
 ) -> tuple[dict[str, Any], str]:
     seal_path, _ = _path_digest(
         provider_spec["provider_seal_path"],
@@ -321,7 +341,6 @@ def _package_provider_identity(
             "blocked_non_operational_package_provider_seal",
             "$.installed_package.provider_seal_path",
         )
-    now = datetime.datetime.now(datetime.timezone.utc)
     observed_at = datetime.datetime.fromisoformat(
         document["observed_at"][:-1] + "+00:00"
     )
@@ -359,8 +378,15 @@ def _package_provider_identity(
     }, document["digest"]
 
 
-def collect(spec_value: Any, _stability_check: bool = True) -> dict[str, Any]:
+def collect(
+    spec_value: Any,
+    _stability_check: bool = True,
+    *,
+    clock: Callable[[], datetime.datetime] = _utc_now,
+    _clock_context: datetime.datetime | None = None,
+) -> dict[str, Any]:
     try:
+        now = _clock_context if _clock_context is not None else _clock_instant(clock)
         spec = _validate_spec(spec_value)
         source_kind = spec["source"].get("kind")
         if source_kind == "git":
@@ -394,7 +420,7 @@ def collect(spec_value: Any, _stability_check: bool = True) -> dict[str, Any]:
         provider_seal_digest = None
         if set(spec["installed_package"]) == PACKAGE_PROVIDER_SHAPE:
             installed_package, provider_seal_digest = _package_provider_identity(
-                spec["installed_package"], observed_paths
+                spec["installed_package"], observed_paths, now
             )
         else:
             installed_package = {
@@ -463,7 +489,12 @@ def collect(spec_value: Any, _stability_check: bool = True) -> dict[str, Any]:
         if errors:
             return _blocked("blocked_invalid_collected_identity", errors[0]["path"])
         if _stability_check:
-            verification = collect(spec_value, _stability_check=False)
+            verification = collect(
+                spec_value,
+                _stability_check=False,
+                clock=clock,
+                _clock_context=now,
+            )
             if verification.get("digest") != sealed.get("digest"):
                 return _blocked("blocked_unstable_identity_set", "$.subject_identity")
             return verification

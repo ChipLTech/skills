@@ -14,7 +14,7 @@
       "properties": {
         "id": {"const": "model-adaptation/python-package-identity-provider"},
         "version": {"const": "1.0.0"},
-        "identity_digest": {"const": "sha256:5e61c613ee2db3fbbf234d37b259853cebffc84d2b61058fa52aea212cafee92"}
+        "identity_digest": {"const": "sha256:871d3f1e169b7637f50d483362aac4398e36fe0243ac1db63e412748de047f44"}
       }
     },
     "subject_class": {"const": "installed_package"},

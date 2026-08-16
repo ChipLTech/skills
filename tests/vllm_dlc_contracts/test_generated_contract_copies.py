@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL_MODULE = ROOT / "skills/engineering/chipltech-context/scripts/qualification_artifact.py"
 CANONICAL_SCHEMA = ROOT / "skills/engineering/chipltech-context/contracts/qualification-artifact-envelope-v1.schema.json"
+COLLECTIVE_V2_SCHEMA = ROOT / "skills/engineering/chipltech-context/contracts/vllm-dlc-collective-selection-v1.schema.json"
 SYNC = ROOT / "scripts/sync-qualification-artifact-contracts.py"
 CONSUMERS = ("diagnosing-bugs", "model-adaptation")
 
@@ -23,6 +24,10 @@ class GeneratedContractCopyTests(unittest.TestCase):
                 self.assertEqual(
                     hashlib.sha256((generated / CANONICAL_MODULE.name).read_bytes()).digest(),
                     hashlib.sha256(CANONICAL_MODULE.read_bytes()).digest(),
+                )
+                self.assertEqual(
+                    hashlib.sha256((generated / COLLECTIVE_V2_SCHEMA.name).read_bytes()).digest(),
+                    hashlib.sha256(COLLECTIVE_V2_SCHEMA.read_bytes()).digest(),
                 )
                 self.assertEqual(
                     hashlib.sha256((generated / CANONICAL_SCHEMA.name).read_bytes()).digest(),
@@ -55,6 +60,7 @@ class GeneratedContractCopyTests(unittest.TestCase):
             canonical_scripts.mkdir(parents=True)
             shutil.copyfile(CANONICAL_SCHEMA, canonical_contracts / CANONICAL_SCHEMA.name)
             shutil.copyfile(CANONICAL_MODULE, canonical_scripts / CANONICAL_MODULE.name)
+            shutil.copyfile(COLLECTIVE_V2_SCHEMA, canonical_contracts / COLLECTIVE_V2_SCHEMA.name)
             generated = root / "skills/engineering/diagnosing-bugs/scripts/_generated_contracts"
             generated.mkdir(parents=True)
             (generated / CANONICAL_SCHEMA.name).write_bytes(CANONICAL_SCHEMA.read_bytes())

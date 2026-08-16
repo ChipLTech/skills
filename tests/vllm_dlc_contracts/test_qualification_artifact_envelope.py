@@ -237,6 +237,41 @@ class QualificationArtifactEnvelopeTests(unittest.TestCase):
             {"code": "producer_schema_excluded", "path": "$.schema_version"},
         )
 
+    def test_distributed_collective_producers_allow_exact_v1_and_v2(self):
+        for producer in (
+            "model-adaptation/distributed-collective-fixture",
+            "model-adaptation/dlccl-qualification-runner",
+            "model-adaptation/qualification-runner",
+        ):
+            schemas = self.contract.PRODUCER_POLICY["producers"][producer]["schemas"]
+            self.assertIn("vllm-dlc-distributed-collective-qualification/v1", schemas)
+            self.assertIn("vllm-dlc-distributed-collective-qualification/v2", schemas)
+
+    def test_topic_v2_requires_an_exact_consumer_allowlist(self):
+        document = copy.deepcopy(self.document)
+        document["schema_version"] = (
+            "vllm-dlc-distributed-collective-qualification/v2"
+        )
+        document["producer"] = "model-adaptation/distributed-collective-fixture"
+        document["evidence_class"] = "fixture"
+        document["authoritativeness"] = "non_authoritative"
+        document["acceptance_eligible"] = False
+        sealed = self.contract.seal_envelope(document)
+
+        self.assertIn(
+            {"code": "unsupported_schema_version", "path": "$.schema_version"},
+            self.contract.validate_envelope(sealed),
+        )
+        self.assertEqual(
+            self.contract.validate_envelope(
+                sealed,
+                accepted_schema_versions=(
+                    "vllm-dlc-distributed-collective-qualification/v2",
+                ),
+            ),
+            [],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

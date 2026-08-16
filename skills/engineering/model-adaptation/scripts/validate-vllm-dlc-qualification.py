@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
 import re
@@ -18,7 +19,12 @@ if SHARED_SPEC is None or SHARED_SPEC.loader is None:
 SHARED = importlib.util.module_from_spec(SHARED_SPEC)
 SHARED_SPEC.loader.exec_module(SHARED)
 
-SCHEMA = "vllm-dlc-distributed-collective-qualification/v1"
+SCHEMAS = {
+    "vllm-dlc-distributed-collective-qualification/v1",
+    "vllm-dlc-distributed-collective-qualification/v2",
+}
+SCHEMA_V1 = "vllm-dlc-distributed-collective-qualification/v1"
+SCHEMA_V2 = "vllm-dlc-distributed-collective-qualification/v2"
 ROUTE_CLASSES = {
     "native_dlc_cl", "pytorch_process_group", "vllm_communicator",
     "model_route", "moe_dispatch", "moe_combine", "custom_kernel",
@@ -46,7 +52,32 @@ ROUTE_FIELDS = {
     "asynchronous", "completion_boundary", "fallback", "qualification_status",
     "identity",
 }
+ROUTE_V2_FIELDS = ROUTE_FIELDS | {"selection"}
 IDENTITY_FIELDS = {"source_sha", "binary_sha256", "abi_digest", "symbol"}
+SELECTION_FIELDS = {
+    "selector", "topology_digest", "payload_bytes", "constraints",
+    "rank_domain", "rank_order", "strategy", "cache_key_digest", "fallback",
+}
+SELECTOR_FIELDS = {"source_sha", "binary_sha256", "symbol"}
+CONSTRAINT_FIELDS = {
+    "min_payload_bytes", "max_payload_bytes", "payload_alignment_bytes",
+    "dtypes", "layouts", "actual_layout",
+}
+RANK_DOMAIN_FIELDS = {
+    "domain", "primary_root", "secondary_root", "logical_to_physical",
+}
+STRATEGY_FIELDS = {
+    "strategy_id", "consumer_route_id", "metadata_abi_digest", "rank_domain",
+    "requires_secondary_root",
+}
+FALLBACK_FIELDS = {
+    "preferred_strategy_id", "candidate_strategy_id", "validation_state",
+    "validation", "committed",
+}
+FALLBACK_VALIDATION_FIELDS = {
+    "graph", "channel", "rank_order", "rank_range", "unique_ranks",
+    "root_metadata", "payload", "alignment",
+}
 EXECUTION_FIELDS = {
     "harness_command", "attempt_count", "timeout_seconds", "watchdog_actions",
     "rank_results", "correctness", "process_tree_cleanup", "health_snapshot",
@@ -79,6 +110,29 @@ def artifact_digest(document: dict[str, Any]) -> str:
     return SHARED.canonical_digest(document)
 
 
+def selection_cache_digest(selection: dict[str, Any], route: dict[str, Any]) -> str:
+    inputs = {
+        "selection": {
+            field: selection[field]
+            for field in sorted(SELECTION_FIELDS - {"cache_key_digest"})
+        },
+        "route": {
+            field: route[field]
+            for field in (
+                "route_id", "route_class", "primitive", "backend", "dtype",
+                "rank", "world_size", "identity",
+            )
+        },
+    }
+    return "sha256:" + hashlib.sha256(canonical_bytes(inputs)).hexdigest()
+
+
+def refresh_selection_digests(
+    selection: dict[str, Any], route: dict[str, Any]
+) -> None:
+    selection["cache_key_digest"] = selection_cache_digest(selection, route)
+
+
 def exact_object(value: Any, fields: set[str], path: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ContractError("contract.invalid_type", path, "expected object")
@@ -101,11 +155,146 @@ def nonempty(value: Any, path: str) -> str:
     return value
 
 
+def validate_permutation(value: Any, world_size: int, path: str) -> None:
+    if (
+        not isinstance(value, list)
+        or len(value) != world_size
+        or any(type(rank) is not int for rank in value)
+        or set(value) != set(range(world_size))
+    ):
+        raise ContractError(
+            "contract.invalid_value", path,
+            "rank order must be a complete unique in-range permutation",
+        )
+
+
+def validate_selection(
+    value: Any,
+    route: dict[str, Any],
+    path: str,
+    hardware_topology_digest: str,
+) -> None:
+    if value is None:
+        if route["active"] and route["route_class"] == "vllm_communicator" and route["primitive"] == "all_reduce":
+            raise ContractError("contract.missing_required_field", path, "topology-aware route requires selection")
+        return
+    if (
+        not route["active"]
+        or route["route_class"] != "vllm_communicator"
+        or route["primitive"] != "all_reduce"
+    ):
+        raise ContractError(
+            "contract.invalid_value", path,
+            "selection is owned only by the topology-aware communicator route",
+        )
+    selection = exact_object(value, SELECTION_FIELDS, path)
+    selector = exact_object(selection["selector"], SELECTOR_FIELDS, f"{path}.selector")
+    required_identity(selector["source_sha"], f"{path}.selector.source_sha", SHA_RE)
+    required_identity(selector["binary_sha256"], f"{path}.selector.binary_sha256", DIGEST_RE)
+    nonempty(selector["symbol"], f"{path}.selector.symbol")
+    required_identity(selection["topology_digest"], f"{path}.topology_digest", DIGEST_RE)
+    if selection["topology_digest"] != hardware_topology_digest:
+        raise ContractError("contract.identity_mismatch", f"{path}.topology_digest", "selection topology contradicts subject hardware identity")
+    if type(selection["payload_bytes"]) is not int or selection["payload_bytes"] < 0:
+        raise ContractError("contract.invalid_value", f"{path}.payload_bytes", "invalid payload bytes")
+
+    constraints = exact_object(selection["constraints"], CONSTRAINT_FIELDS, f"{path}.constraints")
+    minimum, maximum = constraints["min_payload_bytes"], constraints["max_payload_bytes"]
+    alignment = constraints["payload_alignment_bytes"]
+    if (
+        type(minimum) is not int or minimum < 0
+        or type(maximum) is not int or maximum < minimum
+        or type(alignment) is not int or alignment <= 0
+    ):
+        raise ContractError("contract.invalid_value", f"{path}.constraints", "invalid payload constraints")
+    for field in ("dtypes", "layouts"):
+        values = constraints[field]
+        if (
+            not isinstance(values, list)
+            or not values
+            or any(not isinstance(item, str) or not item for item in values)
+            or len(values) != len(set(values))
+        ):
+            raise ContractError("contract.invalid_value", f"{path}.constraints.{field}", "invalid closed-world constraints")
+    if constraints["actual_layout"] not in constraints["layouts"]:
+        raise ContractError("contract.invalid_value", f"{path}.constraints.actual_layout", "route layout violates selection constraints")
+    payload = selection["payload_bytes"]
+    if payload < minimum or payload > maximum:
+        raise ContractError("contract.invalid_value", f"{path}.payload_bytes", "payload is outside strategy threshold")
+    if payload % alignment:
+        raise ContractError("contract.invalid_value", f"{path}.payload_bytes", "payload is not strategy-aligned")
+    if route["dtype"] not in constraints["dtypes"]:
+        raise ContractError("contract.invalid_value", f"{path}.constraints.dtypes", "route dtype violates selection constraints")
+
+    rank_domain = exact_object(selection["rank_domain"], RANK_DOMAIN_FIELDS, f"{path}.rank_domain")
+    if not isinstance(rank_domain["domain"], str) or rank_domain["domain"] not in {"communicator_local", "logical", "physical"}:
+        raise ContractError("contract.invalid_value", f"{path}.rank_domain.domain", "unknown rank mapping domain")
+    primary_root = rank_domain["primary_root"]
+    secondary_root = rank_domain["secondary_root"]
+    if type(primary_root) is not int or not 0 <= primary_root < route["world_size"]:
+        raise ContractError("contract.invalid_value", f"{path}.rank_domain.primary_root", "primary root must be in range")
+    if secondary_root is not None and (
+        type(secondary_root) is not int
+        or not 0 <= secondary_root < route["world_size"]
+        or secondary_root == primary_root
+    ):
+        raise ContractError("contract.invalid_value", f"{path}.rank_domain.secondary_root", "secondary root must be distinct and in range")
+    validate_permutation(rank_domain["logical_to_physical"], route["world_size"], f"{path}.rank_domain.logical_to_physical")
+    validate_permutation(selection["rank_order"], route["world_size"], f"{path}.rank_order")
+    if selection["rank_order"] != route["rank_order"]:
+        raise ContractError("contract.strategy_contradiction", f"{path}.rank_order", "selection and route rank descriptors contradict")
+
+    strategy = exact_object(selection["strategy"], STRATEGY_FIELDS, f"{path}.strategy")
+    nonempty(strategy["strategy_id"], f"{path}.strategy.strategy_id")
+    nonempty(strategy["consumer_route_id"], f"{path}.strategy.consumer_route_id")
+    required_identity(strategy["metadata_abi_digest"], f"{path}.strategy.metadata_abi_digest", DIGEST_RE)
+    if type(strategy["requires_secondary_root"]) is not bool:
+        raise ContractError("contract.invalid_value", f"{path}.strategy.requires_secondary_root", "expected boolean")
+    if strategy["rank_domain"] != rank_domain["domain"]:
+        raise ContractError("contract.strategy_contradiction", f"{path}.strategy.rank_domain", "strategy and rank descriptor domains contradict")
+    if strategy["requires_secondary_root"] and secondary_root is None:
+        raise ContractError("contract.invalid_value", f"{path}.rank_domain.secondary_root", "selected strategy requires a secondary root")
+    fallback = exact_object(selection["fallback"], FALLBACK_FIELDS, f"{path}.fallback")
+    nonempty(fallback["preferred_strategy_id"], f"{path}.fallback.preferred_strategy_id")
+    nonempty(fallback["candidate_strategy_id"], f"{path}.fallback.candidate_strategy_id")
+    if not isinstance(fallback["validation_state"], str) or fallback["validation_state"] not in {"unknown", "validating", "passed", "failed"} or type(fallback["committed"]) is not bool:
+        raise ContractError("contract.invalid_value", f"{path}.fallback", "invalid fallback state")
+    validation = exact_object(fallback["validation"], FALLBACK_VALIDATION_FIELDS, f"{path}.fallback.validation")
+    if any(type(value) is not bool for value in validation.values()):
+        raise ContractError("contract.invalid_value", f"{path}.fallback.validation", "invalid fallback validation checks")
+    complete = all(validation.values())
+    state = fallback["validation_state"]
+    if state == "unknown" and any(validation.values()):
+        raise ContractError("contract.fallback_state_contradiction", f"{path}.fallback.validation", "unknown fallback cannot contain completed checks")
+    if state == "validating" and complete:
+        raise ContractError("contract.fallback_state_contradiction", f"{path}.fallback.validation", "complete validation must transition to passed")
+    if state == "passed" and not complete:
+        raise ContractError("contract.fallback_partial_validation", f"{path}.fallback.validation", "passed fallback requires every candidate check")
+    if state == "failed" and complete:
+        raise ContractError("contract.fallback_state_contradiction", f"{path}.fallback.validation", "failed fallback must preserve a failed check")
+    if fallback["committed"] and not (state == "passed" and complete):
+        raise ContractError("contract.fallback_not_validated", f"{path}.fallback", "fallback may commit only after complete validation")
+    if fallback["committed"] and fallback["candidate_strategy_id"] != strategy["strategy_id"]:
+        raise ContractError("contract.strategy_contradiction", f"{path}.fallback.candidate_strategy_id", "committed fallback contradicts selected strategy")
+    if not fallback["committed"] and fallback["preferred_strategy_id"] != strategy["strategy_id"]:
+        raise ContractError("contract.strategy_contradiction", f"{path}.fallback.preferred_strategy_id", "uncommitted fallback cannot replace the preferred strategy")
+    if selection["cache_key_digest"] != selection_cache_digest(selection, route):
+        raise ContractError("contract.cache_key_digest_mismatch", f"{path}.cache_key_digest", "cache key does not bind every selection input")
+
+
 def nullable_identity(
     value: Any, path: str, pattern: re.Pattern[str] | None = None
 ) -> None:
     if value is None:
         return
+    nonempty(value, path)
+    if pattern is not None and not pattern.fullmatch(value):
+        raise ContractError("contract.invalid_value", path, "invalid identity format")
+
+
+def required_identity(
+    value: Any, path: str, pattern: re.Pattern[str] | None = None
+) -> None:
     nonempty(value, path)
     if pattern is not None and not pattern.fullmatch(value):
         raise ContractError("contract.invalid_value", path, "invalid identity format")
@@ -356,20 +545,27 @@ def normalize_status(document: dict[str, Any]) -> None:
 
 
 def validate_document(document: Any) -> dict[str, Any]:
-    envelope_errors = SHARED.validate_envelope(document, ("qualification",))
+    envelope_errors = SHARED.validate_envelope(
+        document,
+        ("qualification",),
+        accepted_schema_versions=(SCHEMA_V2,),
+    )
     if envelope_errors:
         error = envelope_errors[0]
         raise ContractError(f"contract.{error['code']}", error["path"], "shared envelope validation failed")
     artifact = document
-    if artifact["schema_version"] != SCHEMA:
+    if artifact["schema_version"] not in SCHEMAS:
         raise ContractError("contract.unsupported_schema_version", "$.schema_version", "unsupported schema")
+    schema = artifact["schema_version"]
 
     qualification = exact_object(artifact["qualification"], QUALIFICATION_FIELDS, "$.qualification")
     preflight = exact_object(qualification["preflight"], PREFLIGHT_FIELDS, "$.qualification.preflight")
     if (
-        preflight["hardware_environment"] not in {"real_dlc_hardware", "controlled_fixture", "none"}
+        not isinstance(preflight["hardware_environment"], str)
+        or preflight["hardware_environment"] not in {"real_dlc_hardware", "controlled_fixture", "none"}
         or type(preflight["hardware_available"]) is not bool
         or type(preflight["authorization_granted"]) is not bool
+        or not isinstance(preflight["requested_operation"], str)
         or preflight["requested_operation"] not in {"qualify", "observe", "formal_acceptance", "modify_shared_device"}
     ):
         raise ContractError("contract.invalid_value", "$.qualification.preflight", "invalid preflight")
@@ -379,11 +575,19 @@ def validate_document(document: Any) -> dict[str, Any]:
         raise ContractError("contract.invalid_type", "$.qualification.route_inventory", "expected list")
     route_ids: set[str] = set()
     route_classes: set[str] = set()
+    selected_routes: list[tuple[dict[str, Any], str]] = []
+    hardware_topology_digest = artifact["subject_identity"]["hardware"]["topology_digest"]
     for index, route_value in enumerate(routes):
         path = f"$.qualification.route_inventory[{index}]"
-        route = exact_object(route_value, ROUTE_FIELDS, path)
+        route = exact_object(route_value, ROUTE_FIELDS if schema == SCHEMA_V1 else ROUTE_V2_FIELDS, path)
         route_id = nonempty(route["route_id"], f"{path}.route_id")
-        if route_id in route_ids or route["route_class"] not in ROUTE_CLASSES or route["primitive"] not in PRIMITIVES:
+        if (
+            route_id in route_ids
+            or not isinstance(route["route_class"], str)
+            or route["route_class"] not in ROUTE_CLASSES
+            or not isinstance(route["primitive"], str)
+            or route["primitive"] not in PRIMITIVES
+        ):
             raise ContractError("contract.invalid_value", path, "duplicate or invalid route identity")
         route_ids.add(route_id)
         route_classes.add(route["route_class"])
@@ -395,17 +599,51 @@ def validate_document(document: Any) -> dict[str, Any]:
                 raise ContractError("contract.invalid_value", f"{path}.{field}", "invalid route detail")
         if type(route["rank"]) is not int or route["rank"] < 0 or type(route["world_size"]) is not int or route["world_size"] <= 0 or route["rank"] >= route["world_size"]:
             raise ContractError("contract.invalid_value", path, "invalid rank/world size")
-        if not isinstance(route["rank_order"], list) or route["rank_order"] != list(range(route["world_size"])):
-            raise ContractError("contract.invalid_value", f"{path}.rank_order", "rank order must close the world")
-        if route["qualification_status"] not in QUALIFICATION_STATES:
-            raise ContractError("contract.invalid_value", f"{path}.qualification_status", "invalid qualification state")
         identity = exact_object(route["identity"], IDENTITY_FIELDS, f"{path}.identity")
         nullable_identity(identity["source_sha"], f"{path}.identity.source_sha", SHA_RE)
         for field in ("binary_sha256", "abi_digest"):
             nullable_identity(identity[field], f"{path}.identity.{field}", DIGEST_RE)
         nullable_identity(identity["symbol"], f"{path}.identity.symbol")
+        if schema == SCHEMA_V1:
+            if not isinstance(route["rank_order"], list) or route["rank_order"] != list(range(route["world_size"])):
+                raise ContractError("contract.invalid_value", f"{path}.rank_order", "rank order must close the world")
+        else:
+            validate_permutation(route["rank_order"], route["world_size"], f"{path}.rank_order")
+            validate_selection(
+                route["selection"], route, f"{path}.selection",
+                hardware_topology_digest,
+            )
+            if route["selection"] is not None:
+                selected_routes.append((route, path))
+        if not isinstance(route["qualification_status"], str) or route["qualification_status"] not in QUALIFICATION_STATES:
+            raise ContractError("contract.invalid_value", f"{path}.qualification_status", "invalid qualification state")
     if route_classes != ROUTE_CLASSES:
         raise ContractError("contract.missing_required_route_class", "$.qualification.route_inventory", "route inventory is not closed-world")
+    for selected_route, selected_path in selected_routes:
+        consumer_route_id = selected_route["selection"]["strategy"]["consumer_route_id"]
+        consumers = [
+            route for route in routes
+            if route["route_id"] == consumer_route_id
+            and route["active"]
+            and route["route_class"] == "native_dlc_cl"
+            and route["primitive"] == selected_route["primitive"]
+        ]
+        if len(consumers) != 1 or consumers[0]["identity"]["abi_digest"] is None:
+            raise ContractError(
+                "contract.missing_required_route_class",
+                f"{selected_path}.selection.strategy.consumer_route_id",
+                "selection requires an exact native consumer ABI",
+            )
+        consumer = consumers[0]
+        if (
+            selected_route["selection"]["strategy"]["metadata_abi_digest"]
+            != consumer["identity"]["abi_digest"]
+        ):
+            raise ContractError(
+                "contract.strategy_contradiction",
+                f"{selected_path}.selection.strategy.metadata_abi_digest",
+                "strategy metadata ABI contradicts the native consumer route",
+            )
     primitive_inventory = qualification["primitive_inventory"]
     if not isinstance(primitive_inventory, list) or set(primitive_inventory) != PRIMITIVES or len(primitive_inventory) != len(PRIMITIVES):
         raise ContractError("contract.incomplete_primitive_inventory", "$.qualification.primitive_inventory", "every reachable primitive must be inventoried exactly once")
@@ -461,7 +699,7 @@ def validate_document(document: Any) -> dict[str, Any]:
     if artifact["resume_point"] != expected_resume:
         raise ContractError("contract.inconsistent_status", "$.resume_point", "resume point does not match primary blocker")
     return {
-        "schema_version": SCHEMA,
+        "schema_version": schema,
         "status": artifact["status"],
         "reason_code": expected_primary["code"] if expected_primary else "passed",
         "resume_point": artifact["resume_point"],

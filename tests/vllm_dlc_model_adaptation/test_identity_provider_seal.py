@@ -1,3 +1,4 @@
+import datetime
 import importlib.util
 import unittest
 from pathlib import Path
@@ -119,31 +120,59 @@ class IdentityProviderSealTests(unittest.TestCase):
         }
         with self.assertRaisesRegex(ValueError, "blocked_missing_authenticated_provider_seal"):
             self.contract.verify(
-                document, "installed_package", "2026-08-08T12:00:00Z", trusted,
+                document, "installed_package", self.clock(2026, 8, 8, 12), trusted,
                 current_generation="fixture-generation-1",
             )
         with self.assertRaisesRegex(ValueError, "blocked_expired_provider_seal"):
             self.contract.verify(
-                document, "installed_package", "2026-08-10T00:00:00Z", trusted,
+                document, "installed_package", self.clock(2026, 8, 9), trusted,
                 current_generation="fixture-generation-1",
             )
         with self.assertRaisesRegex(ValueError, "blocked_future_provider_observation"):
             self.contract.verify(
-                document, "installed_package", "2026-08-07T00:00:00Z", trusted,
+                document, "installed_package", self.clock(2026, 8, 7), trusted,
                 current_generation="fixture-generation-1",
             )
         with self.assertRaisesRegex(ValueError, "blocked_missing_current_provider_generation"):
             self.contract.verify(
-                document, "installed_package", "2026-08-08T12:00:00Z", trusted
+                document, "installed_package", self.clock(2026, 8, 8, 12), trusted
             )
         with self.assertRaisesRegex(ValueError, "blocked_stale_provider_generation"):
             self.contract.verify(
                 document,
                 "installed_package",
-                "2026-08-08T12:00:00Z",
+                self.clock(2026, 8, 8, 12),
                 trusted,
                 current_generation="fixture-generation-2",
             )
+
+    @staticmethod
+    def clock(year, month, day, hour=0):
+        return lambda: datetime.datetime(
+            year, month, day, hour, tzinfo=datetime.timezone.utc
+        )
+
+    def test_verifier_rejects_untrusted_clock_values(self):
+        document = self.seal()
+        trusted = {
+            document["provider"]["id"] + "@" + document["provider"]["version"]:
+            document["provider"]["identity_digest"]
+        }
+        for clock in (
+            lambda: datetime.datetime(2026, 8, 8),
+            lambda: "2026-08-08T00:00:00Z",
+        ):
+            with self.subTest(clock=clock):
+                with self.assertRaisesRegex(
+                    ValueError, "blocked_invalid_clock_context"
+                ):
+                    self.contract.verify(
+                        document,
+                        "installed_package",
+                        clock,
+                        trusted,
+                        current_generation="fixture-generation-1",
+                    )
 
     def test_observed_package_value_is_closed_world(self):
         document = self.seal()

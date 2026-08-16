@@ -9,7 +9,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 
 SCHEMA_VERSION = "vllm-dlc-identity-provider-seal/v1"
@@ -199,7 +199,7 @@ def validate(
 def verify(
     document: Any,
     expected_subject_class: str,
-    now: str,
+    clock: Callable[[], datetime.datetime],
     trusted_provider_identities: Mapping[str, str],
     current_generation: str | None = None,
 ) -> Mapping[str, Any]:
@@ -211,9 +211,10 @@ def verify(
         raise ValueError("blocked_invalid_provider_seal")
     if document["subject_class"] != expected_subject_class:
         raise ValueError("blocked_wrong_provider_scope")
-    if _parse_time(now) < _parse_time(document["observed_at"]):
+    now = _clock_instant(clock)
+    if now < _parse_time(document["observed_at"]):
         raise ValueError("blocked_future_provider_observation")
-    if _parse_time(now) >= _parse_time(document["expires_at"]):
+    if now >= _parse_time(document["expires_at"]):
         raise ValueError("blocked_expired_provider_seal")
     if current_generation is None:
         raise ValueError("blocked_missing_current_provider_generation")
@@ -227,6 +228,20 @@ def verify(
     if document["status"] != "passed" or document["authoritativeness"] != "authoritative":
         raise ValueError("blocked_missing_authoritative_identity_provider")
     return document["observed_value"]
+
+
+def _clock_instant(clock: Callable[[], datetime.datetime]) -> datetime.datetime:
+    try:
+        now = clock()
+    except Exception as error:
+        raise ValueError("blocked_invalid_clock_context") from error
+    if (
+        not isinstance(now, datetime.datetime)
+        or now.tzinfo is None
+        or now.utcoffset() != datetime.timedelta(0)
+    ):
+        raise ValueError("blocked_invalid_clock_context")
+    return now
 
 
 def _validate_installed_package(value: Mapping[str, Any]) -> list[dict[str, str]]:

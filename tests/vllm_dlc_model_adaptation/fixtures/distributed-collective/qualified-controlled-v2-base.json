@@ -1,0 +1,48 @@
+{
+  "selector": {
+    "source_sha": "1111111111111111111111111111111111111111",
+    "binary_sha256": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "symbol": "selectAllReduceStrategy"
+  },
+  "topology_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "payload_bytes": 128,
+  "constraints": {
+    "min_payload_bytes": 128,
+    "max_payload_bytes": 256,
+    "payload_alignment_bytes": 64,
+    "dtypes": ["bfloat16"],
+    "layouts": ["contiguous"],
+    "actual_layout": "contiguous"
+  },
+  "rank_domain": {
+    "domain": "logical",
+    "primary_root": 1,
+    "secondary_root": 0,
+    "logical_to_physical": [1, 0]
+  },
+  "rank_order": [1, 0],
+  "strategy": {
+    "strategy_id": "controlled-ring",
+    "consumer_route_id": "native-all-reduce",
+    "metadata_abi_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+    "rank_domain": "logical",
+    "requires_secondary_root": true
+  },
+  "cache_key_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "fallback": {
+    "preferred_strategy_id": "preferred-tree",
+    "candidate_strategy_id": "controlled-ring",
+    "validation_state": "passed",
+    "validation": {
+      "graph": true,
+      "channel": true,
+      "rank_order": true,
+      "rank_range": true,
+      "unique_ranks": true,
+      "root_metadata": true,
+      "payload": true,
+      "alignment": true
+    },
+    "committed": true
+  }
+}

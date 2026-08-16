@@ -157,6 +157,7 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
             "references/identity-provider-seal-v1.schema.json",
             "scripts/_generated_contracts/qualification_artifact.py",
             "scripts/_generated_contracts/qualification-artifact-envelope-v1.schema.json",
+            "scripts/_generated_contracts/vllm-dlc-collective-selection-v1.schema.json",
         )
         for relative in qualification_assets:
             if not (stable_root / relative).is_file():

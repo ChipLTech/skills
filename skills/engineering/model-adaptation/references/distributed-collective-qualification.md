@@ -1,6 +1,6 @@
 # Distributed Collective Qualification
 
-`vllm-dlc-distributed-collective-qualification/v1` is the closed-world Stage A safety baseline for distributed model routes. It is a launch gate, not a parallel-performance profile. Validate artifacts with `scripts/validate-vllm-dlc-qualification.py`; execute an approved bounded harness with `scripts/run-dlccl-qualification.py`.
+`vllm-dlc-distributed-collective-qualification/v1` remains frozen as the closed-world Stage A route baseline. `vllm-dlc-distributed-collective-qualification/v2` is an exact additive contract version for topology/payload selection; validators do not reinterpret v1 routes as v2. Both are launch gates, not parallel-performance profiles. Validate artifacts with `scripts/validate-vllm-dlc-qualification.py`; execute an approved bounded harness with `scripts/run-dlccl-qualification.py`.
 
 ## Route Inventory
 
@@ -25,11 +25,13 @@ For AllReduce, AllGather/AllGatherIntoTensor, Gather, ReduceScatter, ReduceScatt
 
 ## Topology/Payload-Aware Selection
 
+In v2, every route has an explicit `selection`; non-topology-aware routes set it to `null`, while only the active topology-aware vLLM communicator route supplies the closed-world `vllm-dlc-collective-selection/v1` sub-contract. It binds exact selector source and binary identity, the subject hardware topology digest, payload bytes, allowed dtype/layout plus actual layout, local rank, explicit primary/secondary root roles and rank-domain mapping, actual rank-order permutation, selected strategy ID, exact native consumer route ID and metadata ABI digest, the complete selection-input cache-key digest, and fallback preferred/candidate validation/commit state. A valid rank order is any complete unique in-range permutation; natural order is not required.
+
 For a route with multiple topology-specific implementations, inventory the initialized communicator as the owner of actual LYP topology, formal algorithm lookup, root metadata, and rank order. Record every selector input, including payload bytes and applicable dtype/layout constraints; world size identifies participant count only. The framework adapter must cache by every decision input and pass a stable strategy plus explicit rank-domain metadata to the DLC Custom Kernel. The kernel dispatches the strategy and may reject illegal strategy or strategy/rank descriptor contradictions, while payload capacity, alignment, root availability, and preferred-implementation support remain pre-launch selection conditions.
 
-Fallback is a state transition, not an enum substitution. Begin from Unknown, validate the candidate's graph, channel, complete rank order, rank range, uniqueness, root metadata, payload, and alignment prerequisites, then commit the candidate only after all applicable checks pass. A formal selector may downgrade a multi-root implementation to a verified single-root implementation when that transition is explicitly defined; otherwise it must validate the generic fallback or remain Unknown and fail closed.
+Fallback is a state transition, not an enum substitution. Begin from Unknown while the selected strategy remains the preferred strategy, validate the candidate's graph, channel, complete rank order, rank range, uniqueness, root metadata, payload, and alignment prerequisites, then commit the candidate and replace the selected strategy only after all applicable checks pass. Strategies declare whether a secondary root is required. A formal selector may downgrade a multi-root implementation to a verified single-root implementation when that transition is explicitly defined; otherwise it must validate the generic fallback or remain Unknown and fail closed.
 
-Qualification fixtures cover each formal threshold boundary, aligned and unaligned payloads, missing/out-of-range/duplicate roots, unknown mapping, incomplete or duplicate rank order, fallback validation failure, and changed payload on one communicator. Static/source checks establish selection structure only. Real qualification binds exact selector source, loaded native and kernel binaries, actual LYP topology, payload, all-rank content correctness, and task-owned cleanup evidence.
+Machine tests now cover exact threshold boundaries and out-of-range payloads, aligned and unaligned payloads, missing/out-of-range/duplicate roots, unknown mapping, incomplete/duplicate/out-of-range rank order, fallback partial validation, changed payload on one communicator, layout contradiction, and strategy/rank descriptor contradiction. The controlled base fixture remains non-authoritative `fixture` evidence. Static/source checks establish selection structure only. Real qualification binds exact selector source, loaded native and kernel binaries, actual LYP topology, payload, all-rank content correctness, and task-owned cleanup evidence.
 
 ## Preflight And Stops
 
@@ -88,6 +90,12 @@ search roots needed to re-run the adapter. It compares the complete seal digest
 and includes that digest in `input_artifact_digests`. Consumption replaces the
 caller-selected package sidecar but does not upgrade the collector above
 `non_authoritative` or remove `blocked_non_atomic_identity_snapshot`.
+The library consumer accepts an injected, timezone-aware UTC clock so one
+collection epoch and its stability recheck share one freshness instant. The
+production CLI exposes no clock override and uses the real UTC clock. This seam
+makes future, valid-window, exact-expiry, and stale-generation fixtures
+deterministic; it does not establish that the Host clock is trusted or that a
+provider seal is authenticated.
 
 `scripts/attest-vllm-dlc-qualification.py` invokes the canonical distributed
 validator and immediately re-runs the live collector. It does not issue a
