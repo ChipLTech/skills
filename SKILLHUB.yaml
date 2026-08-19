@@ -5,7 +5,7 @@ skills:
   # ── Engineering ───────────────────────────────────────────────────────
 
   - name: ask-matt
-    description: "Ask which skill or flow fits your situation; a router over the skills in this repo"
+    description: "Automatically route tasks through the right skills and companion knowledge base"
     path: skills/engineering/ask-matt
     files:
       - SKILL.md

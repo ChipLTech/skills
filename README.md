@@ -50,7 +50,7 @@ implement 内部
 
 | 当前情况 | 推荐入口 |
 |---|---|
-| 不确定该使用哪个 skill | `ask-matt` |
+| 未指定 owning skill，或不确定该使用哪个 skill | `ask-matt` 自动发现同级知识库、参考相关 prompt 示例并加载最窄 skill |
 | Chipltech-Family Accelerator、DLC Platform、DLC Runtime、Real DLC Hardware 或 vLLM-DLC 工作 | 先用 `chipltech-context` 读取当前知识和能力目录，再加载最窄 owning Skill |
 | 已有代码库，需要把设计问清楚 | `grill-with-docs` |
 | 没有代码库，需要压力测试计划 | `grill-me` |

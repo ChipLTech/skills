@@ -1,14 +1,28 @@
 ---
 name: ask-matt
-description: Ask which skill or flow fits your situation. A router over the skills in this repo.
-disable-model-invocation: true
+description: Automatically choose and load the right skill or flow, consulting a companion knowledge base and its prompt examples when available. Use when the user asks what skill to use, gives a task without naming an owning skill, or needs an end-to-end workflow selected.
 ---
 
 # Ask Matt
 
-You don't remember every skill, so ask.
+You don't remember every skill, so route the task automatically.
 
 A **flow** is a path through the skills. Most paths run along one **main flow**, and two **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
+
+## Default behavior
+
+Treat the user's request as the input to execute, not as a request for a menu. Do the routing legwork yourself:
+
+1. Inspect the current workspace and the available Skills. Classify the request by intent, current phase, scope, and whether it needs domain knowledge, runnable evidence, implementation, review, or communication.
+2. Discover the Skills repository root from the loaded `ask-matt` package or the available Skill paths. Unless configuration or the user supplies another authoritative location, assume the companion knowledge repository is a sibling under the same parent directory as the Skills repository.
+3. Qualify sibling candidates by repository structure, not directory name alone. A knowledge repository must contain readable `CONTEXT.md` and `README.md`; prefer a unique candidate that also contains `prompt-examples/`. Ignore build trees, code repositories, and the active business workspace unless they satisfy this knowledge-repository contract.
+4. When a unique companion knowledge repository is available, read its `CONTEXT.md` and `README.md` before routing. Search its filenames, headings, and content for the user's task, then read the nearest relevant topic, case study, runbook, contract, and `prompt-examples/` entry. If it exposes a canonical capability catalog such as `prompt-examples/all-supported-capabilities-quickstart.md`, use that catalog as the first index and follow its links to the authoritative detailed material.
+5. Select the narrowest owning Skill from the routes below and the knowledge repository's current capability catalog. Actually load that Skill through the active Harness, then follow its current workflow; this router's summary never overrides the owning Skill.
+6. Continue into the selected Skill or flow in the same turn. Return a menu only when two materially different routes remain equally valid and the choice requires a user decision. Ask for a path only when automatic discovery leaves multiple authoritative candidates or no usable candidate and the selected owning Skill requires one.
+
+Knowledge is the default context, not execution proof. Keep the companion knowledge repository read-only unless the user explicitly requests a contribution. Distinguish repository guidance from current workspace state and runtime Evidence, and preserve every authorization, Stop Semantics, completion criterion, and Claim Boundary declared by the owning Skill.
+
+If no companion knowledge repository is available, route from the installed Skills and current workspace without blocking generic work. For Chipltech-Family Accelerator or DLC work, delegate discovery and evidence-aware retrieval to `/chipltech-context`; its stricter knowledge-root and Claim Boundary rules take precedence.
 
 ## The main flow: idea → ship
 
@@ -35,7 +49,7 @@ The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-diction
 
 A starting situation that generates work, then merges onto the main flow.
 
-- **Chipltech accelerator, DLC Platform, DLC Runtime, Real DLC Hardware, vLLM-DLC, model qualification, PD separation, or main-to-main work** → **`/chipltech-context`** first. It retrieves cited, read-only knowledge and loads the narrow owning execution skill. It is a router, not execution evidence; use its current capability catalog rather than duplicating the DLC routing table here.
+- **Chipltech accelerator, DLC Platform, DLC Runtime, Real DLC Hardware, vLLM-DLC, model qualification, PD separation, or main-to-main work** → **`/chipltech-context`** first. Pass it the automatically discovered sibling knowledge and Skills roots when the Harness supports configured inputs. It retrieves cited, read-only knowledge, consults the matching `prompt-examples/` contract, and loads the narrow owning execution skill. It is a router, not execution evidence; use its current capability catalog rather than duplicating the DLC routing table here.
 
 - **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
 

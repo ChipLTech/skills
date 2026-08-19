@@ -100,13 +100,18 @@ class UpstreamV12PublicationTests(unittest.TestCase):
                     self.assertEqual(user_invoked, implicit_disabled)
 
     def test_router_and_chipltech_boundary_cover_v1_2(self):
-        router = (
+        router_path = (
             ROOT / "skills" / "engineering" / "ask-matt" / "SKILL.md"
-        ).read_text(encoding="utf-8")
+        )
+        router = router_path.read_text(encoding="utf-8")
         context = (
             ROOT / "skills" / "engineering" / "chipltech-context" / "SKILL.md"
         ).read_text(encoding="utf-8")
 
+        self.assertNotIn("disable-model-invocation", frontmatter(router_path))
+        self.assertIn("same parent directory as the Skills repository", router)
+        self.assertIn("prompt-examples/", router)
+        self.assertIn("Actually load that Skill", router)
         for identity in IMPORTED | {
             "chipltech-context",
             "technical-delivery-summary",

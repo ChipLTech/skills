@@ -6,7 +6,6 @@ Skills I use daily for code work.
 
 Reachable only when you type them (`disable-model-invocation: true`).
 
-- **[ask-matt](./ask-matt/SKILL.md)** — Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[grill-with-docs](./grill-with-docs/SKILL.md)** — Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates `CONTEXT.md` and ADRs inline.
 - **[triage](./triage/SKILL.md)** — Triage issues through a state machine of triage roles.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** — Find deepening opportunities in a codebase, informed by the domain language in `CONTEXT.md` and the decisions in `docs/adr/`.
@@ -21,6 +20,7 @@ Reachable only when you type them (`disable-model-invocation: true`).
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
+- **[ask-matt](./ask-matt/SKILL.md)** — Automatically choose and load the narrowest skill or flow, using a sibling knowledge base and its prompt examples by default when available.
 - **[chipltech-context](./chipltech-context/SKILL.md)** — Route Chipltech tasks with cited engineering knowledge.
 - **[codebase-design](./codebase-design/SKILL.md)** — Shared vocabulary for deep modules, interfaces, seams, leverage, locality, and testability.
 - **[domain-modeling](./domain-modeling/SKILL.md)** — Build and sharpen the active project's domain language, `CONTEXT.md`, and ADRs.
