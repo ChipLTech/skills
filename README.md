@@ -51,7 +51,7 @@ implement 内部
 | 当前情况 | 推荐入口 |
 |---|---|
 | 未指定 owning skill，或不确定该使用哪个 skill | `ask-matt` 自动发现同级知识库、参考相关 prompt 示例并加载最窄 skill |
-| Chipltech-Family Accelerator、DLC Platform、DLC Runtime、Real DLC Hardware 或 vLLM-DLC 工作 | 先用 `chipltech-context` 读取当前知识和能力目录，再加载最窄 owning Skill |
+| Chipltech-Family Accelerator、DLC Platform、DLC Runtime、Real DLC Hardware 或 vLLM-CL 工作 | 先用 `chipltech-context` 读取当前知识和能力目录，再加载最窄 owning Skill |
 | 已有代码库，需要把设计问清楚 | `grill-with-docs` |
 | 没有代码库，需要压力测试计划 | `grill-me` |
 | 问题必须通过运行实验才能回答 | `prototype` |
@@ -84,7 +84,7 @@ implement 内部
 Chipltech-Family Accelerator 和 DLC/vLLM 工作统一从 `chipltech-context` 进入：
 
 ```text
-Chipltech / DLC / vLLM-DLC 任务
+Chipltech / DLC / vLLM-CL 任务
   → chipltech-context
   → 读取配置知识库的当前 capability catalog 与正式 Contract
   → 加载最窄 owning Skill
@@ -114,7 +114,7 @@ Performance：声明 workload 下的性能证据
 
 ### DLC 机器合同
 
-`model-adaptation` 的 distributed qualification 同时保留 frozen `vllm-dlc-distributed-collective-qualification/v1` 和 exact `v2`。v2 使用发布的 `vllm-dlc-collective-selection/v1` 子合同，机器验证 communicator-owned topology/payload selection、rank/root domain、完整 cache key、exact native consumer ABI 和 validate-then-commit fallback；controlled runner 仍只产生 non-authoritative fixture evidence。
+`model-adaptation` 的 distributed qualification 同时保留 frozen `vllm-cl-distributed-collective-qualification/v1` 和 exact `v2`。v2 使用发布的 `vllm-cl-collective-selection/v1` 子合同，机器验证 communicator-owned topology/payload selection、rank/root domain、完整 cache key、exact native consumer ABI 和 validate-then-commit fallback；controlled runner 仍只产生 non-authoritative fixture evidence。
 
 Identity Provider freshness 的 library consumer 接受 timezone-aware UTC clock context，使一次 collection epoch 与稳定性复核共享同一时刻。Production CLI 不暴露 clock override；该 seam 只提供确定性 future/expiry/stale 测试，不证明 Host clock 可信或 Provider Seal 已认证。详细字段、状态和 Claim Boundary 见 [`model-adaptation` distributed reference](./skills/engineering/model-adaptation/references/distributed-collective-qualification.md)。
 
@@ -181,7 +181,7 @@ main-to-main-upgrade
 | [`grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) | 用户调用 | 对照代码、领域模型和 ADR 逐项澄清设计 |
 | [`implement`](./skills/engineering/implement/SKILL.md) | 用户调用 | 根据 spec/tickets 实现、验证、审查并交付 |
 | [`improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) | 用户调用 | 寻找浅模块、耦合泄漏和测试困难等架构深化机会 |
-| [`main-to-main-upgrade`](./skills/engineering/main-to-main-upgrade/SKILL.md) | 自动或用户调用 | 分析 vllm-dlc main 对齐 exact upstream full SHA 的完整影响 |
+| [`main-to-main-upgrade`](./skills/engineering/main-to-main-upgrade/SKILL.md) | 自动或用户调用 | 分析 vllm-cl main 对齐 exact upstream full SHA 的完整影响 |
 | [`model-adaptation`](./skills/engineering/model-adaptation/SKILL.md) | 自动或用户调用 | 处理具体模型的 Attention、MLA、MoE、量化、多模态、MTP 和分布式兼容，并为 topology-aware collective 提供版本化机器合同 |
 | [`modelzoo-image-validation`](./skills/engineering/modelzoo-image-validation/SKILL.md) | 自动或用户调用 | 资格验证本地模型并按门禁交付独立 DLC/TYD 镜像 |
 | [`pd-separation`](./skills/engineering/pd-separation/SKILL.md) | 自动或用户调用 | 部署和诊断 MooncakeDLCConnector Prefill/Decode 分离 |
@@ -291,8 +291,8 @@ npx skills@latest add mattpocock/skills
 | `to-issues` | `to-tickets` |
 | `write-a-skill` | `writing-for-agents` |
 | `writing-great-skills` | `writing-for-agents` |
-| `vllm-dlc-model-adapter` | `model-adaptation` |
-| `vllm-dlc-main2main` | `main-to-main-upgrade` |
+| `vllm-cl-model-adapter` | `model-adaptation` |
+| `vllm-cl-main2main` | `main-to-main-upgrade` |
 
 安装脚本会清理已退休的生成型 symlink 或 command wrapper，但不会删除用户维护的真实文件和目录。
 

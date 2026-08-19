@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 
-SCHEMA_VERSION = "vllm-dlc-identity-provider-seal/v1"
+SCHEMA_VERSION = "vllm-cl-identity-provider-seal/v1"
 TOP_LEVEL_FIELDS = {
     "schema_version", "seal_id", "provider", "subject_class", "observed_value",
     "generation", "observed_at", "expires_at", "raw_evidence_digest",

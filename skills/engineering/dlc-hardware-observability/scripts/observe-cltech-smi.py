@@ -206,7 +206,7 @@ def main() -> int:
     print(
         json.dumps(
             {
-                "adapter_schema": "vllm-dlc-smi-observation/v1",
+                "adapter_schema": "vllm-cl-smi-observation/v1",
                 "devices": devices,
                 "sample_point": arguments.sample_point,
             },

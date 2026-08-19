@@ -28,7 +28,7 @@ SCENARIOS = (
     {
         "name": "model_adaptation",
         "owner": "model-adaptation",
-        "knowledge": "vllm-dlc/model-adaptation-and-main-to-main-decisions.md",
+        "knowledge": "vllm-cl/model-adaptation-and-main-to-main-decisions.md",
         "blocker": "blocked_missing_asset",
         "request": (
             "I need to adapt a model for DLC Platform, but no model name, local "
@@ -38,7 +38,7 @@ SCENARIOS = (
     {
         "name": "model_qualification",
         "owner": "modelzoo-image-validation",
-        "knowledge": "vllm-dlc/modelzoo-driven-dlc-tyd-image-contract.md",
+        "knowledge": "vllm-cl/modelzoo-driven-dlc-tyd-image-contract.md",
         "blocker": "blocked_missing_asset",
         "request": (
             "I need runtime-first local model qualification, but no model name "
@@ -48,7 +48,7 @@ SCENARIOS = (
     {
         "name": "pd_separation",
         "owner": "pd-separation",
-        "knowledge": "vllm-dlc/prefill-decode-separation.md",
+        "knowledge": "vllm-cl/prefill-decode-separation.md",
         "blocker": "blocked_missing_contract",
         "request": (
             "I need Prefill/Decode separation, but no model path, topology, "

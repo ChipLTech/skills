@@ -58,7 +58,7 @@ cd skills
 /modelzoo-image-validation Qwen2-7B /mnt/jfs/models/Qwen2-7B，先验证本地模型；ModelZoo 同名时记录歧义，必要时用 framework selector 消歧
 /dlc-hardware-observability 为当前 Real DLC Hardware run 采集 before-launch、after-ready、during-request 和 after-cleanup 的 cltech_smi 证据，不执行维护
 /pd-separation 先验证 transport，再用 qualified TCP、lyp_full 或 dlccl_direct 部署 Prefill/Decode/Proxy，并保留 request-correlated KV transfer 与 site recovery evidence
-/main-to-main-upgrade 请只路由：分析 vllm-dlc main 对齐 exact upstream full SHA 的完整兼容影响
+/main-to-main-upgrade 请只路由：分析 vllm-cl main 对齐 exact upstream full SHA 的完整兼容影响
 ```
 
 ## 2. 推荐安装方式：全局安装
@@ -309,12 +309,12 @@ $ARGUMENTS
 请使用 tdd skill，简单说明红绿重构流程，不要改代码。
 ```
 
-也可以验证 vLLM-DLC publication 路由边界：
+也可以验证 vLLM-CL publication 路由边界：
 
 ```text
 这个特定新模型在 DLC Platform 上加载失败，请只路由到合适 skill，不要运行命令或修改文件。
 /model-adaptation 请只处理参数转发：检查这个模型的 Attention、tokenizer 和部署 profile 兼容边界。
-把 vllm-dlc main 对齐到 exact upstream full SHA 1111111111111111111111111111111111111111，并只分析兼容影响。
+把 vllm-cl main 对齐到 exact upstream full SHA 1111111111111111111111111111111111111111，并只分析兼容影响。
 /main-to-main-upgrade 请只处理参数转发：分析 exact upstream full SHA 的完整 compatibility-impact range。
 ```
 

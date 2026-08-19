@@ -1,6 +1,6 @@
 # Main-to-Main Upgrade Stable Decisions
 
-shared_contract: vllm-dlc-contract/v1
+shared_contract: vllm-cl-contract/v1
 
 Main-to-Main Upgrade owns exact upstream target identity, ordered Verified vLLM Alignment candidate recovery, exhaustive global compatibility impact, read-only manifest impact, mandatory regression assignments, child aggregation, and no-finalize reporting. It delegates all model-specific adaptation one-way to Model Adaptation.
 

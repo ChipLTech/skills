@@ -1,12 +1,12 @@
 # Distributed Collective Qualification
 
-`vllm-dlc-distributed-collective-qualification/v1` remains frozen as the closed-world Stage A route baseline. `vllm-dlc-distributed-collective-qualification/v2` is an exact additive contract version for topology/payload selection; validators do not reinterpret v1 routes as v2. Both are launch gates, not parallel-performance profiles. Validate artifacts with `scripts/validate-vllm-dlc-qualification.py`; execute an approved bounded harness with `scripts/run-dlccl-qualification.py`.
+`vllm-cl-distributed-collective-qualification/v1` remains frozen as the closed-world Stage A route baseline. `vllm-cl-distributed-collective-qualification/v2` is an exact additive contract version for topology/payload selection; validators do not reinterpret v1 routes as v2. Both are launch gates, not parallel-performance profiles. Validate artifacts with `scripts/validate-vllm-cl-qualification.py`; execute an approved bounded harness with `scripts/run-dlccl-qualification.py`.
 
 ## Route Inventory
 
 Inventory every reachable primitive and keep these route classes separate:
 
-Use `scripts/inventory-vllm-dlc-collectives.py --vllm-root <root>` to seal the
+Use `scripts/inventory-vllm-cl-collectives.py --vllm-root <root>` to seal the
 source-level communicator and MoE caller snapshot. This inventory is generated
 from the injected checkout rather than copied from a model fixture, and remains
 `static_snapshot` evidence only.
@@ -25,7 +25,7 @@ For AllReduce, AllGather/AllGatherIntoTensor, Gather, ReduceScatter, ReduceScatt
 
 ## Topology/Payload-Aware Selection
 
-In v2, every route has an explicit `selection`; non-topology-aware routes set it to `null`, while only the active topology-aware vLLM communicator route supplies the closed-world `vllm-dlc-collective-selection/v1` sub-contract. It binds exact selector source and binary identity, the subject hardware topology digest, payload bytes, allowed dtype/layout plus actual layout, local rank, explicit primary/secondary root roles and rank-domain mapping, actual rank-order permutation, selected strategy ID, exact native consumer route ID and metadata ABI digest, the complete selection-input cache-key digest, and fallback preferred/candidate validation/commit state. A valid rank order is any complete unique in-range permutation; natural order is not required.
+In v2, every route has an explicit `selection`; non-topology-aware routes set it to `null`, while only the active topology-aware vLLM communicator route supplies the closed-world `vllm-cl-collective-selection/v1` sub-contract. It binds exact selector source and binary identity, the subject hardware topology digest, payload bytes, allowed dtype/layout plus actual layout, local rank, explicit primary/secondary root roles and rank-domain mapping, actual rank-order permutation, selected strategy ID, exact native consumer route ID and metadata ABI digest, the complete selection-input cache-key digest, and fallback preferred/candidate validation/commit state. A valid rank order is any complete unique in-range permutation; natural order is not required.
 
 For a route with multiple topology-specific implementations, inventory the initialized communicator as the owner of actual LYP topology, formal algorithm lookup, root metadata, and rank order. Record every selector input, including payload bytes and applicable dtype/layout constraints; world size identifies participant count only. The framework adapter must cache by every decision input and pass a stable strategy plus explicit rank-domain metadata to the DLC Custom Kernel. The kernel dispatches the strategy and may reject illegal strategy or strategy/rank descriptor contradictions, while payload capacity, alignment, root availability, and preferred-implementation support remain pre-launch selection conditions.
 
@@ -38,7 +38,7 @@ Machine tests now cover exact threshold boundaries and out-of-range payloads, al
 Preflight runs before any harness launch. The artifact is a Qualification Artifact Envelope v1 extension and must pass the generated `validate_envelope(document, ("qualification",))` validator. Envelope blockers use only canonical `status`, `code`, and `path` fields; distributed phase, message, and resume detail remains under `qualification.blocker_details`. Status aggregation is always `failed` before `blocked` before `not_verified`.
 
 Collect live identity first with
-`scripts/collect-vllm-dlc-live-identity.py <spec> <output>`. The collector is
+`scripts/collect-vllm-cl-live-identity.py <spec> <output>`. The collector is
 read-only, validates a closed-world spec, hashes path type/content and symlink
 target, requires a clean authoritative Git root for source observation, and
 emits all thirteen Qualification Artifact Envelope identity classes as
@@ -97,7 +97,7 @@ makes future, valid-window, exact-expiry, and stale-generation fixtures
 deterministic; it does not establish that the Host clock is trusted or that a
 provider seal is authenticated.
 
-`scripts/attest-vllm-dlc-qualification.py` invokes the canonical distributed
+`scripts/attest-vllm-cl-qualification.py` invokes the canonical distributed
 validator and immediately re-runs the live collector. It does not issue a
 signature in this version: production issuance remains
 `blocked_missing_authoritative_identity_producers` or

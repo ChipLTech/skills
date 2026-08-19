@@ -76,7 +76,7 @@ class PDSeparationPublicationTests(unittest.TestCase):
             self.assertNotIn(unsafe, public_package)
 
     def test_practical_guide_matches_authorization_and_terminal_contract(self):
-        guide = (KNOWLEDGE_ROOT / "vllm-dlc" / "prefill-decode-separation-practical-guide.md").read_text(encoding="utf-8")
+        guide = (KNOWLEDGE_ROOT / "vllm-cl" / "prefill-decode-separation-practical-guide.md").read_text(encoding="utf-8")
         authorization = guide.split("### 2.1.1 授权与恢复", 1)[1].split("### 2.2", 1)[0]
         terminal = guide.split("## 12. 最终验收表", 1)[1].split("## 13.", 1)[0]
 

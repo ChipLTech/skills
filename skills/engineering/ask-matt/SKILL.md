@@ -49,7 +49,7 @@ The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-diction
 
 A starting situation that generates work, then merges onto the main flow.
 
-- **Chipltech accelerator, DLC Platform, DLC Runtime, Real DLC Hardware, vLLM-DLC, model qualification, PD separation, or main-to-main work** → **`/chipltech-context`** first. Pass it the automatically discovered sibling knowledge and Skills roots when the Harness supports configured inputs. It retrieves cited, read-only knowledge, consults the matching `prompt-examples/` contract, and loads the narrow owning execution skill. It is a router, not execution evidence; use its current capability catalog rather than duplicating the DLC routing table here.
+- **Chipltech accelerator, DLC Platform, DLC Runtime, Real DLC Hardware, vLLM-CL, model qualification, PD separation, or main-to-main work** → **`/chipltech-context`** first. Pass it the automatically discovered sibling knowledge and Skills roots when the Harness supports configured inputs. It retrieves cited, read-only knowledge, consults the matching `prompt-examples/` contract, and loads the narrow owning execution skill. It is a router, not execution evidence; use its current capability catalog rather than duplicating the DLC routing table here.
 
 - **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
 

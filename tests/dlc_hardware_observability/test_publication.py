@@ -55,7 +55,7 @@ class DLCHardwareObservabilityPublicationTests(unittest.TestCase):
             "during_request",
             "after_cleanup",
             "blocked_missing_observability",
-            "vllm-dlc-smi-observation/v1",
+            "vllm-cl-smi-observation/v1",
             "Shared Hosts need not reach global zero",
             "does not independently prove C1b",
             "Do not recreate the normalized schema manually",
@@ -83,7 +83,7 @@ class DLCHardwareObservabilityPublicationTests(unittest.TestCase):
             self.assertTrue((installed / "references" / "observation-contract.md").is_file())
             self.assertTrue((installed / "scripts" / "observe-cltech-smi.py").is_file())
             self.assertTrue(
-                (installed / "scripts" / "qualify-vllm-dlc-smi-environment.py").is_file()
+                (installed / "scripts" / "qualify-vllm-cl-smi-environment.py").is_file()
             )
             wrapper = Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"
             self.assertIn(f"请使用 `{IDENTITY}` skill", wrapper.read_text(encoding="utf-8"))

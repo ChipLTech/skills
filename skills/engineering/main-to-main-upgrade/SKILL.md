@@ -1,15 +1,15 @@
 ---
 name: main-to-main-upgrade
-description: Upgrade vllm-dlc main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests.
+description: Upgrade vllm-cl main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests.
 ---
 
 # Main-to-Main Upgrade
 
-shared_contract: vllm-dlc-contract/v1
+shared_contract: vllm-cl-contract/v1
 
 Use this stable read-only, no-finalize workflow to plan one upstream alignment change. A tag is lineage metadata only; the target identity is a full SHA. Model Adaptation is the only model-specific child feedback seam.
 
-1. Validate target, branch, shared contract, history, approved assets, hardware allocation, observability, and the read-only repository boundary. Complete when: each identity is unique or one stable preflight blocker records an exact resume point without modifying vllm-dlc.
+1. Validate target, branch, shared contract, history, approved assets, hardware allocation, observability, and the read-only repository boundary. Complete when: each identity is unique or one stable preflight blocker records an exact resume point without modifying vllm-cl.
 2. Recover the baseline in evidence-confidence order from historical mandatory evidence, an explicit pin requiring revalidation, then a correlated candidate requiring revalidation. Complete when: exactly one Verified vLLM Alignment has complete mandatory evidence, or the baseline remains unknown with `blocked_missing_verified_alignment`.
 3. Classify the complete old-to-target upstream delta as affected dependency, new dependency candidate, or confirmed irrelevant. In each v1 delta row's existing evidence, record the source owner, consumers, change kind, cross-repository pairing, and validation owner. Exact-HEAD static absence can establish a source gap; whether it is necessary for a target workload remains a validation assignment until exact-artifact runtime evidence returns. Code present with mismatched schema, descriptor, DLC Custom Kernel binary, toolchain, or native stack is pairing impact, not source absence. Complete when: history is complete, every changed surface has exactly one v1 classification, evidence names its owner and validation assignment, and unknown impact count is zero.
 4. Produce the Patch Import Manifest impact report without applying it. Use only the v1 `future_add`, `future_update`, `future_remove`, or `no_change` action vocabulary; distinguish source change, schema/descriptor adapter, artifact pairing only, or no change in the existing reason. Complete when: every affected dependency and new candidate has one valid future action, applied changes are empty, and manifest state is reported unchanged.

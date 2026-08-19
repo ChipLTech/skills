@@ -25,7 +25,7 @@ Treat class names, module paths, callback names, and metadata fields as checked-
 | `--lyp-debug` | `MOONCAKE_LYP_DEBUG` |
 | `--p2p-full-debug` | `MOONCAKE_LYP_FULL_DEBUG` |
 | `--side-channel-port` | `VLLM_MOONCAKE_SIDE_CHANNEL_PORT` |
-| `--device-offset` | `VLLM_DLC_DEVICE_OFFSET` |
+| `--device-offset` | `VLLM_CL_DEVICE_OFFSET` |
 | `--env-KEY VALUE` | task-declared `KEY=VALUE` |
 
 The launcher uses `--` to separate its arguments from vLLM server arguments. Read its actual parser before constructing commands.

@@ -12,7 +12,7 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - The user wants a full DLC workstation rebuild.
 - The user wants to switch one or more rebuild repos to target branches before rebuilding.
 - The user wants a partial rebuild from LLVM, `DLC_Custom_Kernel`, PyTorch wheel build, or wheel reinstall.
-- The user wants to repair local `vllm` or `vllm-dlc` editable installs on top of a working PyTorch DLC stack.
+- The user wants to repair local `vllm` or `vllm-cl` editable installs on top of a working PyTorch DLC stack.
 
 ## Inputs To Collect Up Front
 
@@ -29,11 +29,11 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 3. Before mutation, validate every requested ref object, recursive submodule worktree, and expected build entrypoint. A submodule SHA alone is insufficient: the required `CMakeLists.txt`, Makefile, `setup.py`, or build script must exist in the worktree. When the builder UID differs from a task-owned source owner, validate canonical paths and write only the task root and build-time submodules to a task-local `GIT_CONFIG_GLOBAL` `safe.directory` file; remove that file during task cleanup.
 4. If branch switching was requested, inspect `git status --short`, current branch, and branch availability before any checkout.
 5. Before the first long build, read the Host driver API from its authority surface and choose a DLCSynapse ref explicitly compatible with it. Confirm Host driver version, source header, installed library, and fresh import agree; tags and existing images are provenance only. A fresh userspace import does not replace target-hardware runtime validation. Reuse a driver-compatible profile only when a successful C1b record binds it to an exactly equal canonical fingerprint covering kernel, hardware generation, Host driver API/version, container runtime/config digest, immutable base Image ID, device-node inventory/mapping, and profile digest, and every privilege/mount is explicitly authorized.
-6. Run the rebuild in dependency order. A driver API or native dependency change invalidates every downstream consumer and requires rebuild through PyTorch, optional `vllm-dlc`, and optional `vllm`. Each build record binds the current epoch, clean/configure command, source/submodule refs, direct upstream installed hashes, and produced hashes; reject stale cache/no-op outputs with mismatched bindings.
+6. Run the rebuild in dependency order. A driver API or native dependency change invalidates every downstream consumer and requires rebuild through PyTorch, optional `vllm-cl`, and optional `vllm`. Each build record binds the current epoch, clean/configure command, source/submodule refs, direct upstream installed hashes, and produced hashes; reject stale cache/no-op outputs with mismatched bindings.
 7. Run `scripts/pytorch-preflight.sh` before the PyTorch 2.5.0 wheel build only when mutation of the active Python environment is authorized. The script installs/upgrades packages and is not a read-only check. When system Python mutation is forbidden, create a task-local virtual environment or perform equivalent query-only checks instead; never run this script against system Python. Set the approved PyTorch build version before the first configure; wheel metadata and `torch.__version__` must agree.
 8. Force-reinstall the fresh wheel and verify runtime behavior from outside the source tree.
-9. If the user asked for local `vllm` or `vllm-dlc` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
-10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Seal the actual Python, build toolchain, PyTorch distribution/wheel/import/native extension, vLLM/vLLM-DLC import, DLC Custom Kernel binary, and loaded DLC Runtime/native-library identities when discoverable; unavailable identities remain explicit instead of inferred from source checkout.
+9. If the user asked for local `vllm` or `vllm-cl` repair, run `scripts/vllm-preflight.sh` and then perform the editable installs.
+10. Finish package validation with `scripts/runtime-smoke.sh` plus the final install checks listed below. Seal the actual Python, build toolchain, PyTorch distribution/wheel/import/native extension, vLLM/vLLM-CL import, DLC Custom Kernel binary, and loaded DLC Runtime/native-library identities when discoverable; unavailable identities remain explicit instead of inferred from source checkout.
 11. Before Real DLC Hardware model serving or exact-image acceptance, run `scripts/stack-preflight.py` against the immutable Image ID, equal Driver/Runtime API, exact four-file CRT bundle, installed DLC Custom Kernel library, LLVM full SHA, and an approved/revoked policy. Exact approved identity creates only `Static Stack Compatible`; revoked, unknown, incomplete, malformed, mutable, or API-mismatched identities stop before device execution. Policy approval must cite prior qualification evidence; source/tag/version similarity cannot create approval.
 12. Only after static preflight passes, run `scripts/runtime-smoke.sh --require-device-execution` in a fresh process and delegate the query-only SMI Observation Envelope to `dlc-hardware-observability`. Allocation/H2D submission is not sufficient: device operation completion, synchronize, D2H, and correctness must pass. Static compatibility, C1b, and SMI evidence remain separate.
 
@@ -47,11 +47,11 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 6. `DLC_CL`
 7. `DLC_Custom_Kernel`
 8. PyTorch 2.5.0 wheel build and reinstall.
-9. Optional `vllm` and `vllm-dlc` editable install repair.
+9. Optional `vllm` and `vllm-cl` editable install repair.
 
 ## Partial Rebuild Rules
 
-- From LLVM: rebuild LLVM, `DLCsim`, `DLCSynapse`, `DLC_CL`, `DLC_Custom_Kernel`, PyTorch, reinstall the wheel, optional `vllm-dlc`/`vllm`, then rerun smoke.
+- From LLVM: rebuild LLVM, `DLCsim`, `DLCSynapse`, `DLC_CL`, `DLC_Custom_Kernel`, PyTorch, reinstall the wheel, optional `vllm-cl`/`vllm`, then rerun smoke.
 - From `DLC_Custom_Kernel`: rebuild `DLC_Custom_Kernel`, PyTorch, reinstall the wheel, then rerun smoke.
 - From PyTorch: confirm the native dependency installs still exist before building the wheel.
 - Wheel reinstall only: use only when a fresh wheel already exists in `dist/`.
@@ -76,19 +76,19 @@ Use this skill to turn a machine with unknown repo layout into a validated DLC d
 - `torch.__version__` reports `2.5.0` outside the PyTorch source tree.
 - `torch.tensor([0.1], dtype=torch.float32).numpy()` succeeds outside the source tree.
 - `/usr/local/chipltech/synapse/bin` contains the installed custom-kernel test tools.
-- If optional `vllm` work was requested, inspect the fixed source packaging mode before setting a device target. A core `empty` platform plus independent `vllm-dlc` plugin is valid when the source implements that mode; do not force an unsupported core device target. `import vllm` and its `pip show` metadata checks succeed. `import vllm_dlc` and its metadata are additionally required only when the deployment contract uses the plugin.
-- Before Real DLC Hardware model serving, `scripts/runtime-smoke.sh /tmp --require-device-execution` passes in a fresh process on every requested logical device. Use `--require-vllm` when vLLM is part of the contract. Plugin deployments add `--require-vllm-dlc`; a built-in DLC Platform deployment uses `--skip-vllm-dlc` after verifying its platform and entry-point identity.
+- If optional `vllm` work was requested, inspect the fixed source packaging mode before setting a device target. A core `empty` platform plus independent `vllm-cl` plugin is valid when the source implements that mode; do not force an unsupported core device target. `import vllm` and its `pip show` metadata checks succeed. `import vllm_cl` and its metadata are additionally required only when the deployment contract uses the plugin.
+- Before Real DLC Hardware model serving, `scripts/runtime-smoke.sh /tmp --require-device-execution` passes in a fresh process on every requested logical device. Use `--require-vllm` when vLLM is part of the contract. Plugin deployments add `--require-vllm-cl`; a built-in DLC Platform deployment uses `--skip-vllm-cl` after verifying its platform and entry-point identity.
 - Before that C1b, `scripts/stack-preflight.py` returns exit `0` and `reason_code=approved_profile` for the exact immutable image/artifact identity. This does not replace C1b and cannot approve a profile by itself.
 - A native component is complete only when task build output exists, the build and install logs have terminal success, the installed target timestamp/hash matches the task output, and applicable `ldd`, `nm`, or fresh import validation succeeds. Finding a same-named base-image library is not evidence of the current rebuild.
 
 ## Script Assets
 
 - `scripts/pytorch-preflight.sh`: Python packaging and NumPy preflight before building the wheel.
-- `scripts/vllm-preflight.sh`: editable-install preflight for local `vllm` and `vllm-dlc` work.
+- `scripts/vllm-preflight.sh`: editable-install preflight for local `vllm` and `vllm-cl` work.
 - `scripts/runtime-smoke.sh`: package checks outside source trees, with optional required vLLM imports and an opt-in layered Real DLC Hardware execution gate.
 - `scripts/stack-preflight.py`: read-only fail-closed exact stack identity gate for immutable image, Driver/Runtime API, four CRT files, DLC Custom Kernel library, and LLVM identity.
 - `references/stack-preflight-policy.schema.json`: policy schema for explicitly approved or revoked exact stack profiles; unknown profiles remain blocked.
-- `scripts/qualify-vllm-dlc-smi-environment.py` and `scripts/observe-cltech-smi.py`: official `cltech_smi` source/executable qualification and normalized query-only sampling; they do not replace C1b.
+- `scripts/qualify-vllm-cl-smi-environment.py` and `scripts/observe-cltech-smi.py`: official `cltech_smi` source/executable qualification and normalized query-only sampling; they do not replace C1b.
 - `agents/openai.yaml`: preserved agent entrypoint for environments that surface skill-specific quick prompts.
 
 ## Related Knowledge-Base Docs

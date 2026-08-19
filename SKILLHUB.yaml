@@ -101,7 +101,7 @@ skills:
       - "scripts/"
 
   - name: pd-separation
-    description: "Deploy or diagnose vLLM-DLC Prefill/Decode separation with MooncakeDLCConnector; use for single-node TCP, qualified lyp_full or dlccl_direct, cross-machine TCP, transport qualification, KV-transfer lifecycle, routing, and recovery."
+    description: "Deploy or diagnose vLLM-CL Prefill/Decode separation with MooncakeDLCConnector; use for single-node TCP, qualified lyp_full or dlccl_direct, cross-machine TCP, transport qualification, KV-transfer lifecycle, routing, and recovery."
     path: skills/engineering/pd-separation
     files:
       - SKILL.md
@@ -118,7 +118,7 @@ skills:
       - "scripts/"
 
   - name: main-to-main-upgrade
-    description: "Upgrade vllm-dlc main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests."
+    description: "Upgrade vllm-cl main toward an exact upstream vLLM full SHA, recover an unknown Verified vLLM Alignment candidate, or perform complete compatibility-impact analysis; do not use for standalone model adaptation, environment rebuild, single-operator diagnosis, independent compile work, release branch management, or smoke-only requests."
     path: skills/engineering/main-to-main-upgrade
     files:
       - SKILL.md

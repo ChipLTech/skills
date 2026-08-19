@@ -29,8 +29,8 @@ class RuntimeSmokeTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("--require-device-execution", result.stdout)
         self.assertIn("--require-vllm", result.stdout)
-        self.assertIn("--require-vllm-dlc", result.stdout)
-        self.assertIn("--skip-vllm-dlc", result.stdout)
+        self.assertIn("--require-vllm-cl", result.stdout)
+        self.assertIn("--skip-vllm-cl", result.stdout)
         self.assertIn("DLC_PACKAGE_SMOKE_TIMEOUT", result.stdout)
         self.assertIn("DLC_RUNTIME_SMOKE_TIMEOUT", result.stdout)
 
@@ -40,7 +40,7 @@ class RuntimeSmokeTests(unittest.TestCase):
             ("--device-index",),
             ("--device-index", "invalid"),
             ("/tmp", "/tmp"),
-            ("--require-vllm-dlc", "--skip-vllm-dlc"),
+            ("--require-vllm-cl", "--skip-vllm-cl"),
         ):
             with self.subTest(arguments=arguments):
                 result = self.run_script(*arguments)
@@ -62,7 +62,7 @@ class RuntimeSmokeTests(unittest.TestCase):
             result = self.run_script(
                 str(root),
                 "--require-vllm",
-                "--skip-vllm-dlc",
+                "--skip-vllm-cl",
                 "--require-device-execution",
                 "--device-index",
                 "3",
@@ -95,7 +95,7 @@ class RuntimeSmokeTests(unittest.TestCase):
             self.write_fake_runtime(root)
             result = self.run_script(
                 str(root),
-                "--skip-vllm-dlc",
+                "--skip-vllm-cl",
                 "--require-device-execution",
                 environment={
                     "PATH": f"{fake_bin}:{os.environ['PATH']}",

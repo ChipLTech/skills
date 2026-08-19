@@ -7,8 +7,8 @@ workdir="/tmp"
 workdir_set=0
 require_device_execution=0
 require_vllm=0
-require_vllm_dlc=0
-skip_vllm_dlc=0
+require_vllm_cl=0
+skip_vllm_cl=0
 device_index=0
 
 usage() {
@@ -19,8 +19,8 @@ Options:
   --require-device-execution  Run allocation/H2D/device-op/sync/D2H correctness
   --device-index N            Logical DLC device index for execution (default: 0)
   --require-vllm              Fail if vllm cannot be imported
-  --require-vllm-dlc          Fail if vllm_dlc cannot be imported
-  --skip-vllm-dlc             Do not import vllm_dlc for built-in platform use
+  --require-vllm-cl          Fail if vllm_cl cannot be imported
+  --skip-vllm-cl             Do not import vllm_cl for built-in platform use
   -h, --help                  Show this help
 
 Set DLC_PACKAGE_SMOKE_TIMEOUT to override the 45-second package timeout.
@@ -47,12 +47,12 @@ while [[ $# -gt 0 ]]; do
       require_vllm=1
       shift
       ;;
-    --require-vllm-dlc)
-      require_vllm_dlc=1
+    --require-vllm-cl)
+      require_vllm_cl=1
       shift
       ;;
-    --skip-vllm-dlc)
-      skip_vllm_dlc=1
+    --skip-vllm-cl)
+      skip_vllm_cl=1
       shift
       ;;
     -h|--help)
@@ -81,8 +81,8 @@ if [[ ! "$device_index" =~ ^[0-9]+$ ]]; then
   exit 2
 fi
 
-if [[ "$require_vllm_dlc" == "1" && "$skip_vllm_dlc" == "1" ]]; then
-  printf '%s\n' '--require-vllm-dlc and --skip-vllm-dlc are mutually exclusive' >&2
+if [[ "$require_vllm_cl" == "1" && "$skip_vllm_cl" == "1" ]]; then
+  printf '%s\n' '--require-vllm-cl and --skip-vllm-cl are mutually exclusive' >&2
   exit 2
 fi
 
@@ -102,8 +102,8 @@ cd "$workdir"
 printf 'package_smoke_timeout_seconds %s\n' "$package_timeout_seconds"
 
 REQUIRE_VLLM="$require_vllm" \
-  REQUIRE_VLLM_DLC="$require_vllm_dlc" \
-  SKIP_VLLM_DLC="$skip_vllm_dlc" \
+  REQUIRE_VLLM_CL="$require_vllm_cl" \
+  SKIP_VLLM_CL="$skip_vllm_cl" \
   timeout --signal=TERM --kill-after=5 "$package_timeout_seconds" python3 - <<'PY'
 import os
 from importlib import metadata
@@ -126,16 +126,16 @@ except Exception as exc:
     print('vllm_import_error', repr(exc))
     if os.environ['REQUIRE_VLLM'] == '1':
         raise
-if os.environ['SKIP_VLLM_DLC'] == '1':
-    print('vllm_dlc', 'not_applicable_by_contract')
+if os.environ['SKIP_VLLM_CL'] == '1':
+    print('vllm_cl', 'not_applicable_by_contract')
 else:
     try:
-        import vllm_dlc
-        print('vllm_dlc', vllm_dlc.__file__)
-        print('vllm_dlc_metadata', metadata.version('vllm-dlc'))
+        import vllm_cl
+        print('vllm_cl', vllm_cl.__file__)
+        print('vllm_cl_metadata', metadata.version('vllm-cl'))
     except Exception as exc:
-        print('vllm_dlc_import_error', repr(exc))
-        if os.environ['REQUIRE_VLLM_DLC'] == '1':
+        print('vllm_cl_import_error', repr(exc))
+        if os.environ['REQUIRE_VLLM_CL'] == '1':
             raise
 PY
 

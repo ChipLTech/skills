@@ -1,6 +1,6 @@
 ---
 name: pd-separation
-description: Deploy or diagnose vLLM-DLC Prefill/Decode separation with MooncakeDLCConnector; use for single-node TCP, qualified lyp_full or dlccl_direct, cross-machine TCP, transport qualification, KV-transfer lifecycle, routing, and recovery.
+description: Deploy or diagnose vLLM-CL Prefill/Decode separation with MooncakeDLCConnector; use for single-node TCP, qualified lyp_full or dlccl_direct, cross-machine TCP, transport qualification, KV-transfer lifecycle, routing, and recovery.
 ---
 
 # Prefill/Decode Separation
@@ -9,7 +9,7 @@ Establish a request-correlated Prefill/Decode (PD) deployment. Service readiness
 
 ## Inputs
 
-- Exact vLLM, vllm-dlc, mooncake-dlc, PyTorch DLC Backend, and model identities.
+- Exact vLLM, vllm-cl, mooncake-dlc, PyTorch DLC Backend, and model identities.
 - Topology: `single_node_tcp`, `single_node_lyp_full`, qualified `single_node_dlccl_direct`, or `cross_machine_tcp`.
 - Prefill, Decode, and Proxy hosts, routable addresses, device sets, TP, and ports.
 - Model, tokenizer, dtype, quantization, KV layout/cache dtype, block size, context, and role-specific vLLM arguments.

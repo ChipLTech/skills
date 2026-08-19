@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "vllm-dlc-identity-provider-seal/v1",
+  "$id": "vllm-cl-identity-provider-seal/v1",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "seal_id", "provider", "subject_class", "observed_value", "generation", "observed_at", "expires_at", "raw_evidence_digest", "authoritativeness", "status", "blockers", "primary_blocker", "claim_boundary", "unverified_scope", "digest"],
   "properties": {
-    "schema_version": {"const": "vllm-dlc-identity-provider-seal/v1"},
+    "schema_version": {"const": "vllm-cl-identity-provider-seal/v1"},
     "seal_id": {"type": "string", "minLength": 1},
     "provider": {
       "type": "object",

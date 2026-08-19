@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 
-VALIDATOR_PATH = Path(__file__).with_name("validate-vllm-dlc-qualification.py")
+VALIDATOR_PATH = Path(__file__).with_name("validate-vllm-cl-qualification.py")
 SPEC = importlib.util.spec_from_file_location("dlccl_qualification_contract", VALIDATOR_PATH)
 if SPEC is None or SPEC.loader is None:
     raise RuntimeError("cannot load distributed qualification validator")

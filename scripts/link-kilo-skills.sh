@@ -5,7 +5,7 @@ set -euo pipefail
 #
 # Default behavior:
 #   - Links published skills from engineering/, productivity/, and misc/
-#   - Includes stable vLLM-DLC engineering skills such as model-adaptation and main-to-main-upgrade by bucket membership, not --all
+#   - Includes stable vLLM-CL engineering skills such as model-adaptation and main-to-main-upgrade by bucket membership, not --all
 #   - Writes symlinks to ~/.config/kilo/skills/<skill-name>
 #   - Skips existing real directories/files instead of deleting them
 #   - Optionally writes thin slash-command wrappers to ~/.config/kilo/command/

@@ -21,7 +21,7 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 
 ## When To Use
 
-- A task concerns the Chipltech-Family Accelerator, DLC Platform, DLC Ecosystem, PyTorch DLC Backend, DLC Runtime, vLLM-DLC, model qualification, or related engineering work.
+- A task concerns the Chipltech-Family Accelerator, DLC Platform, DLC Ecosystem, PyTorch DLC Backend, DLC Runtime, vLLM-CL, model qualification, or related engineering work.
 - The answer must use the team's formal terminology or cite the engineering knowledge base.
 - The correct business prompt or execution Skill is not yet known.
 
@@ -34,8 +34,9 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 ## Workflow
 
 1. Resolve both configured roots to readable absolute paths. Confirm the knowledge root contains `CONTEXT.md` and `README.md`, and the skills root contains `skills/`. If no configured path is usable, perform query-only discovery. Multiple plausible roots without a unique authority stop as `blocked_ambiguous_knowledge_root` or `blocked_ambiguous_skills_root`.
-   Repository-aware qualification uses the injectable `scripts/repository_guard.py` and requires the supplied path to equal the Git top-level root. Artifact-only validators do not invoke this guard and do not assume `/work/vllm-dlc` or any other fixed checkout path.
+   Repository-aware qualification uses the injectable `scripts/repository_guard.py` and requires the supplied path to equal the Git top-level root. Artifact-only validators do not invoke this guard and do not assume `/work/vllm-cl` or any other fixed checkout path.
 2. Read `<KNOWLEDGE_BASE_ROOT>/CONTEXT.md` and `<KNOWLEDGE_BASE_ROOT>/README.md`. Adopt their formal terminology, component boundaries, source-of-truth policy, and maintenance rules before interpreting the task.
+   Treat `vllm-cl` as the current repository and Distribution and `vllm_cl` as its Python package. Old `vllm-dlc` or `vllm_dlc` tokens are historical aliases only when an original pre-rename artifact explicitly contains them; never generate them for a current checkout, command, URL, identity field, or import.
 3. For capability discovery, task routing, or an unclear owner, read `<KNOWLEDGE_BASE_ROOT>/prompt-examples/all-supported-capabilities-quickstart.md` as the canonical catalog of supported task entrypoints. Select its linked detailed Prompt, Contract, or Runbook; never execute from the catalog alone or treat catalog coverage as execution Evidence.
 4. Classify the request by problem domain. Search repository-relative filenames, headings, and content before reading broadly. Prefer the relevant topic document, then the nearest applicable case study, then the selected approved contract under `prompt-examples/`.
 5. For every substantive domain claim, cite a repository-relative path plus heading or line range. Label the basis as one of: `direct repository evidence`, `runtime observation`, `inference`, or `missing evidence`. Never upgrade one class into another.
@@ -58,14 +59,14 @@ Establish the Chipltech-Family Accelerator domain context, retrieve authoritativ
 | Workstation rebuild or package/runtime repair | `runtime-debugging/`, `debugging-workflows/` | `dlc-env-setup` |
 | Built-in PyTorch DLC Backend to PrivateUse1 plugin migration | `prompt-examples/pytorch-dlc-plugin-migration-prompts.md` | `pytorch-dlc-plugin-migration` |
 | Query-only device, HBM, process, link, or cleanup evidence | `runtime-debugging/chipltech-smi-observability.md` | `dlc-hardware-observability` |
-| One model's loading or serving compatibility | `vllm-dlc/model-adaptation-and-main-to-main-decisions.md` | `model-adaptation` |
-| Local-model qualification or DLC/TYD image delivery | `vllm-dlc/modelzoo-driven-dlc-tyd-image-contract.md` | `modelzoo-image-validation` |
-| Prefill/Decode separation | `vllm-dlc/prefill-decode-separation.md` | `pd-separation` |
-| Exact upstream vLLM SHA alignment | `vllm-dlc/model-adaptation-and-main-to-main-decisions.md` | `main-to-main-upgrade` |
+| One model's loading or serving compatibility | `vllm-cl/model-adaptation-and-main-to-main-decisions.md` | `model-adaptation` |
+| Local-model qualification or DLC/TYD image delivery | `vllm-cl/modelzoo-driven-dlc-tyd-image-contract.md` | `modelzoo-image-validation` |
+| Prefill/Decode separation | `vllm-cl/prefill-decode-separation.md` | `pd-separation` |
+| Exact upstream vLLM SHA alignment | `vllm-cl/model-adaptation-and-main-to-main-decisions.md` | `main-to-main-upgrade` |
 | Hard bug | Relevant topic and nearest case study | `diagnosing-bugs` |
 | Model-serving performance regression | `runtime-debugging/performance-profiling.md` and nearest performance case study | `diagnosing-bugs` |
 | Profile artifact completeness or trace-track breakdown | `runtime-debugging/performance-profiling.md` | `diagnosing-bugs` |
-| Model distributed/MoE collective compatibility | `vllm-dlc/distributed-collective-qualification.md` | `model-adaptation` |
+| Model distributed/MoE collective compatibility | `vllm-cl/distributed-collective-qualification.md` | `model-adaptation` |
 | Completed technical delivery needing a one-sentence cross-team summary | `foundation/technical-delivery-summary.md` | `technical-delivery-summary` |
 | Closed diagnosis needing a short cross-team explanation | `debugging-workflows/technical-issue-summary.md` | `technical-issue-summary` |
 

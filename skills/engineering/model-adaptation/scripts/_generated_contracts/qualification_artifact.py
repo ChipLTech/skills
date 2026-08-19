@@ -112,8 +112,8 @@ PRODUCER_POLICY = {
         },
         "model-adaptation/distributed-collective-fixture": {
             "schemas": (
-                "vllm-dlc-distributed-collective-qualification/v1",
-                "vllm-dlc-distributed-collective-qualification/v2",
+                "vllm-cl-distributed-collective-qualification/v1",
+                "vllm-cl-distributed-collective-qualification/v2",
             ),
             "excluded_schemas": (),
             "max_evidence_class": "fixture",
@@ -121,7 +121,7 @@ PRODUCER_POLICY = {
             "acceptance_eligible": False,
         },
         "model-adaptation/live-identity-collector": {
-            "schemas": ("vllm-dlc-live-identity/v1",),
+            "schemas": ("vllm-cl-live-identity/v1",),
             "excluded_schemas": (),
             "max_evidence_class": "operational_only",
             "max_authoritativeness": "non_authoritative",
@@ -129,8 +129,8 @@ PRODUCER_POLICY = {
         },
         "model-adaptation/dlccl-qualification-runner": {
             "schemas": (
-                "vllm-dlc-distributed-collective-qualification/v1",
-                "vllm-dlc-distributed-collective-qualification/v2",
+                "vllm-cl-distributed-collective-qualification/v1",
+                "vllm-cl-distributed-collective-qualification/v2",
             ),
             "excluded_schemas": (),
             "max_evidence_class": "qualification",
@@ -140,17 +140,17 @@ PRODUCER_POLICY = {
         "model-adaptation/qualification-runner": {
             "schemas": (
                 ENVELOPE_VERSION,
-                "vllm-dlc-local-kv-qualification/v1",
-                "vllm-dlc-distributed-collective-qualification/v1",
-                "vllm-dlc-distributed-collective-qualification/v2",
-                "vllm-dlc-graph-qualification/v1",
-                "vllm-dlc-model-precision-qualification/v1",
-                "vllm-dlc-quantization-qualification/v1",
-                "vllm-dlc-performance-experiment-record/v1",
+                "vllm-cl-local-kv-qualification/v1",
+                "vllm-cl-distributed-collective-qualification/v1",
+                "vllm-cl-distributed-collective-qualification/v2",
+                "vllm-cl-graph-qualification/v1",
+                "vllm-cl-model-precision-qualification/v1",
+                "vllm-cl-quantization-qualification/v1",
+                "vllm-cl-performance-experiment-record/v1",
             ),
             "excluded_schemas": (
-                "vllm-dlc-model-precision-qualification/v1",
-                "vllm-dlc-quantization-qualification/v1",
+                "vllm-cl-model-precision-qualification/v1",
+                "vllm-cl-quantization-qualification/v1",
             ),
             "max_evidence_class": "qualification",
             "max_authoritativeness": "operational",
@@ -158,9 +158,9 @@ PRODUCER_POLICY = {
         },
         "modelzoo-image-validation/formal-qualification-runner": {
             "schemas": (
-                "vllm-dlc-model-precision-qualification/v1",
-                "vllm-dlc-quantization-qualification/v1",
-                "vllm-dlc-performance-experiment-record/v1",
+                "vllm-cl-model-precision-qualification/v1",
+                "vllm-cl-quantization-qualification/v1",
+                "vllm-cl-performance-experiment-record/v1",
             ),
             "excluded_schemas": (),
             "max_evidence_class": "formal_acceptance",

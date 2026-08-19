@@ -68,7 +68,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             self.assertTrue((installed / "SKILL.md").is_file())
             self.assertTrue((installed / "agents" / "openai.yaml").is_file())
             self.assertTrue((installed / "contracts" / "qualification-artifact-envelope-v1.schema.json").is_file())
-            self.assertTrue((installed / "contracts" / "vllm-dlc-collective-selection-v1.schema.json").is_file())
+            self.assertTrue((installed / "contracts" / "vllm-cl-collective-selection-v1.schema.json").is_file())
             self.assertTrue((installed / "scripts" / "qualification_artifact.py").is_file())
             self.assertTrue((installed / "scripts" / "repository_guard.py").is_file())
             wrapper = Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"
@@ -119,17 +119,17 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             ),
             (
                 "model-adaptation",
-                "vllm-dlc/model-adaptation-and-main-to-main-decisions.md",
+                "vllm-cl/model-adaptation-and-main-to-main-decisions.md",
                 "blocked_missing_asset",
             ),
             (
                 "modelzoo-image-validation",
-                "vllm-dlc/modelzoo-driven-dlc-tyd-image-contract.md",
+                "vllm-cl/modelzoo-driven-dlc-tyd-image-contract.md",
                 "blocked_missing_asset",
             ),
             (
                 "pd-separation",
-                "vllm-dlc/prefill-decode-separation.md",
+                "vllm-cl/prefill-decode-separation.md",
                 "blocked_missing_contract",
             ),
             (

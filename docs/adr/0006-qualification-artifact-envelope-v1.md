@@ -12,8 +12,8 @@ contract. Reimplementing those rules in each Skill would allow validator drift
 and accidental promotion. SkillHub does not currently declare cross-Skill
 dependencies, so consuming Skills must remain independently installable.
 
-The existing `vllm-dlc-run-spec`, `vllm-dlc-result-evidence`,
-`vllm-dlc-parent-child-handoff`, and model-adaptation bundle v1 contracts are
+The existing `vllm-cl-run-spec`, `vllm-cl-result-evidence`,
+`vllm-cl-parent-child-handoff`, and model-adaptation bundle v1 contracts are
 already closed-world compatibility surfaces. This decision does not add fields
 to them or change their consumers.
 
@@ -124,4 +124,4 @@ a new ADR and must preserve v1 installed artifacts.
 All Stage A and later qualification schemas have one fail-closed envelope
 implementation and deterministic freshness behavior. Installed consumers carry
 duplicate bytes, but digest checks prevent semantic drift. Existing bundle v1
-and vLLM-DLC contract v1/v2 behavior remain unchanged.
+and vLLM-CL contract v1/v2 behavior remain unchanged.
