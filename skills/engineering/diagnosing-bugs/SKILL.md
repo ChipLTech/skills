@@ -109,7 +109,7 @@ Tool preference:
 
 **Tag every debug log** with a unique prefix, e.g. `[DEBUG-a4f2]`. Cleanup at the end becomes a single grep. Untagged logs survive; tagged logs die.
 
-**Perf branch.** Establish an uninstrumented baseline before profiling. For model-serving or asynchronous accelerator work with nested framework/runtime/device boundaries, load [Hierarchical performance diagnosis](references/hierarchical-performance-diagnosis.md). Validate existing DLC trace bytes and scopes with [Profiling Evidence Contract](references/profiling-evidence-contract.md), then use [Trace-Track Performance Breakdown](references/perf-breakdown.md) only after R1 passes. Diagnostic synchronization and logging may localize a boundary but never establish the final performance result; remove them and rerun the original workload. Measure first, fix second.
+**Perf branch.** Establish an uninstrumented baseline before profiling. For model-serving or asynchronous accelerator work with nested framework/runtime/device boundaries, load [Hierarchical performance diagnosis](references/hierarchical-performance-diagnosis.md). Validate existing DLC trace bytes and scopes with [Profiling Evidence Contract](references/profiling-evidence-contract.md), then use [Trace-Track Performance Breakdown](references/perf-breakdown.md) only after R1 passes. For existing DLCSynapse `.log` or `.ansi` launch logs, use [Kernel CSV Export](references/kernel-summary-export.md) to produce only an operator CSV at the `tool.py` 1400 MHz time basis. Diagnostic synchronization and logging may localize a boundary but never establish the final performance result; remove them and rerun the original workload. Measure first, fix second.
 
 ## Phase 5 — Fix + regression test
 

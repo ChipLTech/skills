@@ -68,8 +68,10 @@ class DiagnosingBugsPublicationTests(unittest.TestCase):
             for relative in (
                 "references/profiling-evidence-contract.md",
                 "references/perf-breakdown.md",
+                "references/kernel-summary-export.md",
                 "scripts/validate-dlc-profile-artifacts.py",
                 "scripts/analyze-dlc-profile.py",
+                "scripts/export-dlc-kernel-csv.py",
                 "scripts/_generated_contracts/qualification_artifact.py",
             ):
                 self.assertTrue((installed / relative).is_file(), relative)
@@ -79,12 +81,17 @@ class DiagnosingBugsPublicationTests(unittest.TestCase):
         skill = (skill_root / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("references/profiling-evidence-contract.md", skill)
         self.assertIn("references/perf-breakdown.md", skill)
+        self.assertIn("references/kernel-summary-export.md", skill)
         profile = (skill_root / "references/profiling-evidence-contract.md").read_text(encoding="utf-8")
         breakdown = (skill_root / "references/perf-breakdown.md").read_text(encoding="utf-8")
         for required in ("read-only", "not OS PID/TID", "acceptance-ineligible", "Claim Boundary:"):
             self.assertIn(required, profile)
         for required in ("unmatched", "residual", "companion semantic producer", "Claim Boundary:"):
             self.assertIn(required, breakdown)
+
+        kernel_summary = (skill_root / "references/kernel-summary-export.md").read_text(encoding="utf-8")
+        for required in ("only `operators.csv`", "1400 MHz", "produces no", "Claim Boundary:"):
+            self.assertIn(required, kernel_summary)
 
 
 if __name__ == "__main__":
