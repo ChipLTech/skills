@@ -69,8 +69,16 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             self.assertTrue((installed / "agents" / "openai.yaml").is_file())
             self.assertTrue((installed / "contracts" / "qualification-artifact-envelope-v1.schema.json").is_file())
             self.assertTrue((installed / "contracts" / "vllm-cl-collective-selection-v1.schema.json").is_file())
+            for contract in (
+                "agent-evidence-return-v1.schema.json",
+                "engineering-handoff-v1.schema.json",
+                "context-reference-package-v1.schema.json",
+                "team-task-brief-v1.schema.json",
+            ):
+                self.assertTrue((installed / "contracts" / contract).is_file())
             self.assertTrue((installed / "scripts" / "qualification_artifact.py").is_file())
             self.assertTrue((installed / "scripts" / "repository_guard.py").is_file())
+            self.assertTrue((installed / "scripts" / "organization_contracts.py").is_file())
             wrapper = Path(directory) / ".kilo" / "command" / f"{IDENTITY}.md"
             self.assertIn(f"请使用 `{IDENTITY}` skill", wrapper.read_text(encoding="utf-8"))
 
@@ -82,6 +90,7 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             "CONTEXT.md",
             "README.md",
             "prompt-examples/all-supported-capabilities-quickstart.md",
+            "agent-context/capability-manifest.yaml",
             "repository-relative path",
             "direct repository evidence",
             "runtime observation",
@@ -91,6 +100,12 @@ class ChipltechContextPublicationTests(unittest.TestCase):
             "blocked_ambiguous_knowledge_root",
             "blocked_conflicting_authority",
             "Claim Boundary:",
+            "Selected capability:",
+            "Selection basis:",
+            "Minimum missing inputs:",
+            "First safe action:",
+            "Expected terminal states:",
+            "Evidence boundary:",
         ):
             self.assertIn(required, text)
 

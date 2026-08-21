@@ -93,6 +93,16 @@ Chipltech / DLC / vLLM-CL 任务
 
 完整业务路由由配置知识库中的 `prompt-examples/all-supported-capabilities-quickstart.md` 维护，README 不复制第二套路由表。`chipltech-context` 是只读 router，不是执行 Evidence；它会实际加载当前 owning Skill，再由 owner 委托环境、硬件观察、诊断或交付子问题。
 
+Chipltech 组织层采用六层引用链：Terminology → Knowledge → Capability Catalog → Task Contract → Owning Skill → Task Evidence。知识库的 `agent-context/capability-manifest.yaml` 仅以稳定 `capability_id` 连接 canonical Quickstart、owner `SKILL.md` 和本仓 `SKILLHUB.yaml`；最少输入、negative scope、授权、terminal states 与 Claim Boundary 仍由被引用真源拥有。
+
+Contributor 可运行：
+
+```bash
+python3 scripts/validate-chipltech-organization.py
+```
+
+该检查验证 catalog anchor、owner publication、lesson source/rule/test refs 和 Claim Boundary closure，只建立 L1 组织证据，不建立 runtime、Real DLC Hardware、模型、性能或 release Evidence。
+
 ### DLC 证据边界
 
 ```text

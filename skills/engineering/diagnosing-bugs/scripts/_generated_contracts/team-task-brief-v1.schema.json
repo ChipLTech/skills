@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "team-task-brief/v1",
+  "title": "Team Task Brief v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "brief_id", "objective", "current_behavior", "desired_behavior", "scope", "out_of_scope", "owning_skill", "execution_locus", "required_identities", "required_authorizations", "acceptance_criteria", "context_package_reference", "claim_boundary", "digest"],
+  "properties": {
+    "schema_version": {"const": "team-task-brief/v1"},
+    "brief_id": {"$ref": "#/$defs/nonEmpty"}, "objective": {"$ref": "#/$defs/nonEmpty"},
+    "current_behavior": {"$ref": "#/$defs/nonEmpty"}, "desired_behavior": {"$ref": "#/$defs/nonEmpty"},
+    "scope": {"$ref": "#/$defs/strings"}, "out_of_scope": {"$ref": "#/$defs/strings"},
+    "owning_skill": {"$ref": "#/$defs/nonEmpty"}, "execution_locus": {"$ref": "#/$defs/nonEmpty"},
+    "required_identities": {"$ref": "#/$defs/strings"}, "required_authorizations": {"$ref": "#/$defs/strings"},
+    "acceptance_criteria": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/criterion"}},
+    "context_package_reference": {"$ref": "#/$defs/reference"},
+    "claim_boundary": {"$ref": "#/$defs/claimBoundary"}, "digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "nonEmpty": {"type": "string", "minLength": 1}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "claimBoundary": {"type": "string", "pattern": "^Claim Boundary: Establishes [^;\\r\\n]+; does not establish [^\\r\\n]+$"},
+    "strings": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}},
+    "reference": {"type": "object", "additionalProperties": false, "required": ["artifact_id", "schema_version", "uri", "digest"], "properties": {"artifact_id": {"$ref": "#/$defs/nonEmpty"}, "schema_version": {"$ref": "#/$defs/nonEmpty"}, "uri": {"$ref": "#/$defs/nonEmpty"}, "digest": {"$ref": "#/$defs/digest"}}},
+    "criterion": {"type": "object", "additionalProperties": false, "required": ["criterion_id", "description", "required_evidence_class", "required_schema_version"], "properties": {"criterion_id": {"$ref": "#/$defs/nonEmpty"}, "description": {"$ref": "#/$defs/nonEmpty"}, "required_evidence_class": {"enum": ["static_snapshot", "fixture", "diagnostic", "operational_only", "qualification", "formal_acceptance"]}, "required_schema_version": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*/v1$"}}}
+  }
+}

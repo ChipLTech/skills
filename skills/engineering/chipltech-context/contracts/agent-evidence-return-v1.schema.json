@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-evidence-return/v1",
+  "title": "Agent Evidence Return v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "return_id", "task_id", "producer", "role", "assignment_state", "evidence_references", "claims", "changed_artifacts", "blocker_reference", "resume_point", "unverified_scope", "claim_boundary", "digest"],
+  "properties": {
+    "schema_version": {"const": "agent-evidence-return/v1"},
+    "return_id": {"$ref": "#/$defs/nonEmpty"},
+    "task_id": {"$ref": "#/$defs/nonEmpty"},
+    "producer": {"$ref": "#/$defs/nonEmpty"},
+    "role": {"$ref": "#/$defs/nonEmpty"},
+    "assignment_state": {"enum": ["passed", "failed", "blocked", "not_applicable", "not_verified"]},
+    "evidence_references": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/reference"}},
+    "claims": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/claim"}},
+    "changed_artifacts": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}},
+    "blocker_reference": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/reference"}]},
+    "resume_point": {"type": ["string", "null"], "minLength": 1},
+    "unverified_scope": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}},
+    "claim_boundary": {"$ref": "#/$defs/claimBoundary"},
+    "digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "nonEmpty": {"type": "string", "minLength": 1},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "claimBoundary": {"type": "string", "pattern": "^Claim Boundary: Establishes [^;\\r\\n]+; does not establish [^\\r\\n]+$"},
+    "reference": {"type": "object", "additionalProperties": false, "required": ["artifact_id", "schema_version", "uri", "digest"], "properties": {"artifact_id": {"$ref": "#/$defs/nonEmpty"}, "schema_version": {"$ref": "#/$defs/nonEmpty"}, "uri": {"$ref": "#/$defs/nonEmpty"}, "digest": {"$ref": "#/$defs/digest"}}},
+    "claim": {"type": "object", "additionalProperties": false, "required": ["claim_id", "statement", "evidence_reference_digests"], "properties": {"claim_id": {"$ref": "#/$defs/nonEmpty"}, "statement": {"$ref": "#/$defs/nonEmpty"}, "evidence_reference_digests": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}}}}
+  }
+}

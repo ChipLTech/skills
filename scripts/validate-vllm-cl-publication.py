@@ -141,6 +141,8 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
     required_members = ["SKILL.md", "agents/", "knowledge.md"]
     if identity == "model-adaptation":
         required_members.extend(("references/", "scripts/"))
+    if identity == "main-to-main-upgrade":
+        required_members.extend(("references/", "scripts/"))
     for member in required_members:
         if member not in hub.get("files", []):
             raise ValueError(f"SkillHub files mismatch for {identity}")
@@ -162,6 +164,16 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
         for relative in qualification_assets:
             if not (stable_root / relative).is_file():
                 raise ValueError(f"missing model-adaptation qualification asset: {relative}")
+    if identity == "main-to-main-upgrade":
+        publication_candidate_assets = (
+            "references/publication-candidate-handoff-v1.schema.json",
+            "references/publication-artifact-map-v1.schema.json",
+            "references/publication-candidate-assessment-v1.schema.json",
+            "scripts/assess-publication-candidate.py",
+        )
+        for relative in publication_candidate_assets:
+            if not (stable_root / relative).is_file():
+                raise ValueError(f"missing main-to-main publication candidate asset: {relative}")
     docs = (skills_root / "kilo-code-installation-and-validation.md").read_text(encoding="utf-8")
     if identity not in docs or f"/{identity}" not in docs or "不需要 `--all`" not in docs:
         raise ValueError(f"installation docs mismatch for {identity}")
@@ -198,6 +210,15 @@ def validate_skill(args: argparse.Namespace, identity: str) -> dict[str, Any]:
                     }
                 }
                 if identity == "model-adaptation" else {}
+            ),
+            **(
+                {
+                    "publication_candidate_assets": {
+                        relative: sha256_file(stable_root / relative)
+                        for relative in publication_candidate_assets
+                    }
+                }
+                if identity == "main-to-main-upgrade" else {}
             ),
         },
     }

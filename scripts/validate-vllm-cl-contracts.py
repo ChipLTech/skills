@@ -656,6 +656,7 @@ PROMPT_PROFILES = {
             "unresolved_impact_state", "manifest_impact_identity", "regression_policy_state",
             "deepseek_tp2_assignment", "llama_tp1_assignment", "model_adaptation_handoffs",
             "artifact_evidence_references", "commit_authorization_state",
+            "publication_candidate_handoff_or_null",
         ),
         "body_terms": (
             "exact upstream", "blocked_missing_target", "report-only", "no-finalize",

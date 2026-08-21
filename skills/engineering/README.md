@@ -2,6 +2,12 @@
 
 Skills I use daily for code work.
 
+## Chipltech organization
+
+Chipltech 能力从配置知识库的 canonical Quickstart 发现，再加载本目录最窄的 owning Skill。知识库 `agent-context/capability-manifest.yaml` 只保存稳定 `capability_id` 和 Quickstart → owner `SKILL.md` → `SKILLHUB.yaml` publication closure，不复制 owner 的流程规则。
+
+贡献者在 Skills 根目录运行 `python3 scripts/validate-chipltech-organization.py`，验证 capability links、owner publication、Validated Lesson source/rule/test refs 和 Claim Boundary。该 validator 是结构检查，不产生业务 runtime Evidence。
+
 ## User-invoked
 
 Reachable only when you type them (`disable-model-invocation: true`).

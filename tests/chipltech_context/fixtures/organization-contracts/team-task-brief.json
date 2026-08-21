@@ -1,0 +1,23 @@
+{
+  "schema_version": "team-task-brief/v1",
+  "brief_id": "brief:task-17",
+  "objective": "Qualify one model compatibility path.",
+  "current_behavior": "Only fixture contract behavior is established.",
+  "desired_behavior": "Produce bounded qualification evidence from the owning Skill.",
+  "scope": ["Model loading and one representative inference workload"],
+  "out_of_scope": ["Image release"],
+  "owning_skill": "model-adaptation",
+  "execution_locus": "container:qualification-runtime",
+  "required_identities": ["Full Qualification Artifact subject identity"],
+  "required_authorizations": ["Real DLC Hardware allocation"],
+  "acceptance_criteria": [
+    {
+      "criterion_id": "criterion:model-correctness",
+      "description": "The representative workload passes model correctness gates.",
+      "required_evidence_class": "qualification",
+      "required_schema_version": "vllm-cl-model-precision-qualification/v1"
+    }
+  ],
+  "context_package_reference": null,
+  "claim_boundary": "Claim Boundary: Establishes an Evidence request; does not establish any gate result or acceptance."
+}

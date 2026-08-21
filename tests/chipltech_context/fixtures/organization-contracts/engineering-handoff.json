@@ -1,0 +1,21 @@
+{
+  "schema_version": "engineering-handoff/v1",
+  "handoff_id": "handoff:task-17:session-2",
+  "task_id": "task-17",
+  "objective": "Continue model compatibility qualification from sealed fixture evidence.",
+  "current_state": "Fixture contract behavior is closed; runtime qualification is not verified.",
+  "fact_baseline_references": [],
+  "decision_references": [],
+  "evidence_return_references": [],
+  "failed_attempts_not_to_repeat": ["Do not treat fixture validation as runtime acceptance."],
+  "context_package_reference": null,
+  "next": {
+    "owner": "model-adaptation",
+    "action": "Run the owning Skill qualification workflow on authorized hardware.",
+    "criterion": "A qualification Evidence Artifact closes the required gates.",
+    "stop_conditions": ["Real DLC Hardware allocation is unavailable."]
+  },
+  "authorizations_still_required": ["Real DLC Hardware allocation"],
+  "invalidation_conditions": ["Any referenced artifact digest changes."],
+  "claim_boundary": "Claim Boundary: Establishes preservation of referenced facts and decisions; does not establish upgraded authority."
+}

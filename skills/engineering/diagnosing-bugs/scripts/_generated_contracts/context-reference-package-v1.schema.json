@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "context-reference-package/v1",
+  "title": "Context Reference Package v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "package_id", "owning_skill", "created_at", "references", "freshness", "claim_boundary", "digest"],
+  "properties": {
+    "schema_version": {"const": "context-reference-package/v1"},
+    "package_id": {"$ref": "#/$defs/nonEmpty"},
+    "owning_skill": {"$ref": "#/$defs/nonEmpty"},
+    "created_at": {"$ref": "#/$defs/utcTimestamp"},
+    "references": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/contextReference"}},
+    "freshness": {"$ref": "#/$defs/freshness"},
+    "claim_boundary": {"$ref": "#/$defs/claimBoundary"},
+    "digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "nonEmpty": {"type": "string", "minLength": 1},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utcTimestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$"},
+    "claimBoundary": {"type": "string", "pattern": "^Claim Boundary: Establishes [^;\\r\\n]+; does not establish [^\\r\\n]+$"},
+    "contextReference": {"type": "object", "additionalProperties": false, "required": ["reference_id", "kind", "uri", "digest", "access", "authority", "execution_locus"], "properties": {"reference_id": {"$ref": "#/$defs/nonEmpty"}, "kind": {"enum": ["terminology", "repository_navigation", "capability_catalog", "contract", "runbook", "case", "prompt"]}, "uri": {"$ref": "#/$defs/nonEmpty"}, "digest": {"$ref": "#/$defs/digest"}, "access": {"enum": ["required", "optional", "forbidden"]}, "authority": {"enum": ["canonical", "supporting", "historical"]}, "execution_locus": {"$ref": "#/$defs/nonEmpty"}}},
+    "freshness": {"type": "object", "additionalProperties": false, "required": ["checked_at", "invalidation_conditions"], "properties": {"checked_at": {"$ref": "#/$defs/utcTimestamp"}, "invalidation_conditions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmpty"}}}}
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vllm-cl-publication-artifact-map/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_map_id", "candidate_base_sha", "candidate_commit_sha", "entries", "digest"],
+  "properties": {
+    "schema_version": {"const": "vllm-cl-publication-artifact-map/v1"},
+    "artifact_map_id": {"type": "string", "minLength": 1},
+    "candidate_base_sha": {"$ref": "#/$defs/sha"},
+    "candidate_commit_sha": {"$ref": "#/$defs/sha"},
+    "entries": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_id", "schema_version", "digest", "path"],
+        "properties": {
+          "artifact_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+          "schema_version": {"enum": ["vllm-cl-publication-gate-evidence/v1", "vllm-cl-rebuilt-artifact/v1", "vllm-cl-publication-authorization/v1"]},
+          "digest": {"$ref": "#/$defs/digest"},
+          "path": {"type": "string", "pattern": "^(?!-)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*(?:^|/)\\.(?:/|$))[^\\x00]+\\.json$"}
+        }
+      }
+    },
+    "digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

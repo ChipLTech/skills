@@ -1,0 +1,1 @@
+{"schema":"io.chipltech.model-adaptation-request/v1","request_text":"整理已有 evidence 形成报告","evidence_artifacts":[],"evidence_state":"available","audience":"reviewers","decision_questions":["Is the route feasible?"],"decision_summary_artifact":{},"technical_attachment_artifact":{}}

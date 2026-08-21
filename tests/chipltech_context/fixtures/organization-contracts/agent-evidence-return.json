@@ -1,0 +1,21 @@
+{
+  "schema_version": "agent-evidence-return/v1",
+  "return_id": "return:task-17:compatibility-analysis",
+  "task_id": "task-17",
+  "producer": "model-adaptation/compatibility-analyst",
+  "role": "compatibility_analyst",
+  "assignment_state": "passed",
+  "evidence_references": [],
+  "claims": [
+    {
+      "claim_id": "claim:fixture-contract-valid",
+      "statement": "The fixture envelope passed software contract validation.",
+      "evidence_reference_digests": []
+    }
+  ],
+  "changed_artifacts": [],
+  "blocker_reference": null,
+  "resume_point": null,
+  "unverified_scope": ["Real DLC Hardware behavior"],
+  "claim_boundary": "Claim Boundary: Establishes fixture contract behavior; does not establish qualification or formal acceptance."
+}

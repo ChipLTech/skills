@@ -1,0 +1,22 @@
+{
+  "schema_version": "context-reference-package/v1",
+  "package_id": "context:model-adaptation:task-17",
+  "owning_skill": "model-adaptation",
+  "created_at": "2026-08-21T08:00:00Z",
+  "references": [
+    {
+      "reference_id": "contract:qualification-envelope",
+      "kind": "contract",
+      "uri": "repo://skills/engineering/chipltech-context/contracts/qualification-artifact-envelope-v1.schema.json",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "access": "required",
+      "authority": "canonical",
+      "execution_locus": "host:/work/skills"
+    }
+  ],
+  "freshness": {
+    "checked_at": "2026-08-21T08:00:00Z",
+    "invalidation_conditions": ["The referenced contract digest changes."]
+  },
+  "claim_boundary": "Claim Boundary: Establishes context routing and authority metadata; does not establish runtime Evidence."
+}

@@ -78,7 +78,18 @@ class VllmClPublicationCliTests(unittest.TestCase):
         self.assertTrue(all(value.startswith("sha256:") for value in assets.values()))
 
     def test_main_to_main_upgrade_is_structurally_published(self):
-        self.assert_passes_live_package("main-to-main-upgrade")
+        report = self.assert_passes_live_package("main-to-main-upgrade")
+        assets = report["digests"]["publication_candidate_assets"]
+        self.assertEqual(
+            set(assets),
+            {
+                "references/publication-candidate-handoff-v1.schema.json",
+                "references/publication-artifact-map-v1.schema.json",
+                "references/publication-candidate-assessment-v1.schema.json",
+                "scripts/assess-publication-candidate.py",
+            },
+        )
+        self.assertTrue(all(value.startswith("sha256:") for value in assets.values()))
 
     def test_publication_surface_inventory_reports_both_skills_once(self):
         result = self.run_cli("publication-surface-inventory")

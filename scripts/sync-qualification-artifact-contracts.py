@@ -25,6 +25,10 @@ def main() -> int:
     canonical = (
         root / "skills/engineering/chipltech-context/contracts/qualification-artifact-envelope-v1.schema.json",
         root / "skills/engineering/chipltech-context/contracts/vllm-cl-collective-selection-v1.schema.json",
+        root / "skills/engineering/chipltech-context/contracts/agent-evidence-return-v1.schema.json",
+        root / "skills/engineering/chipltech-context/contracts/engineering-handoff-v1.schema.json",
+        root / "skills/engineering/chipltech-context/contracts/context-reference-package-v1.schema.json",
+        root / "skills/engineering/chipltech-context/contracts/team-task-brief-v1.schema.json",
         root / "skills/engineering/chipltech-context/scripts/qualification_artifact.py",
     )
     drift = []

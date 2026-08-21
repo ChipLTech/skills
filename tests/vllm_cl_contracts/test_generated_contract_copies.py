@@ -12,6 +12,15 @@ ROOT = Path(__file__).resolve().parents[2]
 CANONICAL_MODULE = ROOT / "skills/engineering/chipltech-context/scripts/qualification_artifact.py"
 CANONICAL_SCHEMA = ROOT / "skills/engineering/chipltech-context/contracts/qualification-artifact-envelope-v1.schema.json"
 COLLECTIVE_V2_SCHEMA = ROOT / "skills/engineering/chipltech-context/contracts/vllm-cl-collective-selection-v1.schema.json"
+ORGANIZATION_SCHEMAS = tuple(
+    ROOT / "skills/engineering/chipltech-context/contracts" / name
+    for name in (
+        "agent-evidence-return-v1.schema.json",
+        "engineering-handoff-v1.schema.json",
+        "context-reference-package-v1.schema.json",
+        "team-task-brief-v1.schema.json",
+    )
+)
 SYNC = ROOT / "scripts/sync-qualification-artifact-contracts.py"
 CONSUMERS = ("diagnosing-bugs", "model-adaptation")
 
@@ -33,6 +42,11 @@ class GeneratedContractCopyTests(unittest.TestCase):
                     hashlib.sha256((generated / CANONICAL_SCHEMA.name).read_bytes()).digest(),
                     hashlib.sha256(CANONICAL_SCHEMA.read_bytes()).digest(),
                 )
+                for schema in ORGANIZATION_SCHEMAS:
+                    self.assertEqual(
+                        hashlib.sha256((generated / schema.name).read_bytes()).digest(),
+                        hashlib.sha256(schema.read_bytes()).digest(),
+                    )
                 script = (
                     "import importlib.util; "
                     f"p={str(generated / CANONICAL_MODULE.name)!r}; "
@@ -61,6 +75,8 @@ class GeneratedContractCopyTests(unittest.TestCase):
             shutil.copyfile(CANONICAL_SCHEMA, canonical_contracts / CANONICAL_SCHEMA.name)
             shutil.copyfile(CANONICAL_MODULE, canonical_scripts / CANONICAL_MODULE.name)
             shutil.copyfile(COLLECTIVE_V2_SCHEMA, canonical_contracts / COLLECTIVE_V2_SCHEMA.name)
+            for schema in ORGANIZATION_SCHEMAS:
+                shutil.copyfile(schema, canonical_contracts / schema.name)
             generated = root / "skills/engineering/diagnosing-bugs/scripts/_generated_contracts"
             generated.mkdir(parents=True)
             (generated / CANONICAL_SCHEMA.name).write_bytes(CANONICAL_SCHEMA.read_bytes())

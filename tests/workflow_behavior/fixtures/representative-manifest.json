@@ -1,0 +1,94 @@
+{
+  "schema": "workflow-behavior-manifest/v1",
+  "fixture_root": ".",
+  "cases": [
+    {
+      "id": "pd-core-gates-pass",
+      "workflow": "pd-separation",
+      "quality_kind": "behavior",
+      "fixture": "pd-gates.json",
+      "adapter": "pd-gates",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.terminal_state", "op": "equals", "value": "pd_validated"}, {"path": "$.authoritative", "op": "equals", "value": false}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["runtime_acceptance", "device_execution", "workspace_mutation"]
+    },
+    {
+      "id": "plugin-migration-device-deferral",
+      "workflow": "pytorch-dlc-plugin-migration",
+      "quality_kind": "behavior",
+      "fixture": "plugin-migration.json",
+      "adapter": "plugin-migration",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.terminal_state", "op": "equals", "value": "implementation_complete_tests_deferred"}, {"path": "$.acceptance_eligible", "op": "equals", "value": false}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["formal_acceptance", "device_validation", "workspace_mutation"]
+    },
+    {
+      "id": "model-report-only",
+      "workflow": "model-adaptation-report-routing",
+      "quality_kind": "behavior",
+      "fixture": "report-routing.json",
+      "adapter": "report-routing",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.terminal_state", "op": "equals", "value": "report_complete"}, {"path": "$.route", "op": "equals", "value": "report_only"}, {"path": "$.forbidden_actions", "op": "contains", "value": "device_execution"}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["build", "install", "device_execution", "benchmark", "workspace_mutation"]
+    },
+    {
+      "id": "delivery-source-verb",
+      "workflow": "technical-delivery-summary",
+      "quality_kind": "behavior",
+      "fixture": "delivery-summary.json",
+      "adapter": "delivery-summary",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.summary", "op": "contains", "value": "source 中已实现"}, {"path": "$.claim_boundary", "op": "starts_with", "value": "Claim Boundary:"}, {"path": "$.qualification_artifact_created", "op": "equals", "value": false}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["runtime_claim", "release_claim", "qualification_artifact_creation"]
+    },
+    {
+      "id": "topology-controlled-selection",
+      "workflow": "topology-selection",
+      "quality_kind": "behavior",
+      "fixture": "topology-selection.json",
+      "adapter": "topology-selection",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.status", "op": "equals", "value": "not_verified"}, {"path": "$.reason_code", "op": "equals", "value": "blocked_missing_hardware"}, {"path": "$.claim_boundary", "op": "starts_with", "value": "Claim Boundary:"}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["topology_qualification", "hardware_execution", "runtime_acceptance"]
+    },
+    {
+      "id": "issue-summary-contract",
+      "workflow": "technical-issue-summary",
+      "quality_kind": "contract_static",
+      "fixture": "technical-issue-summary.json",
+      "adapter": "contract-static",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.terminal_state", "op": "equals", "value": "contract_present"}, {"path": "$.authoritative", "op": "equals", "value": false}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["behavior_claim", "diagnosis_claim", "runtime_acceptance"]
+    },
+    {
+      "id": "publication-assessor-adapter",
+      "workflow": "publication-candidate",
+      "quality_kind": "behavior",
+      "fixture": "publication-candidate.json",
+      "adapter": "publication-not-proposed",
+      "expected_exit_codes": [0],
+      "assertions": [{"path": "$.status", "op": "equals", "value": "not_proposed"}, {"path": "$.publication_eligible", "op": "equals", "value": false}, {"path": "$.finalize_action", "op": "equals", "value": "none"}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["commit", "push", "publication", "rewrite"]
+    },
+    {
+      "id": "publication-stale-lease-b02",
+      "workflow": "publication-candidate-stale-lease",
+      "quality_kind": "behavior",
+      "fixture": "publication-candidate.json",
+      "adapter": "publication-stale-lease",
+      "expected_exit_codes": [20],
+      "assertions": [{"path": "$.status", "op": "equals", "value": "blocked"}, {"path": "$.primary_blocker.code", "op": "equals", "value": "lease.target_base_mismatch"}, {"path": "$.publication_eligible", "op": "equals", "value": false}, {"path": "$.finalize_action", "op": "equals", "value": "none"}],
+      "fixture_authority": "fixture_only",
+      "forbidden_actions": ["commit", "push", "publication", "rewrite", "workspace_mutation"]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "vllm-cl-publication-candidate-handoff/v1",
+  "handoff_id": "publication-not-proposed-001",
+  "producer": {
+    "workflow": "externally-authorized-publication-preparation",
+    "authority_id": "producer-team",
+    "produces_handoff_only": true,
+    "self_approval": false
+  },
+  "publication_proposed": false,
+  "tested_revision": {
+    "repository": "vllm-cl",
+    "base_sha": "0000000000000000000000000000000000000000",
+    "commit_sha": "0000000000000000000000000000000000000000",
+    "tree_sha": "0000000000000000000000000000000000000000",
+    "worktree_clean": false,
+    "artifact_graph_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "publication_candidate": null,
+  "generated_at": "2026-08-21T08:05:00Z",
+  "expires_at": "2026-08-22T08:05:00Z",
+  "finalize_action": "none",
+  "claim_boundary": "Claim Boundary: no publication is proposed; this handoff does not invent a candidate or authorize commit, push, rewrite, or finalize.",
+  "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}
