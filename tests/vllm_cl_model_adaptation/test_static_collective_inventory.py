@@ -16,11 +16,24 @@ def load_module():
 
 
 INVENTORY = load_module()
+CONTAINER_VLLM_ROOT = Path("/work/vllm")
+CONTAINER_CROSS_REPOSITORY_ROOTS = tuple(
+    Path(path) for path in (
+        "/work/vllm",
+        "/work/pytorch",
+        "/work/DLC_CL",
+        "/work/DLC_Custom_Kernel",
+    )
+)
 
 
+@unittest.skipUnless(
+    CONTAINER_VLLM_ROOT.is_dir(),
+    "requires the Docker Container Execution Contract with /work/vllm",
+)
 class StaticCollectiveInventoryTests(unittest.TestCase):
     def test_current_snapshot_records_fail_closed_routes_and_moe_callers(self):
-        result = INVENTORY.inventory(Path("/work/vllm"))
+        result = INVENTORY.inventory(CONTAINER_VLLM_ROOT)
         rows = {row["primitive"]: row for row in result["primitives"]}
         for primitive in ("reduce_scatter", "reduce_scatter_v", "all_gather_v"):
             self.assertTrue(rows[primitive]["fail_closed_unimplemented"])
@@ -36,10 +49,14 @@ class StaticCollectiveInventoryTests(unittest.TestCase):
         self.assertTrue(result["claim_boundary"].startswith("Claim Boundary:"))
 
     def test_same_source_bytes_produce_same_digest(self):
-        first = INVENTORY.inventory(Path("/work/vllm"))
-        second = INVENTORY.inventory(Path("/work/vllm"))
+        first = INVENTORY.inventory(CONTAINER_VLLM_ROOT)
+        second = INVENTORY.inventory(CONTAINER_VLLM_ROOT)
         self.assertEqual(first, second)
 
+    @unittest.skipUnless(
+        all(path.is_dir() for path in CONTAINER_CROSS_REPOSITORY_ROOTS),
+        "requires the Docker Container Execution Contract with all cross-repository /work mounts",
+    )
     def test_cross_repository_layers_are_static_and_binary_pairing_blocked(self):
         result = INVENTORY.inventory(
             Path("/work/vllm"), Path("/work/pytorch"), Path("/work/DLC_CL"),

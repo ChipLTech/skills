@@ -7,8 +7,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CLI = ROOT / "scripts" / "validate-vllm-cl-publication.py"
+CONTAINER_ROOTS = tuple(
+    Path(path) for path in (
+        "/work/chipltech-knowledge-base",
+        "/work/vllm",
+        "/work/vllm-cl",
+    )
+)
 
 
+@unittest.skipUnless(
+    all(path.is_dir() for path in CONTAINER_ROOTS),
+    "requires the fixed Docker publication contract with /work repositories",
+)
 class VllmClPublicationCliTests(unittest.TestCase):
     def run_cli(self, *arguments: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(

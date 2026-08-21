@@ -35,6 +35,14 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 
 The two contexts must not be conflated based on filename alone. `domain-modeling`, `grill-with-docs`, and `wait-what` operate on project context; Chipltech execution and Evidence boundaries remain owned by the narrow DLC skills.
 
+## Execution Locus Boundaries
+
+**Execution locus** identifies the namespace in which a command, absolute path, process, or artifact exists. Chipltech model execution and runtime-dependent tests normally use a declared Docker container locus; the Host normally orchestrates containers and stores mounted sources/artifacts.
+
+A path identity is `execution locus + absolute path`, not the path string alone. `/work/vllm`, `/work/vllm-cl`, `/work/chipltech-knowledge-base`, and `/work/skills` are container coordinates unless the active contract explicitly declares a Host locus. Host absence of a container coordinate is an unmet test harness/container precondition, not evidence that the business repository or asset is missing.
+
+Relate Host and container paths only through an explicit mount mapping that records container identity, source, destination, mode, and relevant content identity. Before running a path-bound validator, establish its execution locus. If its required container contract is unavailable, skip or return a precise container-precondition blocker; do not run it against lookalike Host paths or report a product failure.
+
 ## Flagged ambiguities
 
 - "backlog" was previously used to mean both the *tool* hosting issues and the *body of work* inside it — resolved: the tool is the **Issue tracker**; "backlog" is no longer used as a domain term.

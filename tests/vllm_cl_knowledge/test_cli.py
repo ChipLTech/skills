@@ -11,8 +11,13 @@ ROOT = Path(__file__).resolve().parents[2]
 CLI = ROOT / "scripts" / "validate-vllm-cl-contracts.py"
 FIXTURES = Path(__file__).with_name("fixtures")
 KNOWLEDGE_ROOT = Path("/work/chipltech-knowledge-base")
+CONTAINER_VLLM_CL_ROOT = Path("/work/vllm-cl")
 
 
+@unittest.skipUnless(
+    KNOWLEDGE_ROOT.is_dir() and CONTAINER_VLLM_CL_ROOT.is_dir(),
+    "requires the fixed Docker v1 knowledge contract with /work repositories",
+)
 class KnowledgeCliTests(unittest.TestCase):
     def run_cli(
         self, target: str, fixture: Path, knowledge_root: Path = KNOWLEDGE_ROOT
